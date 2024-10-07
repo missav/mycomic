@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('authors', function (Blueprint $table) {
             $table->bigInteger('id')->unique();
             $table->string('name')->index();
+            $table->string('original_name')->nullable();
             $table->text('description')->nullable();
+            $table->string('country')->nullable()->index();
+            $table->string('initial', 1)->nullable()->index();
+            $table->boolean('has_downloaded_cover')->default(false)->index();
         });
     }
 

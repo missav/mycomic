@@ -109,7 +109,7 @@ class ImportComicCommand extends Command
                 'value' => match($node->text()) {
                     '出品年代：' => (int) $node->siblings()->text(),
                     '漫畫地區：' => str($node->siblings()->attr('href'))->explode('/')->get(2),
-                    '字母索引：' => $node->siblings()->text(),
+                    '字母索引：' => strtolower($node->siblings()->text()),
                     '漫畫別名：' => $node
                         ->siblings()
                         ->reduce(fn (Crawler $node) => $node->nodeName() !== 'em')
@@ -140,6 +140,7 @@ class ImportComicCommand extends Command
         }))->flatten(1);
 
         return collect($segments)
+            ->reject(fn (array $segment) => $segment['key'] === null)
             ->mapWithKeys(fn (array $segment) => [$segment['key'] => $segment['value']])
             ->put('name', $crawler->filter('.book-title h1')->text())
             ->put('original_name', $crawler->filter('.book-title h2')->text() ?: null)
