@@ -87,7 +87,7 @@ class ImportComicCommand extends Command
         return Http::retry(5, 1000)
             ->connectTimeout(30)
             ->timeout(30)
-            ->get("https://tw.manhuagui.com/comic/{$id}/")
+            ->get(Comic::sourceUrl($id))
             ->body();
     }
 

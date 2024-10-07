@@ -35,4 +35,9 @@ class Comic extends Model
     {
         return FileSignature::append("/comics/{$this->id}.jpg");
     }
+
+    public static function sourceUrl(int $id): string
+    {
+        return "https://tw.manhuagui.com/comic/{$id}/";
+    }
 }

@@ -26,6 +26,8 @@ class DownloadComicCoverCommand extends Command
                     $this->getCoverImageResource($comic),
                 );
 
+                $comic->update(['has_downloaded_cover' => true]);
+
                 $this->info("Downloaded comic cover #{$comic->id}");
             }));
 
