@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedMediumInteger('number');
             $table->string('title');
             $table->unsignedSmallInteger('pages');
-            $table->boolean('is_downloaded_pages')->default(false)->index();
+            $table->boolean('has_downloaded_pages')->default(false)->index();
             $table->timestamps();
         });
     }

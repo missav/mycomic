@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('initial', 1)->index();
             $table->boolean('has_downloaded_cover')->default(false)->index();
             $table->boolean('is_finished')->default(false)->index();
+            $table->boolean('is_outdated')->default(false)->index();
             $table->timestamps();
         });
     }

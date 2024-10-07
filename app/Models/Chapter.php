@@ -10,7 +10,7 @@ class Chapter extends Model
     public $incrementing = false;
 
     protected $casts = [
-        'is_downloaded_pages' => 'boolean',
+        'has_downloaded_pages' => 'boolean',
     ];
 
     public function comic(): BelongsTo
