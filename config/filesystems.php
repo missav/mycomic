@@ -57,6 +57,16 @@ return [
             'throw' => false,
         ],
 
+        'aliyun' => [
+            'driver' => 's3',
+            'key' => env('ALIYUN_ACCESS_KEY_ID'),
+            'secret' => env('ALIYUN_SECRET_ACCESS_KEY'),
+            'region' => env('ALIYUN_REGION'),
+            'bucket' => env('ALIYUN_BUCKET'),
+            'url' => '',
+            'endpoint' => env('ALIYUN_ENDPOINT'),
+        ],
+
     ],
 
     /*
