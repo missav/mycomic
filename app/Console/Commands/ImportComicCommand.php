@@ -15,14 +15,15 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ImportComicCommand extends Command
 {
-    protected $signature = 'comic:import {id?}';
+    protected $signature = 'comic:import {start=1} {limit=1}';
 
     protected $description = 'Import comics command';
 
     public function handle(): void
     {
-        $currentId = $this->argument('id') ?? 1;
-        $loop = ! $this->argument('id');
+        $start = $currentId = $this->argument('start');
+        $limit = $this->argument('limit');
+        $max = $start + $limit - 1;
 
         do {
             $this->info("Importing comic #{$currentId}");
@@ -76,7 +77,7 @@ class ImportComicCommand extends Command
             $this->info("Imported comic #{$currentId}");
 
             $currentId++;
-        } while ($loop);
+        } while ($currentId <= $max);
 
         $this->info('Imported all comics');
     }
