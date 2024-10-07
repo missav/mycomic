@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,5 +29,10 @@ class Comic extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function coverImagePath(): string
+    {
+        return FileSignature::append("/comics/{$this->id}.jpg");
     }
 }
