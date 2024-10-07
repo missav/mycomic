@@ -20,7 +20,7 @@ class CheckComicUpdateCommand extends Command
         $crawler = new Crawler($source);
 
         $outdatedComicIds = $crawler->filter('.latest-list a')->each(fn (Crawler $node) =>
-            (int )str($node->attr('href'))->explode('/')->get(2)
+            (int) str($node->attr('href'))->explode('/')->get(2)
         );
 
         $updated = Comic::whereIn('id', $outdatedComicIds)->update(['is_outdated' => true]);
