@@ -8,6 +8,7 @@
         "php": "^8.2",
         "chrome-php/chrome": "^1.11",
         "laravel/framework": "^11.9",
+        "laravel/horizon": "^5.29",
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.0",
         "livewire/flux": "^1.0",
