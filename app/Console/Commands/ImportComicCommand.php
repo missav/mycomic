@@ -44,12 +44,13 @@ class ImportComicCommand extends Command
                 'name' => $comicData->get('name'),
                 'original_name' => $comicData->get('original_name'),
                 'aliases' => implode('|', $comicData->get('aliases')) ?: null,
-                'description' => $comicData->get('description'),
+                'description' => trim($comicData->get('description')),
                 'country' => $comicData->get('country'),
                 'audience' => $comicData->get('audience'),
                 'year' => $comicData->get('year'),
                 'initial' => $comicData->get('initial'),
                 'is_finished' => $comicData->get('is_finished'),
+                'last_updated_on' => $comicData->get('last_updated_on'),
             ]);
 
             $authorIds = collect($comicData->get('authors'))
@@ -147,6 +148,7 @@ class ImportComicCommand extends Command
             ->put('original_name', $crawler->filter('.book-title h2')->text() ?: null)
             ->put('audience', str($crawler->filter('.crumb a:nth-of-type(3)')->attr('href'))->explode('/')->get(2))
             ->put('description', $crawler->filter('#intro-all')->text() ?: null)
+            ->put('last_updated_on', $crawler->filter('.status > span > span')->eq(1)->text())
             ->put('chapters', $chapters);
     }
 

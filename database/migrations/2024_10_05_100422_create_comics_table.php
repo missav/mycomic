@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('has_downloaded_cover')->default(false)->index();
             $table->boolean('is_finished')->default(false)->index();
             $table->boolean('is_outdated')->default(false)->index();
+            $table->date('last_updated_on')->nullable()->index();
             $table->timestamps();
         });
     }

@@ -24,8 +24,40 @@ class Chapter extends Model
         return "https://tw.manhuagui.com/comic/{$this->comic_id}/{$this->id}.html";
     }
 
+    public function url(): string
+    {
+        return route('chapters.view', ['chapter' => $this]);
+    }
+
     public function pageImagePath(int $page): string
     {
         return FileSignature::append("/chapters/{$this->id}/{$page}.jpg");
+    }
+
+    public function pageCdnUrl(int $page): string
+    {
+        return cdn($this->pageImagePath($page));
+    }
+
+    public function previous(): ?static
+    {
+        return static::query()
+            ->where('comic_id', $this->comic_id)
+            ->where('type', $this->type)
+            ->where('id', '<', $this->id)
+            ->orderByDesc('number')
+            ->orderByDesc('id')
+            ->first();
+    }
+
+    public function next(): ?static
+    {
+        return static::query()
+            ->where('comic_id', $this->comic_id)
+            ->where('type', $this->type)
+            ->where('id', '>', $this->id)
+            ->orderBy('number')
+            ->orderBy('id')
+            ->first();
     }
 }

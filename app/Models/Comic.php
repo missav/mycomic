@@ -31,9 +31,29 @@ class Comic extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function url(): string
+    {
+        return route('comics.view', ['comic' => $this]);
+    }
+
+    public function audienceUrl(): string
+    {
+        return route('comics.index', ['audience' => $this->audience]);
+    }
+
+    public function countryUrl(): string
+    {
+        return route('comics.index', ['country' => $this->country]);
+    }
+
     public function coverImagePath(): string
     {
         return FileSignature::append("/comics/{$this->id}.jpg");
+    }
+
+    public function coverCdnUrl(): string
+    {
+        return cdn($this->coverImagePath());
     }
 
     public static function sourceUrl(int $id): string

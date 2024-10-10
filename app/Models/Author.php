@@ -26,4 +26,9 @@ class Author extends Model
     {
         return "https://tw.manhuagui.com/author/{$id}/";
     }
+
+    public function url(): string
+    {
+        return route('comics.index', ['author' => $this->name]);
+    }
 }
