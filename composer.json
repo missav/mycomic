@@ -14,6 +14,7 @@
         "livewire/flux": "^1.0",
         "livewire/flux-pro": "^1.0",
         "livewire/livewire": "^3.5",
+        "spatie/laravel-flare": "^1.0",
         "symfony/dom-crawler": "^7.1"
     },
     "require-dev": {
