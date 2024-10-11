@@ -33,6 +33,7 @@ class ImportComicCommand extends Command
                 $source = $this->scrap(Comic::sourceUrl($currentId));
             } catch (ScrapflyRequestException $e) {
                 if ($e->getCode() === 404) {
+                    $this->error("Missing comic #{$currentId}");
                     $currentId++;
                     continue;
                 }
