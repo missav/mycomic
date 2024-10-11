@@ -7,7 +7,7 @@ use App\Models\Author;
 use App\Models\Chapter;
 use App\Models\Comic;
 use App\Models\Tag;
-use GuzzleHttp\Exception\RequestException;
+use App\Scrapfly\ScrapflyRequestException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -17,24 +17,23 @@ class ImportComicCommand extends Command
 {
     use WithScraper;
 
-    protected $signature = 'comic:import {start=1} {limit=1}';
+    protected $signature = 'comic:import {start=1} {end=}';
 
     protected $description = 'Import comics command';
 
     public function handle(): void
     {
-        $start = $currentId = $this->argument('start');
-        $limit = $this->argument('limit');
-        $max = $start + $limit - 1;
+        $currentId = (int) $this->argument('start');
+        $end = $this->argument('end') ? (int) $this->argument('end') : $currentId;
 
         do {
             $this->info("Importing comic #{$currentId}");
 
             try {
                 $source = $this->scrap(Comic::sourceUrl($currentId));
-            } catch (RequestException $e) {
+            } catch (ScrapflyRequestException $e) {
                 if ($e->getCode() === 404) {
-                    break;
+                    continue;
                 }
 
                 throw $e;
@@ -80,7 +79,7 @@ class ImportComicCommand extends Command
             $this->info("Imported comic #{$currentId}");
 
             $currentId++;
-        } while ($currentId <= $max);
+        } while ($currentId <= $end);
 
         $this->info('Imported all comics');
     }
