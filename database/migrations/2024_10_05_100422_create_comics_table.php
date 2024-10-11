@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('country')->nullable()->index();
             $table->string('audience')->nullable()->index();
             $table->unsignedSmallInteger('year')->nullable()->index();
-            $table->string('initial', 1)->index();
+            $table->string('initial', 3)->index();
             $table->boolean('has_downloaded_cover')->default(false)->index();
             $table->boolean('is_finished')->default(false)->index();
             $table->boolean('is_outdated')->default(false)->index();
