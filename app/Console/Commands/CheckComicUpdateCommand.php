@@ -19,7 +19,7 @@ class CheckComicUpdateCommand extends Command
     {
         $day = (int) $this->argument('day') + 1;
 
-        $source = $this->scrap("https://tw.manhuagui.com/update/d{$day}.html", '-ja');
+        $source = $this->scrap("https://tw.manhuagui.com/update/d{$day}.html", '-jp');
 
         $crawler = new Crawler($source);
 

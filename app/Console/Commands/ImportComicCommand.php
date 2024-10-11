@@ -31,7 +31,7 @@ class ImportComicCommand extends Command
             $this->info("Importing comic #{$currentId}");
 
             try {
-                $source = $this->scrap(Comic::sourceUrl($currentId), '-ja');
+                $source = $this->scrap(Comic::sourceUrl($currentId), '-jp');
             } catch (RequestException $e) {
                 if ($e->getCode() === 404) {
                     break;
