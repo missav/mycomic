@@ -6,8 +6,8 @@ use App\Scrapfly\Scrapfly;
 
 trait WithScraper
 {
-    public function scrap(string $url, ?string $country = null): string
+    public function scrap(string $url): string
     {
-        return app(Scrapfly::class)->scrap($url, country: $country)['result']['content'];
+        return retry(5, fn () => app(Scrapfly::class)->scrap($url)['result']['content'], 300);
     }
 }
