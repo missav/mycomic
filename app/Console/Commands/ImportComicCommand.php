@@ -17,7 +17,7 @@ class ImportComicCommand extends Command
 {
     use WithScraper;
 
-    protected $signature = 'comic:import {start=1} {end=}';
+    protected $signature = 'comic:import {start} {end?}';
 
     protected $description = 'Import comics command';
 
