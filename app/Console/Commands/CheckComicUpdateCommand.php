@@ -2,20 +2,24 @@
 
 namespace App\Console\Commands;
 
+use App\Concerns\WithScraper;
 use App\Models\Comic;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
 
 class CheckComicUpdateCommand extends Command
 {
+    use WithScraper;
+
     protected $signature = 'comic:check {day=3}';
 
     protected $description = 'Check comic update command';
 
     public function handle(): void
     {
-        $source = $this->getComicUpdateSource($this->argument('day'));
+        $day = (int) $this->argument('day') + 1;
+
+        $source = $this->scrap("https://tw.manhuagui.com/update/d{$day}.html", '-ja');
 
         $crawler = new Crawler($source);
 
@@ -26,16 +30,5 @@ class CheckComicUpdateCommand extends Command
         $updated = Comic::whereIn('id', $outdatedComicIds)->update(['is_outdated' => true]);
 
         $this->info("Marked {$updated} comics as outdated");
-    }
-
-    protected function getComicUpdateSource(int $day): string
-    {
-        $day++;
-
-        return Http::retry(5, 1000)
-            ->connectTimeout(30)
-            ->timeout(30)
-            ->get("https://tw.manhuagui.com/update/d{$day}.html")
-            ->body();
     }
 }

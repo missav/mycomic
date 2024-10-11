@@ -2,15 +2,17 @@
 
 namespace App\Console\Commands;
 
+use App\Concerns\WithScraper;
 use App\Models\Author;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ImportAuthorCommand extends Command
 {
+    use WithScraper;
+
     protected $signature = 'author:import';
 
     protected $description = 'Import author command';
@@ -23,7 +25,7 @@ class ImportAuthorCommand extends Command
                 $authors->each(function (Author $author) {
                     $this->info("Importing author #{$author->id}");
 
-                    $source = $this->getAuthorSource($author->id);
+                    $source = $this->scrap(Author::sourceUrl($author->id));
 
                     $authorData = $this->getAuthorDataFromSource($source);
 
@@ -39,15 +41,6 @@ class ImportAuthorCommand extends Command
             );
 
         $this->info('Imported all authors');
-    }
-
-    protected function getAuthorSource(int $id): string
-    {
-        return Http::retry(5, 1000)
-            ->connectTimeout(30)
-            ->timeout(30)
-            ->get(Author::sourceUrl($id))
-            ->body();
     }
 
     protected function getAuthorDataFromSource(string $source): Collection

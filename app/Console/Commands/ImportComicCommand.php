@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Concerns\WithScraper;
 use App\Models\Author;
 use App\Models\Chapter;
 use App\Models\Comic;
@@ -9,12 +10,13 @@ use App\Models\Tag;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ImportComicCommand extends Command
 {
+    use WithScraper;
+
     protected $signature = 'comic:import {start=1} {limit=1}';
 
     protected $description = 'Import comics command';
@@ -29,7 +31,7 @@ class ImportComicCommand extends Command
             $this->info("Importing comic #{$currentId}");
 
             try {
-                $source = $this->getComicSource($currentId);
+                $source = $this->scrap(Comic::sourceUrl($currentId), '-ja');
             } catch (RequestException $e) {
                 if ($e->getCode() === 404) {
                     break;
@@ -81,15 +83,6 @@ class ImportComicCommand extends Command
         } while ($currentId <= $max);
 
         $this->info('Imported all comics');
-    }
-
-    protected function getComicSource(int $id): string
-    {
-        return Http::retry(5, 1000)
-            ->connectTimeout(30)
-            ->timeout(30)
-            ->get(Comic::sourceUrl($id))
-            ->body();
     }
 
     protected function getComicDataFromSource(string $source): Collection

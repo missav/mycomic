@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'scrapfly' => [
+        'api_key' => env('SCRAPFLY_API_KEY'),
+    ],
+
 ];

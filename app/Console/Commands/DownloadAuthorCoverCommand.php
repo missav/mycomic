@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Concerns\WithScraper;
 use App\Models\Author;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -11,6 +12,8 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class DownloadAuthorCoverCommand extends Command
 {
+    use WithScraper;
+
     protected $signature = 'author:download-cover';
 
     protected $description = 'Download author cover command';
@@ -37,22 +40,13 @@ class DownloadAuthorCoverCommand extends Command
 
     protected function getCoverImageResource(Author $author): mixed
     {
-        $source = $this->getAuthorSource($author->id);
+        $source = $this->scrap(Author::sourceUrl($author->id));
 
         $coverImageUrl = $this->getCoverImageUrlFromSource($source);
 
         return Http::withHeader('referer', 'https://tw.manhuagui.com/')
             ->get($coverImageUrl)
             ->resource();
-    }
-
-    protected function getAuthorSource(int $id): string
-    {
-        return Http::retry(5, 1000)
-            ->connectTimeout(30)
-            ->timeout(30)
-            ->get(Author::sourceUrl($id))
-            ->body();
     }
 
     protected function getCoverImageUrlFromSource(string $source): string
