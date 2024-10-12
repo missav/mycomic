@@ -117,7 +117,7 @@ class ImportComicCommand extends Command
                             'id' => str($node->attr('href'))->explode('/')->get(2),
                             'text' => $node->text(),
                         ]),
-                    '漫畫狀態：' => $node->siblings()->text() === '已完結',
+                    '漫畫狀態：' => $node->siblings()->count() && $node->siblings()->text() === '已完結',
                     default => null,
                 },
             ];
@@ -142,7 +142,7 @@ class ImportComicCommand extends Command
             ->put('original_name', $crawler->filter('.book-title h2')->text() ?: null)
             ->put('audience', str($crawler->filter('.crumb a:nth-of-type(3)')->attr('href'))->explode('/')->get(2))
             ->put('description', $crawler->filter('#intro-all')->text() ?: null)
-            ->put('last_updated_on', $crawler->filter('.status > span > span')->eq(1)->text())
+            ->put('last_updated_on', $crawler->filter('.status > span > span')->count() ? $crawler->filter('.status > span > span')->eq(1)->text() : null)
             ->put('chapters', $chapters);
     }
 
