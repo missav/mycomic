@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\DownloadChapter;
+use App\Models\Chapter;
 use Illuminate\Console\Command;
 
 class TempCommand extends Command
@@ -12,5 +14,6 @@ class TempCommand extends Command
 
     public function handle(): void
     {
+        dd(DownloadChapter::dispatchSync(Chapter::find(1)));
     }
 }
