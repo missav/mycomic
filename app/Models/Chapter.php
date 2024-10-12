@@ -12,7 +12,7 @@ class Chapter extends Model
 
     protected $casts = [
         'has_downloaded_pages' => 'boolean',
-        'locked_at' => 'timestamp',
+        'locked_at' => 'datetime',
     ];
 
     public function comic(): BelongsTo
