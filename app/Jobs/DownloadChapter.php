@@ -27,7 +27,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
-        if ($this->chapter->has_downloaded_pages || $this->chapter->isLocked()) {
+        if ($this->chapter->has_downloaded_pages) {
             return;
         }
 
