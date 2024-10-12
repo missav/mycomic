@@ -17,14 +17,22 @@ class ImportComicCommand extends Command
 {
     use WithScraper;
 
-    protected $signature = 'comic:import {start} {end?}';
+    protected $signature = 'comic:import {start?} {end?}';
 
     protected $description = 'Import comics command';
 
     public function handle(): void
     {
-        $currentId = (int) $this->argument('start');
-        $end = $this->argument('end') ? (int) $this->argument('end') : $currentId;
+        $start = $this->argument('start');
+        $end = $this->argument('end');
+
+        if ($start) {
+            $currentId = (int) $start;
+            $end = $end ? (int) $end : $currentId;
+        } else {
+            $currentId = Comic::max('id') + 1;
+            $end = $currentId + 4;
+        }
 
         do {
             $this->info("Importing comic #{$currentId}");
