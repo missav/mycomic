@@ -103,7 +103,7 @@ class ImportComicCommand extends Command
                     default => null,
                 },
                 'value' => match($node->text()) {
-                    '出品年代：' => (int) $node->siblings()->text(),
+                    '出品年代：' => (int) ($node->siblings()->text() ?? 2020),
                     '漫畫地區：' => str($node->siblings()->attr('href'))->explode('/')->get(2),
                     '字母索引：' => strtolower($node->siblings()->text()),
                     '漫畫別名：' => $node
