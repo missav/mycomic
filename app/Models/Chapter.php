@@ -12,6 +12,7 @@ class Chapter extends Model
 
     protected $casts = [
         'has_downloaded_pages' => 'boolean',
+        'locked_at' => 'timestamp',
     ];
 
     public function comic(): BelongsTo
@@ -64,5 +65,20 @@ class Chapter extends Model
             ->orderBy('number')
             ->orderBy('id')
             ->first();
+    }
+
+    public function lock(): void
+    {
+        $this->update(['locked_at' => now()]);
+    }
+
+    public function unlock(array $data = []): void
+    {
+        $this->update(array_merge($data, ['locked_at' => null]));
+    }
+
+    public function isLocked(int $seconds = 1800): bool
+    {
+        return $this->locked_at && now()->subSeconds($seconds)->lessThanOrEqualTo($this->locked_at);
     }
 }

@@ -27,6 +27,10 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
+        if ($this->chapter->has_downloaded_pages || $this->chapter->isLocked()) {
+            return;
+        }
+
         $this->getAllPageImageUrls($this->chapter)->each(function (string $pageImageUrl, int $i) {
             Storage::put(
                 $this->chapter->pageImagePath($i + 1),
@@ -38,7 +42,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             throw new MissingPageException("Missing page for chapter #{$this->chapter->id}");
         }
 
-        $this->chapter->update(['has_downloaded_pages' => true]);
+        $this->chapter->unlock(['has_downloaded_pages' => true]);
     }
 
     protected function getPageImageResource(string $url): mixed

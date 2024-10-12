@@ -18,9 +18,15 @@ class DownloadChapterCommand extends Command
         Chapter::query()
             ->when($this->argument('id'), fn (Builder $query, int $id) => $query->where('id', $id))
             ->where('has_downloaded_pages', false)
+            ->where(fn (Builder $query) => $query
+                ->orWhereNull('locked_at')
+                ->orWhere('locked_at', '<', now()->subSeconds(1800))
+            )
             ->limit($this->option('max'))
             ->get()
             ->each(function (Chapter $chapter) {
+                $chapter->lock();
+
                 DownloadChapter::dispatch($chapter);
 
                 $this->info("Downloaded chapter #{$chapter->id}");
