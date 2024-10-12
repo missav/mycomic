@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Concerns\WithScraper;
 use App\Models\Author;
+use App\Scrapfly\ScrapflyRequestException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -25,7 +26,22 @@ class ImportAuthorCommand extends Command
                 $authors->each(function (Author $author) {
                     $this->info("Importing author #{$author->id}");
 
-                    $source = $this->scrap(Author::sourceUrl($author->id));
+                    try {
+                        $source = $this->scrap(Author::sourceUrl($author->id));
+                    } catch (ScrapflyRequestException $e) {
+                        if ($e->getCode() === 404) {
+                            Author::updateOrCreate(['id' => $author->id], [
+                                'original_name' => null,
+                                'country' => null,
+                                'initial' => null,
+                                'description' => '',
+                            ]);
+                            $this->error("Missing author #{$author->id}");
+                            return;
+                        }
+
+                        throw $e;
+                    }
 
                     $authorData = $this->getAuthorDataFromSource($source);
 

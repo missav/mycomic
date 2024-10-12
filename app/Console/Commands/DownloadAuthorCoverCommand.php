@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Concerns\WithScraper;
 use App\Models\Author;
+use App\Scrapfly\ScrapflyRequestException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -25,10 +26,20 @@ class DownloadAuthorCoverCommand extends Command
             ->chunkById(100, fn (Collection $authors) => $authors->each(function (Author $author) {
                 $this->info("Downloading author cover #{$author->id}");
 
-                Storage::disk('aliyun')->put(
-                    $author->coverImagePath(),
-                    $this->getCoverImageResource($author),
-                );
+                try {
+                    Storage::disk('aliyun')->put(
+                        $author->coverImagePath(),
+                        $this->getCoverImageResource($author),
+                    );
+                } catch (ScrapflyRequestException $e) {
+                    if ($e->getCode() === 404) {
+                        $author->update(['has_downloaded_cover' => true]);
+                        $this->error("Missing author #{$author->id}");
+                        return;
+                    }
+
+                    throw $e;
+                }
 
                 $author->update(['has_downloaded_cover' => true]);
 
