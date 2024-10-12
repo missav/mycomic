@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Models\Chapter;
 use HeadlessChromium\BrowserFactory;
+use HeadlessChromium\Communication\Message;
+use HeadlessChromium\Page;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -46,8 +48,11 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             app()->environment('production') ? 'google-chrome-stable' : null
         );
 
+        $proxy = parse_url(config('app.proxy_url'));
+
         try {
             $browser = $browserFactory->createBrowser([
+                'proxyServer' => "{$proxy['host']}:{$proxy['port']}",
                 'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36',
                 'headless' => true,
                 'customFlags' => [
@@ -58,6 +63,9 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             ]);
 
             $page = $browser->createPage();
+
+            $this->applyProxyCredentials($page, $proxy['user'], $proxy['pass']);
+
             $page->navigate($chapter->sourceUrl());
             $page->waitUntilContainsElement('.mangaFile');
 
@@ -83,6 +91,34 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
                 $browser->close();
             }
         }
+    }
+
+    protected function applyProxyCredentials(Page $page, string $username, string $password): void
+    {
+        $page->getSession()->sendMessageSync(new Message('Network.setRequestInterception', [
+            'patterns' => [['urlPattern' => '*']],
+        ]));
+
+        $page->getSession()->on('method:Network.requestIntercepted', function (array $params) use ($page, $username, $password) {
+            if (isset($params['authChallenge'])) {
+                $page->getSession()->sendMessageSync(
+                    new Message('Network.continueInterceptedRequest', [
+                        'interceptionId' => $params['interceptionId'],
+                        'authChallengeResponse' => [
+                            'response' => 'ProvideCredentials',
+                            'username' => $username,
+                            'password' => $password,
+                        ],
+                    ])
+                );
+            } else {
+                $page->getSession()->sendMessageSync(
+                    new Message('Network.continueInterceptedRequest', [
+                        'interceptionId' => $params['interceptionId'],
+                    ])
+                );
+            }
+        });
     }
 
     public function uniqueId(): string

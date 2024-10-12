@@ -56,6 +56,8 @@ return [
 
     'cdn_url' => 'https://cubbid.com',
 
+    'proxy_url' => env('PROXY_URL'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
