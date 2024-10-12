@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigInteger('id')->unique();
             $table->foreignId('comic_id')->index();
             $table->string('type');
-            $table->unsignedMediumInteger('number');
+            $table->unsignedInteger('number');
             $table->string('title');
             $table->unsignedSmallInteger('pages');
             $table->boolean('has_downloaded_pages')->default(false)->index();
