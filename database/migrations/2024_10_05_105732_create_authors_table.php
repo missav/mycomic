@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('original_name')->nullable();
             $table->text('description')->nullable();
             $table->string('country')->nullable()->index();
-            $table->string('initial', 1)->nullable()->index();
+            $table->string('initial', 3)->nullable()->index();
             $table->boolean('has_downloaded_cover')->default(false)->index();
         });
     }
