@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Exceptions\MissingPageException;
 use App\Models\Chapter;
 use HeadlessChromium\BrowserFactory;
 use HeadlessChromium\Communication\Message;
@@ -18,7 +19,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
 {
     use Queueable;
 
-    public int $uniqueFor = 60;
+    public int $uniqueFor = 1800;
 
     public function __construct(
         public Chapter $chapter,
@@ -27,11 +28,15 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
     public function handle(): void
     {
         $this->getAllPageImageUrls($this->chapter)->each(function (string $pageImageUrl, int $i) {
-            Storage::disk('aliyun')->put(
+            Storage::put(
                 $this->chapter->pageImagePath($i + 1),
                 $this->getPageImageResource($pageImageUrl),
             );
         });
+
+        if (count(Storage::files($this->chapter->pageImageDirectory())) < $this->chapter->pages) {
+            throw new MissingPageException("Missing page for chapter #{$this->chapter->id}");
+        }
 
         $this->chapter->update(['has_downloaded_pages' => true]);
     }

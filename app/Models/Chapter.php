@@ -29,9 +29,14 @@ class Chapter extends Model
         return route('chapters.view', ['chapter' => $this]);
     }
 
+    public function pageImageDirectory(): string
+    {
+        return "/chapters/{$this->id}";
+    }
+
     public function pageImagePath(int $page): string
     {
-        return FileSignature::append("/chapters/{$this->id}/{$page}.jpg");
+        return FileSignature::append("{$this->pageImageDirectory()}/{$page}.jpg");
     }
 
     public function pageCdnUrl(int $page): string
