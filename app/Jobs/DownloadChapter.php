@@ -12,6 +12,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DownloadChapter implements ShouldQueue, ShouldBeUnique
 {
@@ -74,7 +75,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             while (true) {
                 $pageImageUrl = $page->dom()->querySelector('.mangaFile')->getAttribute('src');
 
-                $pageImageUrls->add($pageImageUrl);
+                $pageImageUrls->add(Str::replace('.jpg.webp', '.jpg', $pageImageUrl));
 
                 if (count($pageImageUrls) >= $chapter->pages) {
                     break;
