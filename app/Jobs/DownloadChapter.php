@@ -30,11 +30,17 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             return;
         }
 
-        $this->getAllPageImageUrls($this->chapter)->each(function (string $pageImageUrl, int $i) {
-            Storage::put(
-                $this->chapter->pageImagePath($i + 1),
-                $this->getPageImageResource($pageImageUrl),
-            );
+        $existingFiles = Storage::files($this->chapter->pageImageDirectory());
+        $existingFiles = collect($existingFiles)->map(fn (string $file) => "/{$file}");
+
+        $this->getAllPageImageUrls($this->chapter)->each(function (string $pageImageUrl, int $i) use ($existingFiles) {
+            $imagePath = $this->chapter->pageImagePath($i + 1);
+            
+            if ($existingFiles->contains($imagePath)) {
+                return;
+            }
+
+            Storage::put($imagePath, $this->getPageImageResource($pageImageUrl));
         });
 
         if (count(Storage::files($this->chapter->pageImageDirectory())) < $this->chapter->pages) {
@@ -47,6 +53,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
     protected function getPageImageResource(string $url): mixed
     {
         return Http::proxy()
+            ->retry(5, 1000)
             ->withHeader('referer', 'https://tw.manhuagui.com/')
             ->get($url)
             ->resource();
