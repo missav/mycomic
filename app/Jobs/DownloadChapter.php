@@ -6,8 +6,6 @@ use App\Concerns\WithScraper;
 use App\Exceptions\MissingPageException;
 use App\Models\Chapter;
 use HeadlessChromium\BrowserFactory;
-use HeadlessChromium\Communication\Message;
-use HeadlessChromium\Page;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -48,7 +46,8 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
 
     protected function getPageImageResource(string $url): mixed
     {
-        return Http::withHeader('referer', 'https://tw.manhuagui.com/')
+        return Http::proxy()
+            ->withHeader('referer', 'https://tw.manhuagui.com/')
             ->get($url)
             ->resource();
     }
@@ -81,7 +80,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             $data = $page->evaluate('window.data')->getReturnValue();
 
             return collect($data['files'])->map(fn (string $file) =>
-                str_replace('.jpg.webp', '.jpg', "https://us.hamreus.com{$data['path']}{$file}")
+                str_replace('.jpg.webp', '.jpg', "https://eu.hamreus.com{$data['path']}{$file}")
             );
         } finally {
             if (isset($browser)) {
