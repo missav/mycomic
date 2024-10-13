@@ -57,7 +57,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
     protected function getPageImageResource(string $url): mixed
     {
         return Http::proxy()
-            ->retry(5, 1000)
+            ->retry(10, 1000)
             ->withHeader('referer', 'https://tw.manhuagui.com/')
             ->get($url)
             ->resource();
