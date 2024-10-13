@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Concerns\WithScraper;
 use App\Exceptions\MissingPageException;
 use App\Models\Chapter;
 use HeadlessChromium\BrowserFactory;
@@ -17,7 +18,7 @@ use Illuminate\Support\Str;
 
 class DownloadChapter implements ShouldQueue, ShouldBeUnique
 {
-    use Queueable;
+    use Queueable, WithScraper;
 
     public int $uniqueFor = 1800;
 
@@ -54,15 +55,16 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
 
     protected function getAllPageImageUrls(Chapter $chapter): Collection
     {
+        $tempFile = sys_get_temp_dir() . '/' . Str::uuid() . '.html';
+        $source = $this->scrap($chapter->sourceUrl());
+        file_put_contents($tempFile, $this->hackSource($source));
+
         $browserFactory = new BrowserFactory(
             app()->environment('production') ? 'google-chrome-stable' : null
         );
 
-        $proxy = parse_url(config('app.proxy_url'));
-
         try {
             $browser = $browserFactory->createBrowser([
-                'proxyServer' => "{$proxy['host']}:{$proxy['port']}",
                 'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36',
                 'headless' => true,
                 'customFlags' => [
@@ -72,30 +74,15 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
                 ],
             ]);
 
-            $page = $browser->createPage();
+            $page = $browser->getPages()[0];
 
-            $this->applyProxyCredentials($page, $proxy['user'], $proxy['pass']);
+            $page->navigate("file://{$tempFile}");
+            $page->waitUntilContainsElement('#ready');
+            $data = $page->evaluate('window.data')->getReturnValue();
 
-            $page->navigate($chapter->sourceUrl());
-            $page->waitUntilContainsElement('.mangaFile');
-
-            $pageImageUrls = collect();
-
-            while (true) {
-                $pageImageUrl = $page->dom()->querySelector('.mangaFile')->getAttribute('src');
-
-                $pageImageUrls->add(Str::replace('.jpg.webp', '.jpg', $pageImageUrl));
-
-                if (count($pageImageUrls) >= $chapter->pages) {
-                    break;
-                }
-
-                $page->dom()->querySelector('#next')->click();
-
-                $page->waitUntilContainsElement(".mangaFile:not([src='{$pageImageUrl}'])");
-            }
-
-            return $pageImageUrls;
+            return collect($data['files'])->map(fn (string $file) =>
+                str_replace('.jpg.webp', '.jpg', "https://us.hamreus.com{$data['path']}{$file}")
+            );
         } finally {
             if (isset($browser)) {
                 $browser->close();
@@ -103,32 +90,23 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
         }
     }
 
-    protected function applyProxyCredentials(Page $page, string $username, string $password): void
+    protected function hackSource(string $source): string
     {
-        $page->getSession()->sendMessageSync(new Message('Network.setRequestInterception', [
-            'patterns' => [['urlPattern' => '*']],
-        ]));
-
-        $page->getSession()->on('method:Network.requestIntercepted', function (array $params) use ($page, $username, $password) {
-            if (isset($params['authChallenge'])) {
-                $page->getSession()->sendMessageSync(
-                    new Message('Network.continueInterceptedRequest', [
-                        'interceptionId' => $params['interceptionId'],
-                        'authChallengeResponse' => [
-                            'response' => 'ProvideCredentials',
-                            'username' => $username,
-                            'password' => $password,
-                        ],
-                    ])
-                );
-            } else {
-                $page->getSession()->sendMessageSync(
-                    new Message('Network.continueInterceptedRequest', [
-                        'interceptionId' => $params['interceptionId'],
-                    ])
-                );
-            }
-        });
+        return str($source)
+            ->replace('src="//', 'src="https://')
+            ->replace('<head>', <<<SCRIPT
+            <head><script>
+                SMH = {
+                    set imgData(x) {
+                        window.SMH = { ...window.SMH };
+                        window.SMH.imgData = data => {
+                            window.data = data;
+                            document.body.innerHTML += '<div id="ready"></div>';
+                        };
+                    },
+                };
+            </script>
+            SCRIPT);
     }
 
     public function uniqueId(): string
