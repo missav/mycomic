@@ -14,6 +14,18 @@ Schedule::command(\App\Console\Commands\DownloadComicCoverCommand::class)
     ->onOneServer()
     ->runInBackground();
 
+Schedule::command(\App\Console\Commands\DownloadChapterCommand::class)
+    ->everyFiveMinutes()
+    ->withoutOverlapping()
+    ->onOneServer()
+    ->runInBackground();
+
+Schedule::command(\App\Console\Commands\CheckComicUpdateCommand::class)
+    ->daily()
+    ->withoutOverlapping()
+    ->onOneServer()
+    ->runInBackground();
+
 Schedule::command(\App\Console\Commands\ImportAuthorCommand::class)
     ->everySixHours()
     ->withoutOverlapping()

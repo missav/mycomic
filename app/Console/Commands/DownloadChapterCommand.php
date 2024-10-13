@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DownloadChapterCommand extends Command
 {
-    protected $signature = 'chapter:download {id?} {--max=200}';
+    protected $signature = 'chapter:download {id?}';
 
     protected $description = 'Download chapter command';
 
     public function handle(): void
     {
+        $countLockedChapters = Chapter::whereNotNull('locked_at')->count();
+
         Chapter::query()
             ->when($this->argument('id'), fn (Builder $query, int $id) => $query->where('id', $id))
             ->where('has_downloaded_pages', false)
@@ -22,7 +24,7 @@ class DownloadChapterCommand extends Command
                 ->orWhereNull('locked_at')
                 ->orWhere('locked_at', '<', now()->subSeconds(1800))
             )
-            ->limit($this->option('max'))
+            ->limit(1000 - $countLockedChapters)
             ->get()
             ->each(function (Chapter $chapter) {
                 $chapter->lock();
