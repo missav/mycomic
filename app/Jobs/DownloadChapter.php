@@ -26,28 +26,32 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
-        if ($this->chapter->has_downloaded_pages) {
-            return;
-        }
-
-        $existingFiles = Storage::files($this->chapter->pageImageDirectory());
-        $existingFiles = collect($existingFiles)->map(fn (string $file) => "/{$file}");
-
-        $this->getAllPageImageUrls($this->chapter)->each(function (string $pageImageUrl, int $i) use ($existingFiles) {
-            $imagePath = $this->chapter->pageImagePath($i + 1);
-            
-            if ($existingFiles->contains($imagePath)) {
+        try {
+            if ($this->chapter->has_downloaded_pages) {
                 return;
             }
 
-            Storage::put($imagePath, $this->getPageImageResource($pageImageUrl));
-        });
+            $existingFiles = Storage::files($this->chapter->pageImageDirectory());
+            $existingFiles = collect($existingFiles)->map(fn(string $file) => "/{$file}");
 
-        if (count(Storage::files($this->chapter->pageImageDirectory())) < $this->chapter->pages) {
-            throw new MissingPageException("Missing page for chapter #{$this->chapter->id}");
+            $this->getAllPageImageUrls($this->chapter)->each(function (string $pageImageUrl, int $i) use ($existingFiles) {
+                $imagePath = $this->chapter->pageImagePath($i + 1);
+
+                if ($existingFiles->contains($imagePath)) {
+                    return;
+                }
+
+                Storage::put($imagePath, $this->getPageImageResource($pageImageUrl));
+            });
+
+            if (count(Storage::files($this->chapter->pageImageDirectory())) < $this->chapter->pages) {
+                throw new MissingPageException("Missing page for chapter #{$this->chapter->id}");
+            }
+
+            $this->chapter->update(['has_downloaded_pages' => true]);
+        } finally {
+            $this->chapter->unlock();
         }
-
-        $this->chapter->unlock(['has_downloaded_pages' => true]);
     }
 
     protected function getPageImageResource(string $url): mixed

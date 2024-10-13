@@ -72,9 +72,9 @@ class Chapter extends Model
         $this->update(['locked_at' => now()]);
     }
 
-    public function unlock(array $data = []): void
+    public function unlock(): void
     {
-        $this->update(array_merge($data, ['locked_at' => null]));
+        $this->update(['locked_at' => null]);
     }
 
     public function isLocked(int $seconds = 1800): bool
