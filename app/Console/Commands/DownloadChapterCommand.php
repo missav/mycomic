@@ -26,7 +26,7 @@ class DownloadChapterCommand extends Command
                     ->orWhere('locked_at', '<', now()->subSeconds(1800))
                 )
             )
-            ->limit(1000 - $countLockedChapters)
+            ->limit(2000 - $countLockedChapters)
             ->get()
             ->each(function (Chapter $chapter) {
                 $chapter->lock();
