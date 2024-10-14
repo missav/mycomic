@@ -109,7 +109,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             $data = $page->evaluate('window.data')->getReturnValue();
 
             return collect($data['files'])->map(fn (string $file) =>
-                str_replace('.jpg.webp', '.jpg', "https://eu.hamreus.com{$data['path']}{$file}")
+                str_replace('.webp', '', "https://eu.hamreus.com{$data['path']}{$file}")
             );
         } finally {
             if (isset($browser)) {
