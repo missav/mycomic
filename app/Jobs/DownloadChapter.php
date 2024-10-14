@@ -75,6 +75,7 @@ class DownloadChapter implements ShouldQueue
     protected function getPageImageResource(string $url): mixed
     {
         return Http::proxy()
+            ->withoutVerifying()
             ->retry(10, 1000)
             ->withHeader('referer', 'https://tw.manhuagui.com/')
             ->get($url)
