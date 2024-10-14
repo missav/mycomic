@@ -49,7 +49,7 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
                 try {
                     $resource = $this->getPageImageResource($pageImageUrl);
                 } catch (RequestException $e) {
-                    if ($e->getCode() === 404 && Str::contains($e->response->body(), 'fetch_error')) {
+                    if ($e->getCode() === 404) {
                         MissingPage::updateOrCreate(['chapter_id' => $this->chapter->id, 'page' => $page]);
                         return;
                     }
