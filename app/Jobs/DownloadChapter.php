@@ -86,8 +86,12 @@ class DownloadChapter implements ShouldQueue
 
     protected function getAllPageImageUrls(Chapter $chapter): Collection
     {
-        $tempFile = sys_get_temp_dir() . '/' . Str::uuid() . '.html';
         $source = $this->scrap($chapter->sourceUrl());
+        if (Str::contains($source, '版權方')) {
+            $source = $this->scrap($chapter->sourceUrl('www'));
+        }
+
+        $tempFile = sys_get_temp_dir() . '/' . Str::uuid() . '.html';
         file_put_contents($tempFile, $this->hackSource($source));
 
         $browserFactory = new BrowserFactory(

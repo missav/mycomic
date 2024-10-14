@@ -26,9 +26,9 @@ class Chapter extends Model
         return $this->hasMany(MissingPage::class);
     }
 
-    public function sourceUrl(): string
+    public function sourceUrl(string $subdomain = 'tw'): string
     {
-        return "https://tw.manhuagui.com/comic/{$this->comic_id}/{$this->id}.html";
+        return "https://{$subdomain}.manhuagui.com/comic/{$this->comic_id}/{$this->id}.html";
     }
 
     public function url(): string
