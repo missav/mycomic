@@ -5,6 +5,7 @@ namespace App\Models;
 use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Chapter extends Model
 {
@@ -18,6 +19,11 @@ class Chapter extends Model
     public function comic(): BelongsTo
     {
         return $this->belongsTo(Comic::class);
+    }
+
+    public function missingPages(): HasMany
+    {
+        return $this->hasMany(MissingPage::class);
     }
 
     public function sourceUrl(): string

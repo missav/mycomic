@@ -3,12 +3,15 @@
 namespace App\Jobs;
 
 use App\Concerns\WithScraper;
+use App\Exceptions\ChapterAlreadyLockedException;
 use App\Exceptions\MissingPageException;
 use App\Models\Chapter;
+use App\Models\MissingPage;
 use HeadlessChromium\BrowserFactory;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -28,23 +31,38 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
     {
         try {
             if ($this->chapter->has_downloaded_pages) {
-                return;
+                throw new ChapterAlreadyLockedException("Chapter #{$this->chapter->id} already locked");
             }
 
             $existingFiles = Storage::files($this->chapter->pageImageDirectory());
             $existingFiles = collect($existingFiles)->map(fn(string $file) => "/{$file}");
 
             $this->getAllPageImageUrls($this->chapter)->each(function (string $pageImageUrl, int $i) use ($existingFiles) {
-                $imagePath = $this->chapter->pageImagePath($i + 1);
+                $page = $i + 1;
+
+                $imagePath = $this->chapter->pageImagePath($page);
 
                 if ($existingFiles->contains($imagePath)) {
                     return;
                 }
 
-                Storage::put($imagePath, $this->getPageImageResource($pageImageUrl));
+                try {
+                    $resource = $this->getPageImageResource($pageImageUrl);
+                } catch (RequestException $e) {
+                    if ($e->getCode() === 404 && Str::contains($e->response->body(), 'fetch_error')) {
+                        MissingPage::updateOrCreate(['chapter_id' => $this->chapter->id, 'page' => $page]);
+                        return;
+                    }
+
+                    throw $e;
+                }
+
+                Storage::put($imagePath, $resource);
             });
 
-            if (count(Storage::files($this->chapter->pageImageDirectory())) < $this->chapter->pages) {
+            $countExistingFiles = count(Storage::files($this->chapter->pageImageDirectory()));
+
+            if ($countExistingFiles + $this->chapter->missingPages()->count() < $this->chapter->pages) {
                 throw new MissingPageException("Missing page for chapter #{$this->chapter->id}");
             }
 

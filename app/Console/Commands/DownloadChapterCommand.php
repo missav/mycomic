@@ -29,7 +29,11 @@ class DownloadChapterCommand extends Command
             ->each(function (Chapter $chapter) {
                 $chapter->lock();
 
-                DownloadChapter::dispatch($chapter);
+                if ($this->argument('id')) {
+                    DownloadChapter::dispatchSync($chapter);
+                } else {
+                    DownloadChapter::dispatch($chapter);
+                }
 
                 $this->info("Downloaded chapter #{$chapter->id}");
             });
