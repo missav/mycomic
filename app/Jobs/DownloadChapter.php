@@ -3,37 +3,37 @@
 namespace App\Jobs;
 
 use App\Concerns\WithScraper;
-use App\Exceptions\ChapterAlreadyLockedException;
 use App\Exceptions\MissingPageException;
 use App\Models\Chapter;
 use App\Models\MissingPage;
 use HeadlessChromium\BrowserFactory;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class DownloadChapter implements ShouldQueue, ShouldBeUnique
+class DownloadChapter implements ShouldQueue
 {
     use Queueable, WithScraper;
-
-    public int $uniqueFor = 1800;
 
     public function __construct(
         public Chapter $chapter,
     ) {}
 
+    public function middleware(): array
+    {
+        return [
+            Skip::when($this->chapter->has_downloaded_pages),
+        ];
+    }
+
     public function handle(): void
     {
         try {
-            if ($this->chapter->has_downloaded_pages) {
-                throw new ChapterAlreadyLockedException("Chapter #{$this->chapter->id} already locked");
-            }
-
             $existingFiles = Storage::files($this->chapter->pageImageDirectory());
             $existingFiles = collect($existingFiles)->map(fn(string $file) => "/{$file}");
 
@@ -139,10 +139,5 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
                 };
             </script>
             SCRIPT);
-    }
-
-    public function uniqueId(): string
-    {
-        return $this->chapter->id;
     }
 }
