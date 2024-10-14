@@ -97,6 +97,10 @@ class DownloadChapter implements ShouldQueue, ShouldBeUnique
             if (isset($browser)) {
                 $browser->close();
             }
+
+            if (file_exists($tempFile)) {
+                unlink($tempFile);
+            }
         }
     }
 
