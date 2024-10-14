@@ -180,35 +180,24 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-            'maxProcesses' => 1,
-            'maxTime' => 0,
-            'maxJobs' => 100,
-            'memory' => 128,
-            'tries' => 1,
-            'timeout' => 60,
-            'nice' => 0,
-        ],
     ],
 
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'maxProcesses' => 50,
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
+                'maxProcesses' => 50,
+                'maxTime' => 0,
+                'maxJobs' => 100,
+                'memory' => 128,
                 'tries' => 3,
                 'timeout' => 1800,
-            ],
-        ],
-
-        'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
+                'nice' => 0,
             ],
         ],
     ],
