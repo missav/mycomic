@@ -15,7 +15,7 @@ Schedule::command(\App\Console\Commands\DownloadComicCoverCommand::class)
     ->runInBackground();
 
 Schedule::command(\App\Console\Commands\DownloadChapterCommand::class)
-    ->everyFiveMinutes()
+    ->everyTwoMinutes()
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();
