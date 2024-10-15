@@ -2470,16 +2470,16 @@
         },
         {
             "name": "livewire/flux",
-            "version": "v1.0.8",
+            "version": "v1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/flux.git",
-                "reference": "d0728b00f07731711b6d9a8dc5d5e8d6af6c11e0"
+                "reference": "9d71e83ee5ca652563ce2c08e42b87bdbb22a4ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/flux/zipball/d0728b00f07731711b6d9a8dc5d5e8d6af6c11e0",
-                "reference": "d0728b00f07731711b6d9a8dc5d5e8d6af6c11e0",
+                "url": "https://api.github.com/repos/livewire/flux/zipball/9d71e83ee5ca652563ce2c08e42b87bdbb22a4ec",
+                "reference": "9d71e83ee5ca652563ce2c08e42b87bdbb22a4ec",
                 "shasum": ""
             },
             "require": {
@@ -2527,25 +2527,25 @@
             ],
             "support": {
                 "issues": "https://github.com/livewire/flux/issues",
-                "source": "https://github.com/livewire/flux/tree/v1.0.8"
+                "source": "https://github.com/livewire/flux/tree/v1.0.10"
             },
-            "time": "2024-10-03T23:36:00+00:00"
+            "time": "2024-10-13T01:47:41+00:00"
         },
         {
             "name": "livewire/flux-pro",
-            "version": "1.0.8",
+            "version": "1.0.10",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.fluxui.dev/download/9d291d18-7e64-4903-9387-c5197cf99751/flux-pro-1.0.8.zip",
-                "reference": "bd2416c50f83fc4670e1195ab85ad78b9c8b34b5",
-                "shasum": "1ce6cd01463dd4172daa9f81c63fcd54616d7146"
+                "url": "https://composer.fluxui.dev/download/9d407ddd-61ed-417b-8f93-eb6875f5fb12/flux-pro-1.0.10.zip",
+                "reference": "cbbac6aecd7e6d475658ff3efe9eebe90ed72c85",
+                "shasum": "cefca124e6769fedd11cfcb0510a0ef6d713512f"
             },
             "require": {
                 "illuminate/console": "^10.0|^11.0",
                 "illuminate/support": "^10.0|^11.0",
                 "illuminate/view": "^10.0|^11.0",
                 "laravel/prompts": "^0.1.24|^0.2|^0.3",
-                "livewire/flux": "1.0.8",
+                "livewire/flux": "1.0.10",
                 "livewire/livewire": "^3.5",
                 "php": "^8.1",
                 "symfony/console": "^6.0|^7.0"
@@ -2586,20 +2586,20 @@
                 "livewire",
                 "ui"
             ],
-            "time": "2024-10-03T23:44:35+00:00"
+            "time": "2024-10-15T14:39:13+00:00"
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.5.9",
+            "version": "v3.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "d04a229058afa76116d0e39209943a8ea3a7f888"
+                "reference": "f4909e68884b52f13920d108a80854ebcce8200f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/d04a229058afa76116d0e39209943a8ea3a7f888",
-                "reference": "d04a229058afa76116d0e39209943a8ea3a7f888",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/f4909e68884b52f13920d108a80854ebcce8200f",
+                "reference": "f4909e68884b52f13920d108a80854ebcce8200f",
                 "shasum": ""
             },
             "require": {
@@ -2654,7 +2654,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.5.9"
+                "source": "https://github.com/livewire/livewire/tree/v3.5.11"
             },
             "funding": [
                 {
@@ -2662,7 +2662,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-01T12:40:06+00:00"
+            "time": "2024-10-15T14:29:19+00:00"
         },
         {
             "name": "masterminds/html5",
