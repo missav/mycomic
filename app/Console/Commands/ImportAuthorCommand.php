@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use App\Concerns\WithScraper;
 use App\Models\Author;
-use App\Scrapfly\ScrapflyRequestException;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
@@ -28,7 +28,7 @@ class ImportAuthorCommand extends Command
 
                     try {
                         $source = $this->scrap(Author::sourceUrl($author->id));
-                    } catch (ScrapflyRequestException $e) {
+                    } catch (RequestException $e) {
                         if ($e->getCode() === 404) {
                             Author::updateOrCreate(['id' => $author->id], [
                                 'original_name' => null,

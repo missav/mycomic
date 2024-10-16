@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use App\Concerns\WithScraper;
 use App\Models\Author;
-use App\Scrapfly\ScrapflyRequestException;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +31,7 @@ class DownloadAuthorCoverCommand extends Command
                         $author->coverImagePath(),
                         $this->getCoverImageResource($author),
                     );
-                } catch (ScrapflyRequestException $e) {
+                } catch (RequestException $e) {
                     if ($e->getCode() === 404) {
                         $author->update(['has_downloaded_cover' => true]);
                         $this->error("Missing author #{$author->id}");

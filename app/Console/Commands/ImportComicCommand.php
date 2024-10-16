@@ -7,8 +7,8 @@ use App\Models\Author;
 use App\Models\Chapter;
 use App\Models\Comic;
 use App\Models\Tag;
-use App\Scrapfly\ScrapflyRequestException;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
@@ -59,7 +59,7 @@ class ImportComicCommand extends Command
 
         try {
             $source = $this->scrap(Comic::sourceUrl($id));
-        } catch (ScrapflyRequestException $e) {
+        } catch (RequestException $e) {
             if ($e->getCode() === 404) {
                 $this->error("Missing comic #{$id}");
                 return;
