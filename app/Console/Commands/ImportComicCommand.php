@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use LZCompressor\LZString;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ImportComicCommand extends Command
@@ -34,12 +35,6 @@ class ImportComicCommand extends Command
             $end = $currentId + 4;
         }
 
-        do {
-            $this->info('Detecting new comics');
-            $this->importComic($currentId);
-            $currentId++;
-        } while ($currentId <= $end);
-
         if (! $start) {
             $this->info('Reimporting outdated comics');
             Comic::query()
@@ -49,6 +44,12 @@ class ImportComicCommand extends Command
                     $this->importComic($comic->id)
                 );
         }
+
+        do {
+            $this->info('Detecting new comics');
+            $this->importComic($currentId);
+            $currentId++;
+        } while ($currentId <= $end);
 
         $this->info('Imported all comics');
     }
@@ -111,6 +112,12 @@ class ImportComicCommand extends Command
 
     protected function getComicDataFromSource(string $source): Collection
     {
+        if (Str::contains($source, '__VIEWSTATE')) {
+            $encodedHtml = Str::betweenFirst($source, '<input type="hidden" id="__VIEWSTATE" value="', '"');
+            $decodedHtml = LZString::decompressFromBase64($encodedHtml);
+            $source = Str::replaceFirst('<div class="chapter cf mt16">', '<div class="chapter cf mt16">' . $decodedHtml, $source);
+        }
+
         $crawler = new Crawler($source);
 
         $segments = $crawler->filter('.detail-list li strong')->each(function (Crawler $node) {
