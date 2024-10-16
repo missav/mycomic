@@ -43,7 +43,7 @@
         </flux:card>
         <div class="mt-8">
             @foreach ($comic->chapters->reverse()->groupBy('type') as $group => $chapters)
-                <flux:subheading size="xl" class="mb-4">{{ $group }}</flux:subheading>
+                <flux:subheading size="xl" class="mt-8 mb-4">{{ $group }}</flux:subheading>
                 <div class="grid grid-cols-3 gap-4">
                     @foreach ($chapters as $chapter)
                         <flux:button :href="$chapter->url()">{{ $chapter->title }}</flux:button>
