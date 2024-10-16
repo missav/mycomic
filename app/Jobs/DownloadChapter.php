@@ -48,13 +48,17 @@ class DownloadChapter implements ShouldQueue
 
                 try {
                     $resource = $this->getPageImageResource($pageImageUrl);
-                } catch (RequestException $e) {
-                    if ($e->getCode() === 404) {
-                        MissingPage::updateOrCreate(['chapter_id' => $this->chapter->id, 'page' => $page]);
-                        return;
-                    }
+                } catch (RequestException) {
+                    try {
+                        $resource = $this->getPageImageResource(str_replace('//eu.', '//us.', $pageImageUrl));
+                    } catch (RequestException $e) {
+                        if ($e->getCode() === 404) {
+                            MissingPage::updateOrCreate(['chapter_id' => $this->chapter->id, 'page' => $page]);
+                            return;
+                        }
 
-                    throw $e;
+                        throw $e;
+                    }
                 }
 
                 Storage::put($imagePath, $resource);
