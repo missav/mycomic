@@ -4,6 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 
-class MissingPageException extends Exception
+class MissingComicCoverException extends Exception
 {
 }

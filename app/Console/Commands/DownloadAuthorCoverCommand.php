@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Concerns\WithScraper;
+use App\Exceptions\MissingAuthorCoverException;
 use App\Models\Author;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\RequestException;
@@ -26,6 +27,11 @@ class DownloadAuthorCoverCommand extends Command
             ->chunkById(100, fn (Collection $authors) => $authors->each(function (Author $author) {
                 $this->info("Downloading author cover #{$author->id}");
 
+                if (Storage::exists($author->coverImagePath())) {
+                    $author->update(['has_downloaded_cover' => true]);
+                    return;
+                }
+
                 try {
                     Storage::disk('aliyun')->put(
                         $author->coverImagePath(),
@@ -33,15 +39,19 @@ class DownloadAuthorCoverCommand extends Command
                     );
                 } catch (RequestException $e) {
                     if ($e->getCode() === 404) {
-                        $author->update(['has_downloaded_cover' => true]);
-                        $this->error("Missing author #{$author->id}");
+                        $author->update(['has_downloaded_cover' => -1]);
+                        $this->error("Missing author cover #{$author->id}");
                         return;
                     }
 
                     throw $e;
                 }
 
-                $author->update(['has_downloaded_cover' => true]);
+                if (Storage::exists($author->coverImagePath())) {
+                    $author->update(['has_downloaded_cover' => true]);
+                } else {
+                    throw new MissingAuthorCoverException;
+                }
 
                 $this->info("Downloaded author cover #{$author->id}");
             }));

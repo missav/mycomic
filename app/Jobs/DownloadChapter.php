@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Concerns\WithScraper;
-use App\Exceptions\MissingPageException;
+use App\Exceptions\MissingChapterPageException;
 use App\Models\Chapter;
 use App\Models\MissingPage;
 use HeadlessChromium\BrowserFactory;
@@ -67,7 +67,7 @@ class DownloadChapter implements ShouldQueue
             $countExistingFiles = count(Storage::files($this->chapter->pageImageDirectory()));
 
             if ($countExistingFiles + $this->chapter->missingPages()->count() < $this->chapter->pages) {
-                throw new MissingPageException("Missing page for chapter #{$this->chapter->id}");
+                throw new MissingChapterPageException("Missing page for chapter #{$this->chapter->id}");
             }
 
             $this->chapter->update(['has_downloaded_pages' => true]);
