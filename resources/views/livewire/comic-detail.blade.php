@@ -39,7 +39,7 @@
                     <span class="text-zinc-800 dark:text-white">{{ $comic->description }}</span>
                 </div>
             </div>
-            <div class="rounded-xl bg-cover w-2/5 md:w-1/5" style="background-image: url({{ $comic->coverCdnUrl() }});"></div>
+            <div class="rounded-xl bg-cover w-2/5 md:w-1/5 ml-8" style="background-image: url({{ $comic->coverCdnUrl() }});"></div>
         </flux:card>
         <div class="mt-8">
             @foreach ($comic->chapters->reverse()->groupBy('type') as $group => $chapters)
