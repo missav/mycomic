@@ -153,17 +153,27 @@ class ImportComicCommand extends Command
             ];
         });
 
-        $chapters = collect($crawler->filter('.chapter h4')->each(function (Crawler $node, int $i) {
-            $type = $node->text();
-
-            return $node->siblings()->filter('.chapter-list')->eq($i)->filter('a')->each(fn (Crawler $node) => [
+        if ($crawler->filter('.chapter h4')->count() === 0) {
+            $chapters = collect($crawler->filter('.chapter-list a')->each(fn (Crawler $node) => [
                 'id' => str($node->attr('href'))->afterLast('/')->before('.html')->toInteger(),
-                'type' => $type,
+                'type' => null,
                 'pages' => (int) Str::substr($node->filter('i')->text(), 0, -1),
                 'title' => $title = $node->attr('title'),
                 'number' => $this->getFirstIntegerFromString($title),
-            ]);
-        }))->flatten(1);
+            ]));
+        } else {
+            $chapters = collect($crawler->filter('.chapter h4')->each(function (Crawler $node, int $i) {
+                $type = $node->text();
+
+                return $node->siblings()->filter('.chapter-list')->eq($i)->filter('a')->each(fn (Crawler $node) => [
+                    'id' => str($node->attr('href'))->afterLast('/')->before('.html')->toInteger(),
+                    'type' => $type,
+                    'pages' => (int) Str::substr($node->filter('i')->text(), 0, -1),
+                    'title' => $title = $node->attr('title'),
+                    'number' => $this->getFirstIntegerFromString($title),
+                ]);
+            }))->flatten(1);
+        }
 
         return collect($segments)
             ->reject(fn (array $segment) => $segment['key'] === null)

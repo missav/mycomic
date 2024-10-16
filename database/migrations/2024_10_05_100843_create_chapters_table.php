@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chapters', function (Blueprint $table) {
             $table->bigInteger('id')->unique();
             $table->foreignId('comic_id')->index();
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->unsignedInteger('number');
             $table->string('title');
             $table->unsignedSmallInteger('pages');

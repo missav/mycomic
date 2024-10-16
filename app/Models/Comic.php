@@ -56,8 +56,8 @@ class Comic extends Model
         return cdn($this->coverImagePath());
     }
 
-    public static function sourceUrl(int $id): string
+    public static function sourceUrl(int $id, string $subdomain = 'tw'): string
     {
-        return "https://tw.manhuagui.com/comic/{$id}/";
+        return "https://{$subdomain}.manhuagui.com/comic/{$id}/";
     }
 }
