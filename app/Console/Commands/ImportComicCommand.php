@@ -35,63 +35,78 @@ class ImportComicCommand extends Command
         }
 
         do {
-            $this->info("Importing comic #{$currentId}");
-
-            try {
-                $source = $this->scrap(Comic::sourceUrl($currentId));
-            } catch (ScrapflyRequestException $e) {
-                if ($e->getCode() === 404) {
-                    $this->error("Missing comic #{$currentId}");
-                    $currentId++;
-                    continue;
-                }
-
-                throw $e;
-            }
-
-            $comicData = $this->getComicDataFromSource($source);
-
-            $comic = Comic::updateOrCreate(['id' => $currentId], [
-                'name' => $comicData->get('name'),
-                'original_name' => $comicData->get('original_name'),
-                'aliases' => implode('|', $comicData->get('aliases')) ?: null,
-                'description' => trim($comicData->get('description')),
-                'country' => $comicData->get('country'),
-                'audience' => $comicData->get('audience'),
-                'year' => $comicData->get('year'),
-                'initial' => $comicData->get('initial'),
-                'is_finished' => $comicData->get('is_finished'),
-                'last_updated_on' => $comicData->get('last_updated_on'),
-            ]);
-
-            $authorIds = collect($comicData->get('authors'))
-                ->map(fn (array $author) => Author::updateOrCreate(['id' => $author['id']], ['name' => $author['text']]))
-                ->pluck('id');
-            $comic->authors()->sync($authorIds);
-
-            $tagIds = collect($comicData->get('tags'))
-                ->map(fn (array $tag) => Tag::updateOrCreate(['slug' => $tag['id']], ['name' => $tag['text']]))
-                ->pluck('id');
-            $comic->tags()->sync($tagIds);
-
-            $comicData->get('chapters')->each(fn (array $chapterData) =>
-                Chapter::updateOrCreate([
-                    'id' => $chapterData['id'],
-                ], [
-                    'comic_id' => $comic->id,
-                    'type' => $chapterData['type'],
-                    'number' => $chapterData['number'],
-                    'title' => $chapterData['title'],
-                    'pages' => $chapterData['pages'],
-                ])
-            );
-
-            $this->info("Imported comic #{$currentId}");
-
+            $this->info('Detecting new comics');
+            $this->importComic($currentId);
             $currentId++;
         } while ($currentId <= $end);
 
+        if (! $start) {
+            $this->info('Reimporting outdated comics');
+            Comic::query()
+                ->whereIsOutdated(true)
+                ->get()
+                ->each(fn (Comic $comic) =>
+                    $this->importComic($comic->id)
+                );
+        }
+
         $this->info('Imported all comics');
+    }
+
+    protected function importComic(int $id): void
+    {
+        $this->info("Importing comic #{$id}");
+
+        try {
+            $source = $this->scrap(Comic::sourceUrl($id));
+        } catch (ScrapflyRequestException $e) {
+            if ($e->getCode() === 404) {
+                $this->error("Missing comic #{$id}");
+                return;
+            }
+
+            throw $e;
+        }
+
+        $comicData = $this->getComicDataFromSource($source);
+
+        $comic = Comic::updateOrCreate(['id' => $id], [
+            'name' => $comicData->get('name'),
+            'original_name' => $comicData->get('original_name'),
+            'aliases' => implode('|', $comicData->get('aliases')) ?: null,
+            'description' => trim($comicData->get('description')),
+            'country' => $comicData->get('country'),
+            'audience' => $comicData->get('audience'),
+            'year' => $comicData->get('year'),
+            'initial' => $comicData->get('initial'),
+            'is_finished' => $comicData->get('is_finished'),
+            'is_outdated' => false,
+            'last_updated_on' => $comicData->get('last_updated_on'),
+        ]);
+
+        $authorIds = collect($comicData->get('authors'))
+            ->map(fn (array $author) => Author::updateOrCreate(['id' => $author['id']], ['name' => $author['text']]))
+            ->pluck('id');
+        $comic->authors()->sync($authorIds);
+
+        $tagIds = collect($comicData->get('tags'))
+            ->map(fn (array $tag) => Tag::updateOrCreate(['slug' => $tag['id']], ['name' => $tag['text']]))
+            ->pluck('id');
+        $comic->tags()->sync($tagIds);
+
+        $comicData->get('chapters')->each(fn (array $chapterData) =>
+            Chapter::updateOrCreate([
+                'id' => $chapterData['id'],
+            ], [
+                'comic_id' => $comic->id,
+                'type' => $chapterData['type'],
+                'number' => $chapterData['number'],
+                'title' => $chapterData['title'],
+                'pages' => $chapterData['pages'],
+            ])
+        );
+
+        $this->info("Imported comic #{$id}");
     }
 
     protected function getComicDataFromSource(string $source): Collection
