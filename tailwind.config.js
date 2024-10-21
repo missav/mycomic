@@ -14,6 +14,11 @@ export default {
       sans: ['Inter', 'sans-serif'],
     },
   },
-  plugins: [],
+  corePlugins: {
+    aspectRatio: false,
+  },
+  plugins: [
+      require('@tailwindcss/aspect-ratio'),
+  ],
 }
 

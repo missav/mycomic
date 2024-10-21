@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ComicCountry;
 use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,10 +12,14 @@ class Comic extends Model
 {
     public $incrementing = false;
 
-    protected $casts = [
-        'has_downloaded_cover' => 'boolean',
-        'is_finished' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'country' => ComicCountry::class,
+            'has_downloaded_cover' => 'boolean',
+            'is_finished' => 'boolean'
+        ];
+    }
 
     public function chapters(): HasMany
     {

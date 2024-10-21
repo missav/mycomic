@@ -1,6 +1,6 @@
 <div class="flex items-stretch">
-    <div class="grow">
-        <flux:card class="flex">
+    <div class="w-3/4 grow">
+        <flux:card class="flex flex-col sm:flex-row">
             <div class="grow">
                 <flux:subheading>{{ __(':year / :count chapters', ['year' => $comic->year, 'count' => $comic->chapters()->count()]) }}</flux:subheading>
                 <flux:heading size="xl">{{ $comic->name }}</flux:heading>
@@ -35,11 +35,15 @@
                         </span>
                     </div>
                 </div>
-                <div>
-                    <span class="text-zinc-800 dark:text-white">{{ $comic->description }}</span>
+                <div class="md:w-4/5 text-zinc-800 dark:text-white">
+                    {{ $comic->description }}
                 </div>
             </div>
-            <div class="rounded-xl bg-cover w-2/5 md:w-1/5 ml-8" style="background-image: url({{ $comic->coverCdnUrl() }});"></div>
+            <div class="flex-none sm:w-40 mt-6 sm:mt-0 sm:ml-8">
+                <div class="aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-md shadow-lg dark:shadow-gray-500/40">
+                    <img src="{{ $comic->coverCdnUrl() }}" alt="{{ $comic->name }}" class="object-cover object-top">
+                </div>
+            </div>
         </flux:card>
         <div class="mt-8">
             @foreach ($comic->chapters->reverse()->groupBy('type') as $group => $chapters)
@@ -52,6 +56,6 @@
             @endforeach
         </div>
     </div>
-    <div class="w-1/4 ml-4 hidden lg:flex">
+    <div class="w-1/4 ml-4 hidden lg:flex text-white">
     </div>
 </div>
