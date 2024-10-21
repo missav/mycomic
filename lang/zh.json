@@ -8,8 +8,15 @@
     ":year / :count chapters": ":year / 共 :count 話",
     "Author": "作者",
     "Genre": "類型",
-    "Region": "地區",
+    "Region": "作品地區",
+    "Audience": "適合受眾",
+    "Year": "出品年份",
     "Comic list": "漫畫列表",
     "Recent update": "最近更新",
-    "View more": "觀看更多"
+    "View more": "觀看更多",
+    "All": "全部",
+    "200x": "00年代",
+    "199x": "90年代",
+    "198x": "80年代",
+    "197x": "70年代或更早"
 }

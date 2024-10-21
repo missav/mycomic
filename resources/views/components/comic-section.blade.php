@@ -6,7 +6,7 @@
             <flux:heading size="xl">{{ __($title) }}</flux:heading>
         @endif
         @if ($url)
-            <flux:button variant="ghost" href="{{ $url }}" icon-trailing="arrow-up-right">{{ __('View more') }}</flux:button>
+            <flux:button variant="filled" href="{{ $url }}" icon-trailing="arrow-up-right">{{ __('View more') }}</flux:button>
         @endif
     </div>
 @endif

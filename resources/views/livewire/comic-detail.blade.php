@@ -24,14 +24,14 @@
                                 ->map(fn (\App\Models\Tag $tag) =>
                                     '<a href="' . $tag->url() . '" class="hover:underline underline-offset-4">' . $tag->name . '</a>'
                                 )
-                                ->add('<a href="' . $comic->audienceUrl() . '" class="hover:underline underline-offset-4">' . $comic->audience . '</a>')
+                                ->add('<a href="' . $comic->audienceUrl() . '" class="hover:underline underline-offset-4">' . $comic->audience->text() . '</a>')
                                 ->implode(', ') !!}
                         </span>
                     </div>
                     <div>
                         <label class="text-sm text-zinc-500 dark:text-white/50">{{ __('Region') }}:</label>
                         <span class="text-sm text-zinc-800 dark:text-white">
-                            {!! '<a href="' . $comic->countryUrl() . '" class="hover:underline underline-offset-4">' . $comic->country . '</a>' !!}
+                            {!! '<a href="' . $comic->countryUrl() . '" class="hover:underline underline-offset-4">' . $comic->country->text() . '</a>' !!}
                         </span>
                     </div>
                 </div>

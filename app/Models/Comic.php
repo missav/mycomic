@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ComicAudience;
 use App\Enums\ComicCountry;
 use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
@@ -16,8 +17,9 @@ class Comic extends Model
     {
         return [
             'country' => ComicCountry::class,
+            'audience' => ComicAudience::class,
             'has_downloaded_cover' => 'boolean',
-            'is_finished' => 'boolean'
+            'is_ended' => 'boolean'
         ];
     }
 

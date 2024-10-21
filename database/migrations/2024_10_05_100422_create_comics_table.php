@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('year')->nullable()->index();
             $table->string('initial', 3)->index();
             $table->boolean('has_downloaded_cover')->default(false)->index();
-            $table->boolean('is_finished')->default(false)->index();
+            $table->boolean('is_ended')->default(false)->index();
             $table->boolean('is_outdated')->default(false)->index();
             $table->date('last_updated_on')->nullable()->index();
             $table->timestamps();

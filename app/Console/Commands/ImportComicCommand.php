@@ -80,7 +80,7 @@ class ImportComicCommand extends Command
             'audience' => $comicData->get('audience'),
             'year' => $comicData->get('year'),
             'initial' => $comicData->get('initial'),
-            'is_finished' => $comicData->get('is_finished'),
+            'is_ended' => $comicData->get('is_ended'),
             'is_outdated' => false,
             'last_updated_on' => $comicData->get('last_updated_on'),
         ]);
@@ -129,7 +129,7 @@ class ImportComicCommand extends Command
                     '漫畫劇情：' => 'tags',
                     '漫畫作者：' => 'authors',
                     '漫畫別名：' => 'aliases',
-                    '漫畫狀態：' => 'is_finished',
+                    '漫畫狀態：' => 'is_ended',
                     default => null,
                 },
                 'value' => match($node->text()) {

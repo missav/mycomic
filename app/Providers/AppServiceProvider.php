@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +22,14 @@ class AppServiceProvider extends ServiceProvider
                     'https'  => config('app.proxy_url'),
                 ],
             ]);
+        });
+
+        Request::macro('append', function (string $key, ?string $value): array {
+            $data = request()->all();
+
+            Arr::set($data, $key, $value);
+
+            return $data;
         });
     }
 }
