@@ -24,8 +24,8 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        Request::macro('append', function (string $key, ?string $value): array {
-            $data = request()->all();
+        Request::macro('append', function (string $key, ?string $value, array $except = ['page']): array {
+            $data = request()->except($except);
 
             Arr::set($data, $key, $value);
 

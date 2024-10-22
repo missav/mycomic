@@ -18,4 +18,15 @@ class Tag extends Model
     {
         return route('comics.index', ['tag' => $this->name]);
     }
+
+    public static function cached(): array
+    {
+        return cache()->remember('tags', 3600, function () {
+            return Tag::get()
+                ->mapWithKeys(fn (Tag $tag) => [
+                    $tag->slug => $tag->name,
+                ])
+                ->all();
+        });
+    }
 }

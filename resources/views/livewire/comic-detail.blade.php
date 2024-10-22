@@ -3,7 +3,14 @@
         <flux:card class="flex flex-col sm:flex-row">
             <div class="grow">
                 <flux:subheading>{{ __(':year / :count chapters', ['year' => $comic->year, 'count' => $comic->chapters()->count()]) }}</flux:subheading>
-                <flux:heading size="xl">{{ $comic->name }}</flux:heading>
+                <flux:heading size="xl">
+                    {{ $comic->name }}
+                </flux:heading>
+                @if ($comic->is_ended)
+                    <flux:badge color="lime" size="sm" class="mt-2">{{ __('Ended') }}</flux:badge>
+                @else
+                    <flux:badge color="blue" size="sm" class="mt-2">{{ __('Ongoing') }}</flux:badge>
+                @endif
                 <div class="space-y-1 my-4">
                     <div>
                         <label class="text-sm text-zinc-500 dark:text-white/50">{{ __('Author') }}:</label>
