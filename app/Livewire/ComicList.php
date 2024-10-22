@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
-use Spatie\QueryBuilder\Enums\SortDirection;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ComicList extends Component
@@ -28,10 +27,11 @@ class ComicList extends Component
                 ),
             ])
             ->allowedSorts([
-                AllowedSort::field('publish', 'id')->defaultDirection(SortDirection::DESCENDING),
-                AllowedSort::field('update', 'last_updated_on')->defaultDirection(SortDirection::DESCENDING),
-                AllowedSort::field('views', 'views')->defaultDirection(SortDirection::DESCENDING),
+                AllowedSort::field('publish', 'id'),
+                AllowedSort::field('update', 'last_updated_on'),
+                AllowedSort::field('views', 'views'),
             ])
+            ->defaultSort('-id')
             ->orderByDesc('id')
             ->paginate(30)
             ->appends(request()->query());

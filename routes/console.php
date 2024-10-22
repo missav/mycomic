@@ -9,7 +9,7 @@ Schedule::command(\App\Console\Commands\ImportComicCommand::class)
     ->runInBackground();
 
 Schedule::command(\App\Console\Commands\DownloadComicCoverCommand::class)
-    ->everySixHours()
+    ->everyFiveMinutes()
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();

@@ -5,6 +5,9 @@
 >
     <div class="md:flex">
         <flux:navlist class="flex-none hidden md:flex w-32 lg:w-40 mr-6 lg:mr-8 space-y-4">
+            @if (request()->has('filter'))
+                <flux:button size="sm" :href="route('comics.index', request()->append('filter', null))">{{ __('Reset filters') }}</flux:button>
+            @endif
             <flux:navlist.group heading="{{ __('Region') }}" expandable>
                 <flux:navlist.item
                     :href="route('comics.index', request()->append('filter.country', null))"
@@ -105,24 +108,24 @@
             <flux:navbar class="mb-6 pt-0 justify-end">
                 <flux:navbar.item
                     icon="megaphone"
-                    :href="route('comics.index', request()->append('sort', 'publish'))"
-                    :current="! request()->has('sort') || request()->get('sort') === 'publish'"
+                    :href="route('comics.index', request()->append('sort', null))"
+                    :current="! request()->has('sort')"
                     wire:navigate
                 >
                     {{ __('Recent published') }}
                 </flux:navbar.item>
                 <flux:navbar.item
                     icon="clock"
-                    :href="route('comics.index', request()->append('sort', 'update'))"
-                    :current="request()->get('sort') === 'update'"
+                    :href="route('comics.index', request()->append('sort', '-update'))"
+                    :current="request()->get('sort') === '-update'"
                     wire:navigate
                 >
                     {{ __('Recent updates') }}
                 </flux:navbar.item>
                 <flux:navbar.item
                     icon="fire"
-                    :href="route('comics.index', request()->append('sort', 'views'))"
-                    :current="request()->get('sort') === 'views'"
+                    :href="route('comics.index', request()->append('sort', '-views'))"
+                    :current="request()->get('sort') === '-views'"
                     wire:navigate
                 >
                     {{ __('Most views') }}

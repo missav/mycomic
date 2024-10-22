@@ -1,3 +1,9 @@
+@script
+<script>
+    $wire.view();
+</script>
+@endscript
+
 <div class="flex items-stretch">
     <div class="w-3/4 grow">
         <flux:card class="flex flex-col sm:flex-row">
@@ -43,7 +49,19 @@
                     </div>
                 </div>
                 <div class="md:w-4/5 text-zinc-800 dark:text-white">
-                    {{ $comic->description }}
+                    @if (\Illuminate\Support\Str::length($comic->description) > 150)
+                        <div x-data="{ show: false }">
+                            <div x-show="! show">
+                                {{ \Illuminate\Support\Str::limit($comic->description, 150) }}
+                                <a href="#" @click.prevent="show = ! show" class="text-amber-500 hover:underline underline-offset-4">{{ __('Show all') }}</a>
+                            </div>
+                            <div x-cloak x-show="show">
+                                {{ $comic->description }}
+                            </div>
+                        </div>
+                    @else
+                        {{ $comic->description }}
+                    @endif
                 </div>
             </div>
             <div class="flex-none sm:w-40 mt-6 sm:mt-0 sm:ml-8">
