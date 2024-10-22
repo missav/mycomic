@@ -102,6 +102,32 @@
             </flux:navlist.group>
         </flux:navlist>
         <div>
+            <flux:navbar class="mb-6 pt-0 justify-end">
+                <flux:navbar.item
+                    icon="megaphone"
+                    :href="route('comics.index', request()->append('sort', 'publish'))"
+                    :current="! request()->has('sort') || request()->get('sort') === 'publish'"
+                    wire:navigate
+                >
+                    {{ __('Recent published') }}
+                </flux:navbar.item>
+                <flux:navbar.item
+                    icon="clock"
+                    :href="route('comics.index', request()->append('sort', 'update'))"
+                    :current="request()->get('sort') === 'update'"
+                    wire:navigate
+                >
+                    {{ __('Recent updates') }}
+                </flux:navbar.item>
+                <flux:navbar.item
+                    icon="fire"
+                    :href="route('comics.index', request()->append('sort', 'views'))"
+                    :current="request()->get('sort') === 'views'"
+                    wire:navigate
+                >
+                    {{ __('Most views') }}
+                </flux:navbar.item>
+            </flux:navbar>
             <x-comic-section></x-comic-section>
             <div class="mt-8">
                 {{ $comics->links() }}
