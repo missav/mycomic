@@ -7,8 +7,8 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
         @vite('resources/css/app.css')
-        @livewireStyles
         @fluxStyles
+        @livewireStyles
     </head>
     <body class="relative min-h-screen bg-white dark:bg-zinc-800">
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
@@ -18,7 +18,9 @@
             <flux:brand :href="route('home')" logo="https://fluxui.dev/img/demo/dark-mode-logo.png" name="Acme Inc." class="hidden dark:flex" wire:navigate />
 
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="book-open" :href="route('comics.index')" wire:navigate>{{ __('Comic list') }}</flux:navbar.item>
+                <flux:navbar.item icon="book-open" :href="route('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
+                    {{ __('Comic list') }}
+                </flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
@@ -50,8 +52,12 @@
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="home" :href="route('home')" current wire:navigate>{{ __('Home') }}</flux:navlist.item>
-                <flux:navlist.item icon="book-open" :href="route('comics.index')" wire:navigate>{{ __('Comic list') }}</flux:navlist.item>
+                <flux:navlist.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
+                    {{ __('Home') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="book-open" :href="route('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
+                    {{ __('Comic list') }}
+                </flux:navlist.item>
             </flux:navlist>
         </flux:sidebar>
 

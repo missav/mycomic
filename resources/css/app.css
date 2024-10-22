@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@starting-style {
+    [data-flux-modal] > dialog[open][data-flux-flyout] { transform: scale(1) translateX(-50px) !important; }
+}
