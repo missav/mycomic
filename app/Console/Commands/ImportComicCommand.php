@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Concerns\WithScraper;
+use App\Jobs\DownloadComicCover;
 use App\Models\Author;
 use App\Models\Chapter;
 use App\Models\Comic;
@@ -106,6 +107,10 @@ class ImportComicCommand extends Command
                 'pages' => $chapterData['pages'],
             ])
         );
+
+        if (! $comic->has_downloaded_cover) {
+            DownloadComicCover::dispatch($comic);
+        }
 
         $this->info("Imported comic #{$id}");
     }
