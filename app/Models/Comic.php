@@ -67,7 +67,6 @@ class Comic extends Model
     public function toRecommendableArray(): array
     {
         return [
-            'id' => $this->id,
             'name' => $this->name,
             'name_cn' => ChineseConverter::convert($this->name, 't2s'),
             'author_ids' => $this->authors->pluck('id')->all(),
