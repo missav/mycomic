@@ -14,26 +14,28 @@
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
             <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
 
-            <flux:brand :href="route('home')" logo="https://fluxui.dev/img/demo/logo.png" name="Acme Inc." class="dark:hidden" wire:navigate />
-            <flux:brand :href="route('home')" logo="https://fluxui.dev/img/demo/dark-mode-logo.png" name="Acme Inc." class="hidden dark:flex" wire:navigate />
+            <flux:brand :href="route('home')" class="dark:hidden" wire:navigate />
+            <flux:brand :href="route('home')" class="hidden dark:flex" wire:navigate />
 
             <flux:navbar class="-mb-px max-lg:hidden">
                 <flux:navbar.item icon="book-open" :href="route('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
-                    {{ __('Comic list') }}
+                    {{ __('Comic database') }}
                 </flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
 
-            <flux:navbar class="mr-4">
-                <flux:navbar.item icon="magnifying-glass" href="#" label="Search" />
+            <flux:navbar class="mr-0 md:mr-4 gap-0 md:gap-1">
+                <form action="{{ route('comics.index') }}" method="get">
+                    <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" />
+                </form>
                 <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom" x-data x-on:keydown.d.window="if (document.activeElement.localName === 'body') $store.darkMode.toggle()">
-                    <flux:navbar.item icon="moon" icon-variant="solid" href="#" label="{{ __('Toggle dark mode') }}" x-on:click.prevent="$store.darkMode.toggle()" />
+                    <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" href="#" label="{{ __('Toggle dark mode') }}" x-on:click.prevent="$store.darkMode.toggle()" />
                 </flux:tooltip>
             </flux:navbar>
 
             <flux:dropdown position="top" align="end">
-                <flux:profile avatar="https://fluxui.dev/img/demo/user.png" />
+                <flux:profile class="hidden md:flex" avatar="https://fluxui.dev/img/demo/user.png" />
 
                 <flux:menu>
                     <flux:menu.radio.group>
@@ -56,7 +58,7 @@
                     {{ __('Home') }}
                 </flux:navlist.item>
                 <flux:navlist.item icon="book-open" :href="route('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
-                    {{ __('Comic list') }}
+                    {{ __('Comic database') }}
                 </flux:navlist.item>
             </flux:navlist>
         </flux:sidebar>

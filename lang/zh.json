@@ -11,7 +11,7 @@
     "Region": "作品地區",
     "Audience": "適合受眾",
     "Year": "出品年份",
-    "Comic list": "漫畫列表",
+    "Comic database": "漫畫資料庫",
     "Recent update": "最近更新",
     "View more": "觀看更多",
     "All": "所有",
@@ -28,5 +28,7 @@
     "Show all": "觀看全部",
     "Reset filters": "重設條件",
     "Filter": "過濾",
-    "Sort": "排序"
+    "Sort": "排序",
+    "Search": "搜尋",
+    "Keyword: :keyword": "關鍵字: :keyword"
 }

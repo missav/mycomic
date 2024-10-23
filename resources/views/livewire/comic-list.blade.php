@@ -4,7 +4,7 @@
     }'
 >
     <div class="md:flex">
-        <x-comic-sidbar class="flex-none hidden md:flex">
+        <x-comic-sidebar class="flex-none hidden md:flex">
             <flux:navlist.group heading="{{ __('Sort') }}" expandable>
                 <flux:navlist.item
                     :href="route('comics.index', request()->append('sort', null))"
@@ -28,14 +28,14 @@
                     {{ __('Most views') }}
                 </flux:navlist.item>
             </flux:navlist.group>
-        </x-comic-sidbar>
-        <div>
+        </x-comic-sidebar>
+        <div class="grow">
             <div class="flex md:hidden justify-between mb-6">
                 <flux:modal.trigger name="filters">
                     <flux:button icon="adjustments-horizontal">{{ __('Filter') }}</flux:button>
                 </flux:modal.trigger>
                 <flux:modal name="filters" variant="flyout" class="space-y-6">
-                    <x-comic-sidbar class="flex"></x-comic-sidbar>
+                    <x-comic-sidebar class="flex"></x-comic-sidebar>
                 </flux:modal>
                 <flux:dropdown position="bottom" align="end">
                     @if (request()->get('sort') === '-update')
@@ -58,6 +58,14 @@
                     </flux:menu>
                 </flux:dropdown>
             </div>
+            @if (request('q'))
+                <a href="{{ route('comics.index', request()->append('q', null)) }}" wire:navigate>
+                    <flux:badge class="mb-6" size="lg" color="amber">
+                        {{ __('Keyword: :keyword', ['keyword' => request('q')]) }}
+                        <flux:badge.close />
+                    </flux:badge>
+                </a>
+            @endif
             <x-comic-section class="mb-8"></x-comic-section>
             <div>
                 {{ $comics->links() }}

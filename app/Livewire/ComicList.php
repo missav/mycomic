@@ -15,6 +15,9 @@ class ComicList extends Component
     public function render(): View
     {
         $comics = QueryBuilder::for(Comic::class)
+            ->when(request('q'), fn (Builder $query, string $keyword) =>
+                $query->where('name', 'LIKE', "%{$keyword}%")
+            )
             ->allowedFilters([
                 AllowedFilter::exact('country'),
                 AllowedFilter::exact('audience'),

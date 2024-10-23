@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'selector',
@@ -12,6 +14,7 @@ export default {
     extend: {},
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
+      serif: ['Halant', ...defaultTheme.fontFamily.sans],
     },
   },
   corePlugins: {

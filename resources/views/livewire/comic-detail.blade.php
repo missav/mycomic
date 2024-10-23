@@ -53,7 +53,9 @@
                         <div x-data="{ show: false }">
                             <div x-show="! show">
                                 {{ \Illuminate\Support\Str::limit($comic->description, 150) }}
-                                <a href="#" @click.prevent="show = ! show" class="text-amber-500 hover:underline underline-offset-4">{{ __('Show all') }}</a>
+                                <a href="#" @click.prevent="show = ! show" class="text-amber-500 hover:underline underline-offset-4">
+                                    {{ __('Show all') }}
+                                </a>
                             </div>
                             <div x-cloak x-show="show">
                                 {{ $comic->description }}
