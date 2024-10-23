@@ -7,57 +7,57 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
         @vite('resources/css/app.css')
-        @fluxStyles
         @livewireStyles
+        @fluxStyles
     </head>
     <body class="relative min-h-screen bg-white dark:bg-zinc-800">
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
             <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
 
-            <flux:brand :href="route('home')" class="dark:hidden" wire:navigate />
-            <flux:brand :href="route('home')" class="hidden dark:flex" wire:navigate />
+            <flux:brand :href="localizedRoute('home')" class="dark:hidden" wire:navigate />
+            <flux:brand :href="localizedRoute('home')" class="hidden dark:flex" wire:navigate />
 
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="book-open" :href="route('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
+                <flux:navbar.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
                     {{ __('Comic database') }}
                 </flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
 
-            <flux:navbar class="mr-0 md:mr-4 gap-0 md:gap-1">
-                <form action="{{ route('comics.index') }}" method="get">
+            <flux:navbar class="gap-0 md:gap-2">
+                <form action="{{ localizedRoute('comics.index') }}" method="get">
                     <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" />
                 </form>
                 <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom" x-data x-on:keydown.d.window="if (document.activeElement.localName === 'body') $store.darkMode.toggle()">
                     <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" href="#" label="{{ __('Toggle dark mode') }}" x-on:click.prevent="$store.darkMode.toggle()" />
                 </flux:tooltip>
+                <flux:dropdown position="bottom" align="end">
+                    <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
+                        <flux:navbar.item class="hidden md:flex" :square="true">
+                            <img width="20" height="20" src="{{ asset('img/flags/' . \App\Enums\Locale::current()->value . '.png') }}" alt="{{ \App\Enums\Locale::current()->label() }}">
+                        </flux:navbar.item>
+                    </flux:tooltip>
+                    <flux:menu>
+                        @foreach (\App\Enums\Locale::cases() as $locale)
+                            <flux:menu.item :href="localizedRoute($locale)" wire:navigate>
+                                <img width="14" height="14" src="{{ asset("img/flags/{$locale->value}.png") }}" alt="{{ $locale->label() }}" class="mr-2">
+                                {{ $locale->label() }}
+                            </flux:menu.item>
+                        @endforeach
+                    </flux:menu>
+                </flux:dropdown>
             </flux:navbar>
-
-            <flux:dropdown position="top" align="end">
-                <flux:profile class="hidden md:flex" avatar="https://fluxui.dev/img/demo/user.png" />
-
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <flux:menu.radio checked>Olivia Martin</flux:menu.radio>
-                        <flux:menu.radio>Truly Delta</flux:menu.radio>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <flux:menu.item icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
-                </flux:menu>
-            </flux:dropdown>
         </flux:header>
 
         <flux:sidebar stashable sticky class="lg:hidden bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
+                <flux:navlist.item icon="home" :href="localizedRoute('home')" :current="request()->routeIs('home')" wire:navigate>
                     {{ __('Home') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="book-open" :href="route('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
+                <flux:navlist.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
                     {{ __('Comic database') }}
                 </flux:navlist.item>
             </flux:navlist>

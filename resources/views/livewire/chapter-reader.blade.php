@@ -1,7 +1,7 @@
 <div x-data="{ showBottomControl: false }" class="pb-20">
     <flux:breadcrumbs>
-        <flux:breadcrumbs.item :href="route('home')" icon="home" wire:navigate />
-        <flux:breadcrumbs.item :href="route('comics.view', ['comic' => $chapter->comic])" wire:navigate>{{ $chapter->comic->name }}</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" wire:navigate />
+        <flux:breadcrumbs.item :href="localizedRoute('comics.view', ['comic' => $chapter->comic])" wire:navigate>{{ $chapter->comic->name }}</flux:breadcrumbs.item>
         <flux:breadcrumbs.item>{{ $chapter->title }}</flux:breadcrumbs.item>
     </flux:breadcrumbs>
 

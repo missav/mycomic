@@ -40,17 +40,17 @@ class Comic extends Model
 
     public function url(): string
     {
-        return route('comics.view', ['comic' => $this]);
+        return localizedRoute('comics.view', ['comic' => $this]);
     }
 
     public function audienceUrl(): string
     {
-        return route('comics.index', ['audience' => $this->audience]);
+        return localizedRoute('comics.index', ['audience' => $this->audience]);
     }
 
     public function countryUrl(): string
     {
-        return route('comics.index', ['country' => $this->country]);
+        return localizedRoute('comics.index', ['country' => $this->country]);
     }
 
     public function coverImagePath(): string

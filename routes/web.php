@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', \App\Livewire\Home::class)->name('home');
-Route::get('/comics', \App\Livewire\ComicList::class)->name('comics.index');
-Route::get('/comics/{comic}', \App\Livewire\ComicDetail::class)->name('comics.view');
-Route::get('/chapters/{chapter}', \App\Livewire\ChapterReader::class)->name('chapters.view');
+Route::name('zh.')->group(function () {
+    require base_path('routes/app.php');
+});
+
+Route::name('cn.')->prefix('/cn')->middleware(SetLocale::class . ':cn')->group(function () {
+    require base_path('routes/app.php');
+});

@@ -33,7 +33,7 @@ class Chapter extends Model
 
     public function url(): string
     {
-        return route('chapters.view', ['chapter' => $this]);
+        return localizedRoute('chapters.view', ['chapter' => $this]);
     }
 
     public function pageImageDirectory(): string

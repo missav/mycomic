@@ -7,21 +7,21 @@
         <x-comic-sidebar class="flex-none hidden md:flex">
             <flux:navlist.group heading="{{ __('Sort') }}" expandable>
                 <flux:navlist.item
-                    :href="route('comics.index', request()->append('sort', null))"
+                    :href="localizedRoute('comics.index', request()->append('sort', null))"
                     :current="! request('sort')"
                     wire:navigate
                 >
                     {{ __('Recent published') }}
                 </flux:navlist.item>
                 <flux:navlist.item
-                    :href="route('comics.index', request()->append('sort', '-update'))"
+                    :href="localizedRoute('comics.index', request()->append('sort', '-update'))"
                     :current="request('sort') === '-update'"
                     wire:navigate
                 >
                     {{ __('Recent updates') }}
                 </flux:navlist.item>
                 <flux:navlist.item
-                    :href="route('comics.index', request()->append('sort', '-views'))"
+                    :href="localizedRoute('comics.index', request()->append('sort', '-views'))"
                     :current="request('sort') === '-views'"
                     wire:navigate
                 >
@@ -46,20 +46,20 @@
                         <flux:button icon="fire" icon-trailing="chevron-down">{{ __('Recent published') }}</flux:button>
                     @endif
                     <flux:menu>
-                        <flux:menu.item icon="megaphone" :href="route('comics.index', request()->append('sort', null))">
+                        <flux:menu.item icon="megaphone" :href="localizedRoute('comics.index', request()->append('sort', null))">
                             {{ __('Recent published') }}
                         </flux:menu.item>
-                        <flux:menu.item icon="clock" :href="route('comics.index', request()->append('sort', '-update'))">
+                        <flux:menu.item icon="clock" :href="localizedRoute('comics.index', request()->append('sort', '-update'))">
                             {{ __('Recent updates') }}
                         </flux:menu.item>
-                        <flux:menu.item icon="fire" :href="route('comics.index', request()->append('sort', '-views'))">
+                        <flux:menu.item icon="fire" :href="localizedRoute('comics.index', request()->append('sort', '-views'))">
                             {{ __('Most views') }}
                         </flux:menu.item>
                     </flux:menu>
                 </flux:dropdown>
             </div>
             @if (request('q'))
-                <a href="{{ route('comics.index', request()->append('q', null)) }}" wire:navigate>
+                <a href="{{ localizedRoute('comics.index', request()->append('q', null)) }}" wire:navigate>
                     <flux:badge class="mb-6" size="lg" color="amber">
                         {{ __('Keyword: :keyword', ['keyword' => request('q')]) }}
                         <flux:badge.close />
