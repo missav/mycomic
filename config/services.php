@@ -39,4 +39,10 @@ return [
         'api_key' => env('SCRAPFLY_API_KEY'),
     ],
 
+    'recombee' => [
+        'database' => env('RECOMBEE_DATABASE'),
+        'private_token' => env('RECOMBEE_PRIVATE_TOKEN'),
+        'base_uri' => env('RECOMBEE_BASE_URI'),
+    ],
+
 ];

@@ -27,3 +27,10 @@ if (! function_exists('localizedRoute')) {
         return route("{$locale}.{$name}", $parameters, $absolute);
     }
 }
+
+if (! function_exists('cn')) {
+    function cn(string $text): string
+    {
+        return \Tiacx\ChineseConverter::convert($text, 't2s');
+    }
+}

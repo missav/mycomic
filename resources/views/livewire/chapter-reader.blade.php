@@ -17,6 +17,7 @@
                     class="w-full min-h-64 mx-auto"
                 @else
                     data-src="{{ $chapter->pageCdnUrl($i) }}"
+                    data-placeholder-background="#27272A"
                     class="lozad w-full min-h-64 mx-auto"
                 @endif
             />

@@ -10,8 +10,10 @@ enum ComicAudience: string
     case ERTONG = 'ertong';
     case TONGYONG = 'tongyong';
 
-    public function text(): string
+    public function text(?string $locale = null): string
     {
-        return __("enums.comic_audience.{$this->value}");
+        $locale = $locale ?? app()->getLocale();
+
+        return __("enums.comic_audience.{$this->value}", [], $locale);
     }
 }

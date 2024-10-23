@@ -14,6 +14,13 @@ class Tag extends Model
         return $this->belongsToMany(Comic::class);
     }
 
+    public function name(?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $locale === 'cn' ? cn($this->name) : $this->name;
+    }
+
     public function url(): string
     {
         return localizedRoute('comics.index', ['tag' => $this->name]);

@@ -29,8 +29,8 @@
                 <form action="{{ localizedRoute('comics.index') }}" method="get">
                     <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" />
                 </form>
-                <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom" x-data x-on:keydown.d.window="if (document.activeElement.localName === 'body') $store.darkMode.toggle()">
-                    <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" href="#" label="{{ __('Toggle dark mode') }}" x-on:click.prevent="$store.darkMode.toggle()" />
+                <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom">
+                    <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" label="{{ __('Toggle dark mode') }}" x-data x-on:click.prevent="$store.darkMode.toggle()" />
                 </flux:tooltip>
                 <flux:dropdown position="bottom" align="end">
                     <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
@@ -60,6 +60,12 @@
                 <flux:navlist.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
                     {{ __('Comic database') }}
                 </flux:navlist.item>
+            </flux:navlist>
+
+            <flux:spacer />
+
+            <flux:navlist variant="outline">
+                <flux:navlist.item icon="moon" icon-variant="solid" x-on:click.prevent="$store.darkMode.toggle()">{{ __('Toggle dark mode') }}</flux:navlist.item>
             </flux:navlist>
         </flux:sidebar>
 

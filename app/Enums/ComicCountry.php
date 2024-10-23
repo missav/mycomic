@@ -11,8 +11,10 @@ enum ComicCountry: string
     case CHINA = 'china';
     case KOREA = 'korea';
 
-    public function text(): string
+    public function text(?string $locale = null): string
     {
-        return __("enums.comic_country.{$this->value}");
+        $locale = $locale ?? app()->getLocale();
+
+        return __("enums.comic_country.{$this->value}", [], $locale);
     }
 }

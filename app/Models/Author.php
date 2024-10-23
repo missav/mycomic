@@ -17,6 +17,13 @@ class Author extends Model
         return $this->belongsToMany(Comic::class);
     }
 
+    public function name(?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $locale === 'cn' ? cn($this->name) : $this->name;
+    }
+
     public function coverImagePath(): string
     {
         return FileSignature::append("/authors/{$this->id}.jpg");

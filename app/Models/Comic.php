@@ -8,6 +8,7 @@ use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Tiacx\ChineseConverter;
 
 class Comic extends Model
 {
@@ -61,6 +62,29 @@ class Comic extends Model
     public function coverCdnUrl(): string
     {
         return cdn($this->coverImagePath());
+    }
+
+    public function toRecommendableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'name_cn' => ChineseConverter::convert($this->name, 't2s'),
+            'author_ids' => $this->authors->pluck('id')->all(),
+            'author_texts' => $this->authors->map->name('zh')->all(),
+            'author_texts_cn' => $this->authors->map->name('cn')->all(),
+            'tag_ids' => $this->tags->pluck('id')->all(),
+            'tag_texts' => $this->tags->map->name('zh')->all(),
+            'tag_texts_cn' => $this->tags->map->name('cn')->all(),
+            'country' => $this->country->value,
+            'country_text' => $this->country->text('zh'),
+            'country_text_cn' => $this->country->text('cn'),
+            'audience' => $this->audience->value,
+            'audience_text' => $this->audience->text('zh'),
+            'audience_text_cn' => $this->audience->text('cn'),
+            'year' => $this->year,
+            'is_ended' => $this->is_ended,
+            'cover_image_path' => $this->coverImagePath(),
+        ];
     }
 
     public static function sourceUrl(int $id, string $subdomain = 'tw'): string

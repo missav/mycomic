@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1056f86bb2c03b0d5f4d7459016359db",
+    "content-hash": "216999d6077511c85120238ac1eb5e66",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4140,6 +4140,52 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
+            "name": "recombee/php-api-client",
+            "version": "v4.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/recombee/php-api-client.git",
+                "reference": "47091325ada2b56c8f980d34c453f3e57278e095"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/recombee/php-api-client/zipball/47091325ada2b56c8f980d34c453f3e57278e095",
+                "reference": "47091325ada2b56c8f980d34c453f3e57278e095",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0.0 || ^7.0.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "2.*",
+                "phpunit/phpunit": "^9.2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Recombee\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Fiedler",
+                    "email": "ondrej.fiedler@recombee.com"
+                }
+            ],
+            "description": "PHP client for easy use of the Recombee recommendation API.",
+            "homepage": "https://recombee.com",
+            "support": {
+                "issues": "https://github.com/recombee/php-api-client/issues",
+                "source": "https://github.com/recombee/php-api-client/tree/v4.1.2"
+            },
+            "time": "2024-07-19T08:31:07+00:00"
+        },
+        {
             "name": "spatie/backtrace",
             "version": "1.6.2",
             "source": {
@@ -7091,6 +7137,46 @@
                 }
             ],
             "time": "2024-09-16T10:07:02+00:00"
+        },
+        {
+            "name": "tiacx/chinese-converter",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tiacx/ChineseConverter.git",
+                "reference": "b098c8a3a40778674fe9b3601f924258115e159c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tiacx/ChineseConverter/zipball/b098c8a3a40778674fe9b3601f924258115e159c",
+                "reference": "b098c8a3a40778674fe9b3601f924258115e159c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tiacx\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tiac"
+                }
+            ],
+            "description": "中文简繁体转换",
+            "support": {
+                "issues": "https://github.com/Tiacx/ChineseConverter/issues",
+                "source": "https://github.com/Tiacx/ChineseConverter/tree/1.0.1"
+            },
+            "time": "2023-11-03T09:27:53+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
