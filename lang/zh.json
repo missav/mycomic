@@ -12,7 +12,6 @@
     "Audience": "適合受眾",
     "Year": "出品年份",
     "Comic database": "漫畫資料庫",
-    "Recent update": "最近更新",
     "View more": "觀看更多",
     "All": "所有",
     "200x": "00年代",
@@ -36,5 +35,6 @@
     "Start reading": "開始閱讀",
     "Add to bookmark": "加入收藏",
     "Share to friends": "分享朋友",
-    "Share via :channel": "以 :channel 分享"
+    "Share via :channel": "以 :channel 分享",
+    "m-d": "m月d日"
 }

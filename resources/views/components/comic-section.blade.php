@@ -1,4 +1,8 @@
-@props(['title' => null, 'url' => null, 'lozad' => false])
+@props([
+    'title' => null,
+    'url' => null,
+    'lozad' => false,
+])
 
 @if ($title || $url)
     <div class="flex items-center justify-between mb-6">

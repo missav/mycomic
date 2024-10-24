@@ -8,6 +8,7 @@ use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Comic extends Model
 {
@@ -19,13 +20,19 @@ class Comic extends Model
             'country' => ComicCountry::class,
             'audience' => ComicAudience::class,
             'has_downloaded_cover' => 'boolean',
-            'is_ended' => 'boolean'
+            'is_ended' => 'boolean',
+            'last_updated_on' => 'date',
         ];
     }
 
     public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
+    }
+
+    public function recentChapter(): HasOne
+    {
+        return $this->hasOne(Chapter::class)->latestOfMany();
     }
 
     public function authors(): BelongsToMany

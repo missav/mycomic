@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
+        Model::preventLazyLoading();
 
         Http::macro('proxy', function (): PendingRequest {
             return Http::withoutVerifying()->withOptions([

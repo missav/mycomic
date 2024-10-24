@@ -123,6 +123,8 @@
             <x-comic-section></x-comic-section>
         </div>
     </div>
-    <div class="w-1/4 ml-4 hidden lg:block text-white">
+    <div class="w-1/4 ml-8 hidden lg:block text-white space-y-8">
+        <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
+        <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
     </div>
 </div>
