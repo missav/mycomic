@@ -35,7 +35,9 @@
                 return placeholders;
             },
             lozadObserve() {
-                window.lozad().observe();
+                window.lozad('.lozad', {
+                    rootMargin: '0px 0px 500px 0px',
+                }).observe();
             },
             getRecommendations(scenario, count) {
                 return new Promise(resolve => {
@@ -130,7 +132,16 @@
         @livewireScripts
         @fluxScripts
 
+        <script>
+            window.recommendId = window.location.hash.slice(1);
+            window.timeouts = [];
+        </script>
+
         <script data-navigate-once>
+            window.pushTimeout = (callback, ms) => {
+                window.timeouts.push(setTimeout(callback, ms));
+            };
+
             document.addEventListener('livewire:init', () => {
                 window.user_uuid = Cookies.get('user_uuid');
 
@@ -162,6 +173,12 @@
 
                     Cookies.set('user_uuid', window.user_uuid, { expires: 365 });
                 }
+            });
+
+            document.addEventListener('livewire:navigate', () => {
+                window.timeouts.forEach(timeout => {
+                    clearTimeout(timeout);
+                });
             });
 
             document.addEventListener('livewire:navigated', () => {

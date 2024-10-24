@@ -26,6 +26,13 @@ class Chapter extends Model
         return $this->hasMany(MissingPage::class);
     }
 
+    public function type(?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $locale === 'cn' ? cn($this->type) : zh($this->type);
+    }
+
     public function sourceUrl(string $subdomain = 'tw'): string
     {
         return "https://{$subdomain}.manhuagui.com/comic/{$this->comic_id}/{$this->id}.html";

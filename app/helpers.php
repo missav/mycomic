@@ -28,9 +28,24 @@ if (! function_exists('localizedRoute')) {
     }
 }
 
-if (! function_exists('cn')) {
-    function cn(string $text): string
+if (! function_exists('zh')) {
+    function zh(?string $text = null): string
     {
+        if (! $text) {
+            return '';
+        }
+
+        return \Tiacx\ChineseConverter::convert($text, 's2t');
+    }
+}
+
+if (! function_exists('cn')) {
+    function cn(?string $text = null): string
+    {
+        if (! $text) {
+            return '';
+        }
+
         return \Tiacx\ChineseConverter::convert($text, 't2s');
     }
 }

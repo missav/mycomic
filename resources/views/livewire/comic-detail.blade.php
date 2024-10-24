@@ -1,12 +1,22 @@
 @script
-<script>
-    $wire.view();
-</script>
+    <script>
+        window.pushTimeout(() => {
+            $wire.view();
+
+            recombeeClient.send(new recombee.AddDetailView(window.user_uuid, {{ $comic->id }}, {
+                cascadeCreate: true,
+                recommId: window.recommendId,
+            }));
+        }, 5000);
+    </script>
 @endscript
 
 <div class="flex items-stretch">
     <div class="w-3/4 grow">
         <flux:card class="flex flex-col sm:flex-row">
+            <div class="sm:hidden aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-t-md shadow-lg dark:shadow-gray-500/40 -m-6 mb-6">
+                <img src="{{ $comic->coverCdnUrl() }}" alt="{{ $comic->name }}" class="object-cover object-top">
+            </div>
             <div class="grow">
                 <flux:subheading>{{ __(':year / :count chapters', ['year' => $comic->year, 'count' => $comic->chapters()->count()]) }}</flux:subheading>
                 <flux:heading size="xl">
@@ -66,21 +76,28 @@
                     @endif
                 </div>
             </div>
-            <div class="flex-none sm:w-40 mt-6 sm:mt-0 sm:ml-8">
+            <div class="hidden sm:block flex-none sm:w-40 mt-6 sm:mt-0 sm:ml-8">
                 <div class="aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-md shadow-lg dark:shadow-gray-500/40">
                     <img src="{{ $comic->coverCdnUrl() }}" alt="{{ $comic->name }}" class="object-cover object-top">
                 </div>
             </div>
         </flux:card>
-        <div class="mt-8">
-            @foreach ($comic->chapters->reverse()->groupBy('type') as $group => $chapters)
+        <div class="mt-8 mb-12">
+            @foreach ($comic->chapters->reverse()->groupBy(fn (\App\Models\Chapter $chapter) => $chapter->type()) as $group => $chapters)
                 <flux:subheading size="xl" class="mt-8 mb-4">{{ $group }}</flux:subheading>
                 <div class="grid grid-cols-3 gap-4">
                     @foreach ($chapters as $chapter)
-                        <flux:button :href="$chapter->url()">{{ $chapter->title }}</flux:button>
+                        <flux:button ::href="'{{ $chapter->url() }}' + (window.recommendId ? `#${window.recommendId}` : '')" href wire:navigate>{{ $chapter->title }}</flux:button>
                     @endforeach
                 </div>
             @endforeach
+        </div>
+        <flux:separator class="my-8" text="{{ __('Recommended for you') }}" />
+        <div
+            x-data='{ comics: placeholders(12) }'
+            x-init="$nextTick(async () => comics = await getRecommendations('desktop-home-recommended', 12));"
+        >
+            <x-comic-section></x-comic-section>
         </div>
     </div>
     <div class="w-1/4 ml-4 hidden lg:flex text-white">
