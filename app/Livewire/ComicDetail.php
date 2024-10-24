@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Comic;
+use App\Title;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -26,5 +28,11 @@ class ComicDetail extends Component
     public function view(): void
     {
         $this->comic->increment('views');
+    }
+
+    public function render(): View
+    {
+        return view('livewire.comic-detail')
+            ->title(Title::appendAppName($this->comic->name()));
     }
 }

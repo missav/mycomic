@@ -28,6 +28,13 @@ if (! function_exists('localizedRoute')) {
     }
 }
 
+if (! function_exists('localized')) {
+    function localized(?string $text = null): string
+    {
+        return app()->getLocale() === 'zh' ? zh($text) : cn($text);
+    }
+}
+
 if (! function_exists('zh')) {
     function zh(?string $text = null): string
     {

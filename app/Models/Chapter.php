@@ -26,6 +26,13 @@ class Chapter extends Model
         return $this->hasMany(MissingPage::class);
     }
 
+    public function title(?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $locale === 'cn' ? cn($this->title) : $this->title;
+    }
+
     public function type(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();

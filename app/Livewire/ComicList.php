@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Comic;
+use App\Title;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
@@ -41,6 +42,6 @@ class ComicList extends Component
 
         return view('livewire.comic-list', [
             'comics' => $comics,
-        ]);
+        ])->title(Title::appendAppName(__('Comic database')));
     }
 }
