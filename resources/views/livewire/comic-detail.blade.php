@@ -113,11 +113,27 @@
         </flux:card>
         <div class="mt-8 mb-12">
             @foreach ($comic->chapters->reverse()->groupBy(fn (\App\Models\Chapter $chapter) => $chapter->type()) as $group => $chapters)
-                <flux:subheading size="xl" class="mt-8 mb-4">{{ $group }}</flux:subheading>
-                <div class="grid grid-cols-3 gap-4">
-                    @foreach ($chapters as $chapter)
-                        <flux:button ::href="appendRecommendId('{{ $chapter->url() }}')" href wire:navigate>{{ $chapter->title }}</flux:button>
-                    @endforeach
+                <div
+                    x-cloak
+                    x-data='{
+                        chapters: @json(\App\Http\Resources\ChapterResource::collection($chapters)),
+                        decending: true,
+                        toggleSorting() {
+                            this.chapters = this.chapters.reverse();
+                            this.decending = ! this.decending;
+                        },
+                    }'
+                >
+                    <flux:subheading size="xl" class="flex justify-between items-center mt-8 mb-4">
+                        <div>{{ $group }}</div>
+                        <flux:button x-show="decending" @click="toggleSorting" size="sm" variant="ghost" icon="arrow-down-right">{{ __('Decending') }}</flux:button>
+                        <flux:button x-show="! decending" @click="toggleSorting" size="sm" variant="ghost" icon="arrow-up-right">{{ __('Ascending') }}</flux:button>
+                    </flux:subheading>
+                    <div class="grid grid-cols-3 gap-4">
+                        <template x-for="chapter in chapters">
+                            <flux:button ::href="chapterUrl(chapter)" href x-text="chapter.title" wire:navigate>&nbsp;</flux:button>
+                        </template>
+                    </div>
                 </div>
             @endforeach
         </div>

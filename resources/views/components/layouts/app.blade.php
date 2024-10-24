@@ -23,7 +23,16 @@
                     url += `#${comic.recommend_id}`;
                 }
 
-                return url;
+                return this.appendRecommendId(url);
+            },
+            chapterUrl(chapter) {
+                let url = '{{ localizedRoute('chapters.view', ['chapter' => ':chapter']) }}'.replace(':chapter', chapter.id);
+
+                if (chapter.recommend_id) {
+                    url += `#${chapter.recommend_id}`;
+                }
+
+                return this.appendRecommendId(url);
             },
             appendRecommendId(url) {
                 return url + (window.recommendId ? `#${window.recommendId}` : '');
