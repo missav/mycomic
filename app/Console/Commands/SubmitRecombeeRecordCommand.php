@@ -19,7 +19,9 @@ class SubmitRecombeeRecordCommand extends Command
     public function handle(): void
     {
         Comic::query()
-            ->where('has_submitted_recommendation', 0)
+            ->with('authors', 'tags')
+            ->where('has_downloaded_cover', true)
+            ->where('has_submitted_recommendation', false)
             ->chunkById(2000, function (Collection $comics) {
                 $responses = Recombee::send(new Batch(
                     $comics->map(fn (Comic $comic) => new SetItemValues(

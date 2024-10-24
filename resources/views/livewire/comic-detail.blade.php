@@ -27,7 +27,7 @@
                 @else
                     <flux:badge color="blue" size="sm" class="mt-2">{{ __('Ongoing') }}</flux:badge>
                 @endif
-                <div class="space-y-1 my-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 my-4">
                     <div>
                         <label class="text-sm text-zinc-500 dark:text-white/50">{{ __('Author') }}:</label>
                         <span class="text-sm text-zinc-800 dark:text-white">
@@ -37,6 +37,12 @@
                                     '<a href="' . $author->url() . '" class="hover:underline underline-offset-4">' . $author->name . '</a>'
                                 )
                                 ->implode(', ') !!}
+                        </span>
+                    </div>
+                    <div>
+                        <label class="text-sm text-zinc-500 dark:text-white/50">{{ __('Last updated') }}:</label>
+                        <span class="text-sm text-zinc-800 dark:text-white">
+                            <time datetime="{{ $comic->last_updated_on->toDateString() }}">{{ $comic->last_updated_on->toDateString() }}</time>
                         </span>
                     </div>
                     <div>

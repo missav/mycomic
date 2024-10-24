@@ -6,7 +6,7 @@
     "Next": "下一話",
     "Index": "目錄",
     ":year / :count chapters": ":year / 共 :count 話",
-    "Author": "作者",
+    "Author": "原創作者",
     "Genre": "作品類型",
     "Region": "作品地區",
     "Audience": "適合受眾",
@@ -36,5 +36,6 @@
     "Add to bookmark": "加入收藏",
     "Share to friends": "分享朋友",
     "Share via :channel": "以 :channel 分享",
-    "m-d": "m月d日"
+    "m-d": "m月d日",
+    "Last updated": "最後更新"
 }
