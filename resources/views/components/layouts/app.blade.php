@@ -25,6 +25,9 @@
 
                 return url;
             },
+            appendRecommendId(url) {
+                return url + (window.recommendId ? `#${window.recommendId}` : '');
+            },
             placeholders(count) {
                 let i, placeholders = [];
 

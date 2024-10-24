@@ -70,6 +70,16 @@ class Comic extends Model
         return cdn($this->coverImagePath());
     }
 
+    public function shareUrl(string $channel): string
+    {
+        return match($channel) {
+            'whatsapp' => 'https://wa.me/?' . http_build_query(['text' => "{$this->name()}\n\n{$this->url()}"]),
+            'telegram' => 'https://t.me/share/url?' . http_build_query(['url' => $this->url(), 'text' => $this->name()]),
+            'twitter' => 'https://twitter.com/intent/tweet?' . http_build_query(['text' => "{$this->name()}\n\n{$this->url()}"]),
+            'email' => 'mailto:?' . http_build_query(['subject' => $this->name(), 'body' => "{$this->name()}\n\n{$this->url()}"]),
+        };
+    }
+
     public function toRecommendableArray(): array
     {
         return [

@@ -7,7 +7,7 @@
                 cascadeCreate: true,
                 recommId: window.recommendId,
             }));
-        }, 5000);
+        }, 3000);
     </script>
 @endscript
 
@@ -75,6 +75,29 @@
                         {{ $comic->description }}
                     @endif
                 </div>
+                <div class="mt-8 space-x-2">
+                    <flux:button icon="arrow-right-start-on-rectangle" variant="primary" ::href="appendRecommendId('{{ $comic->chapters->first()->url() }}')" href>
+                        {{ __('Start reading') }}
+                    </flux:button>
+                    <flux:button icon="bookmark" variant="filled">{{ __('Add to bookmark') }}</flux:button>
+                    <flux:dropdown position="bottom" align="end">
+                        <flux:button icon="share" variant="ghost">{{ __('Share to friends') }}</flux:button>
+                        <flux:menu>
+                            <flux:menu.item :href="$comic->shareUrl('whatsapp')" target="_blank">
+                                {{ __('Share via :channel', ['channel' => 'Whatsapp']) }}
+                            </flux:menu.item>
+                            <flux:menu.item :href="$comic->shareUrl('telegram')" target="_blank">
+                                {{ __('Share via :channel', ['channel' => 'Telegram']) }}
+                            </flux:menu.item>
+                            <flux:menu.item :href="$comic->shareUrl('twitter')" target="_blank">
+                                {{ __('Share via :channel', ['channel' => 'X (Twitter)']) }}
+                            </flux:menu.item>
+                            <flux:menu.item :href="$comic->shareUrl('email')" target="_blank">
+                                {{ __('Share via :channel', ['channel' => 'Email']) }}
+                            </flux:menu.item>
+                        </flux:menu>
+                    </flux:dropdown>
+                </div>
             </div>
             <div class="hidden sm:block flex-none sm:w-40 mt-6 sm:mt-0 sm:ml-8">
                 <div class="aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-md shadow-lg dark:shadow-gray-500/40">
@@ -87,7 +110,7 @@
                 <flux:subheading size="xl" class="mt-8 mb-4">{{ $group }}</flux:subheading>
                 <div class="grid grid-cols-3 gap-4">
                     @foreach ($chapters as $chapter)
-                        <flux:button ::href="'{{ $chapter->url() }}' + (window.recommendId ? `#${window.recommendId}` : '')" href wire:navigate>{{ $chapter->title }}</flux:button>
+                        <flux:button ::href="appendRecommendId('{{ $chapter->url() }}')" href wire:navigate>{{ $chapter->title }}</flux:button>
                     @endforeach
                 </div>
             @endforeach
@@ -100,6 +123,6 @@
             <x-comic-section></x-comic-section>
         </div>
     </div>
-    <div class="w-1/4 ml-4 hidden lg:flex text-white">
+    <div class="w-1/4 ml-4 hidden lg:block text-white">
     </div>
 </div>

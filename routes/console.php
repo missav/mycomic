@@ -37,3 +37,9 @@ Schedule::command(\App\Console\Commands\DownloadAuthorCoverCommand::class)
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();
+
+Schedule::command(\App\Console\Commands\SubmitRecombeeRecordCommand::class)
+    ->daily()
+    ->withoutOverlapping()
+    ->onOneServer()
+    ->runInBackground();
