@@ -6,11 +6,65 @@
         <title>{{ $title ?? config('app.name') }}</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
-        @vite('resources/css/app.css')
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
         @fluxStyles
     </head>
-    <body class="relative min-h-screen bg-white dark:bg-zinc-800">
+    <body
+        x-data="{
+            cdnUrl: '{{ config('app.cdn_url') }}',
+            cdn(path) {
+                return this.cdnUrl + path;
+            },
+            comicUrl(comic) {
+                let url = '{{ localizedRoute('comics.view', ['comic' => ':comic']) }}'.replace(':comic', comic.id);
+
+                if (comic.recommend_id) {
+                    url += `#${comic.recommend_id}`;
+                }
+
+                return url;
+            },
+            placeholders(count) {
+                let i, placeholders = [];
+
+                for (i = 0; i < count; i++) {
+                    placeholders.push([]);
+                }
+
+                return placeholders;
+            },
+            lozadObserve() {
+                window.lozad().observe();
+            },
+            getRecommendations(scenario, count) {
+                return new Promise(resolve => {
+                    recombeeClient.send(new recombee.RecommendItemsToUser(window.user_uuid, count, {
+                        scenario: scenario,
+                        cascadeCreate: true,
+                        returnProperties: true,
+                        includedProperties: [
+                            'name',
+                            'cover_image_path',
+                        ],
+                    })).then(response => {
+                        const recommendations = response.recomms.map(item => {
+                            item.values.id = item.id;
+                            item.values.recommend_id = response.recommId;
+
+                            return item.values;
+                        });
+
+                        resolve(recommendations);
+                    });
+                });
+            },
+        }"
+        x-init="$nextTick(() => {
+            lozadObserve();
+        })"
+        class="relative min-h-screen bg-white dark:bg-zinc-800"
+    >
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
             <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
 
@@ -40,7 +94,7 @@
                     </flux:tooltip>
                     <flux:menu>
                         @foreach (\App\Enums\Locale::cases() as $locale)
-                            <flux:menu.item :href="localizedRoute($locale)" wire:navigate>
+                            <flux:menu.item :href="localizedRoute($locale)">
                                 <img width="14" height="14" src="{{ asset("img/flags/{$locale->value}.png") }}" alt="{{ $locale->label() }}" class="mr-2">
                                 {{ $locale->label() }}
                             </flux:menu.item>
@@ -77,6 +131,39 @@
         @fluxScripts
 
         <script data-navigate-once>
+            document.addEventListener('livewire:init', () => {
+                window.user_uuid = Cookies.get('user_uuid');
+
+                if (! window.user_uuid) {
+                    if (window.crypto && window.crypto.randomUUID) {
+                        window.user_uuid = window.crypto.randomUUID();
+                    } else {
+                        const generateUUID = () => {
+                            let d = new Date().getTime();
+                            let d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
+
+                            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+                                let r = Math.random() * 16;
+
+                                if (d > 0) {
+                                    r = (d + r) % 16 | 0;
+                                    d = Math.floor(d / 16);
+                                } else {
+                                    r = (d2 + r) % 16 | 0;
+                                    d2 = Math.floor(d2 / 16);
+                                }
+
+                                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                            });
+                        }
+
+                        window.user_uuid = generateUUID();
+                    }
+
+                    Cookies.set('user_uuid', window.user_uuid, { expires: 365 });
+                }
+            });
+
             document.addEventListener('livewire:navigated', () => {
                 Alpine.store('darkMode').applyToBody();
             });

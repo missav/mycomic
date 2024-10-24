@@ -8,7 +8,6 @@ use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Tiacx\ChineseConverter;
 
 class Comic extends Model
 {
@@ -39,6 +38,13 @@ class Comic extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function name(?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $locale === 'cn' ? cn($this->name) : $this->name;
+    }
+
     public function url(): string
     {
         return localizedRoute('comics.view', ['comic' => $this]);
@@ -67,8 +73,8 @@ class Comic extends Model
     public function toRecommendableArray(): array
     {
         return [
-            'name' => $this->name,
-            'name_cn' => ChineseConverter::convert($this->name, 't2s'),
+            'name' => $this->name('zh'),
+            'name_cn' => $this->name('cn'),
             'author_ids' => $this->authors->pluck('id')->all(),
             'author_texts' => $this->authors->map->name('zh')->all(),
             'author_texts_cn' => $this->authors->map->name('cn')->all(),

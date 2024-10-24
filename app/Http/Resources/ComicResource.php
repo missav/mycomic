@@ -12,8 +12,7 @@ class ComicResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'coverCdnUrl' => $this->coverCdnUrl(),
-            'url' => $this->url(),
+            'cover_image_path' => $this->coverImagePath(),
         ];
     }
 }
