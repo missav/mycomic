@@ -90,4 +90,14 @@ class Seo
 
         return static::$image;
     }
+
+    public static function twitter(): string
+    {
+        return '@mycomiccom';
+    }
+
+    public static function gtmId(): string
+    {
+        return 'GTM-NBDC4TBL';
+    }
 }

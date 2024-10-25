@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() === 'zh' ? 'zh-Hant' : 'zh-Hans' }}">
     <head>
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','{{ \App\Seo::gtmId() }}');
+        </script>
         <link rel="alternate" hreflang="zh-Hant" href="{{ localizedRoute(\App\Enums\Locale::ZH) }}" />
         <link rel="alternate" hreflang="zh-Hans" href="{{ localizedRoute(\App\Enums\Locale::CN) }}" />
         <link rel="alternate" hreflang="x-default" href="{{ localizedRoute(\App\Enums\Locale::from(config('app.fallback_locale'))) }}" />
@@ -20,8 +27,8 @@
         <meta name="twitter:title" content="{{ \App\Seo::title() }}" />
         <meta name="twitter:description" content="{{ \App\Seo::description() }}" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@mycomic" />
-        <meta name="twitter:creator" content="@mycomic" />
+        <meta name="twitter:site" content="{{ \App\Seo::twitter() }}" />
+        <meta name="twitter:creator" content="{{ \App\Seo::twitter() }}" />
         <title>{{ \App\Seo::title() }}</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
@@ -99,6 +106,7 @@
         })"
         class="relative min-h-screen bg-white dark:bg-zinc-800"
     >
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ \App\Seo::gtmId() }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
             <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
 
