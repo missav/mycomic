@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() === 'zh' ? 'zh-Hant' : 'zh-Hans' }}">
+<html lang="{{ \App\Enums\Locale::from(app()->getLocale())->code() }}">
     <head>
         <script>
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

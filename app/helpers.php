@@ -14,9 +14,14 @@ if (! function_exists('cdn')) {
 }
 
 if (! function_exists('localizedRoute')) {
-    function localizedRoute(string|\App\Enums\Locale $name, array $parameters = [], bool $absolute = true): string
+    function localizedRoute(
+        string|\App\Enums\Locale $name,
+        array $parameters = [],
+        bool $absolute = true,
+        \App\Enums\Locale $locale = null,
+    ): string
     {
-        $locale = app()->getLocale();
+        $locale = $locale ? $locale->value : app()->getLocale();
 
         if ($name instanceof \App\Enums\Locale) {
             $name = str_replace(app()->getLocale(), $name->value, request()->route()->getName());

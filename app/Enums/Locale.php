@@ -15,6 +15,14 @@ enum Locale: string
         };
     }
 
+    public function code(): string
+    {
+        return match($this->value) {
+            'zh' => 'zh-Hant',
+            'cn' => 'zh-Hans',
+        };
+    }
+
     public static function current(): Locale
     {
         return Locale::from(app()->getLocale());

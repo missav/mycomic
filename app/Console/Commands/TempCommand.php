@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\GenerateSitemap;
 use Illuminate\Console\Command;
 
 class TempCommand extends Command
@@ -12,5 +13,6 @@ class TempCommand extends Command
 
     public function handle(): void
     {
+        GenerateSitemap::dispatchSync();
     }
 }
