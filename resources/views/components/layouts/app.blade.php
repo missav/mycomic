@@ -1,11 +1,31 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ app()->getLocale() === 'zh' ? 'zh-Hant' : 'zh-Hans' }}">
     <head>
+        <link rel="alternate" hreflang="zh-Hant" href="{{ localizedRoute(\App\Enums\Locale::ZH) }}" />
+        <link rel="alternate" hreflang="zh-Hans" href="{{ localizedRoute(\App\Enums\Locale::CN) }}" />
+        <link rel="alternate" hreflang="x-default" href="{{ localizedRoute(\App\Enums\Locale::from(config('app.fallback_locale'))) }}" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ $title ?? localized(config('app.name')) }}</title>
+        <meta name="description" content="{{ \App\Seo::description() }}" />
+        <meta name="keywords" content="{{ \App\Seo::keywords() }}" />
+        <meta name="author" content="{{ \App\Seo::authors() }}">
+        <meta property="og:url" content="{{ request()->url() }}" />
+        <meta property="og:site_name" content="{{ \App\Seo::site() }}" />
+        <meta property="og:title" content="{{ \App\Seo::title() }}" />
+        <meta property="og:description" content="{{ \App\Seo::description() }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="{{ \App\Seo::image() }}" />
+        <meta name="twitter:image" content="{{ \App\Seo::image() }}" />
+        <meta name="twitter:image:alt" content="{{ \App\Seo::title() }}" />
+        <meta name="twitter:title" content="{{ \App\Seo::title() }}" />
+        <meta name="twitter:description" content="{{ \App\Seo::description() }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@mycomic" />
+        <meta name="twitter:creator" content="@mycomic" />
+        <title>{{ \App\Seo::title() }}</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="{{ cdn('img/favicon.png') }}">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
         @fluxStyles
@@ -103,13 +123,13 @@
                 <flux:dropdown position="bottom" align="end">
                     <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
                         <flux:navbar.item class="hidden md:flex" :square="true">
-                            <img width="20" height="20" src="{{ asset('img/flags/' . \App\Enums\Locale::current()->value . '.png') }}" alt="{{ \App\Enums\Locale::current()->label() }}">
+                            <img width="20" height="20" src="{{ cdn('img/flags/' . \App\Enums\Locale::current()->value . '.png') }}" alt="{{ \App\Enums\Locale::current()->label() }}">
                         </flux:navbar.item>
                     </flux:tooltip>
                     <flux:menu>
                         @foreach (\App\Enums\Locale::cases() as $locale)
                             <flux:menu.item :href="localizedRoute($locale)">
-                                <img width="14" height="14" src="{{ asset("img/flags/{$locale->value}.png") }}" alt="{{ $locale->label() }}" class="mr-2">
+                                <img width="14" height="14" src="{{ cdn("img/flags/{$locale->value}.png") }}" alt="{{ $locale->label() }}" class="mr-2">
                                 {{ $locale->label() }}
                             </flux:menu.item>
                         @endforeach

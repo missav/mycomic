@@ -65,20 +65,20 @@
                     </div>
                 </div>
                 <div class="md:w-4/5 text-zinc-800 dark:text-white">
-                    @if (\Illuminate\Support\Str::length($comic->description) > 150)
+                    @if (\Illuminate\Support\Str::length($comic->description()) > 150)
                         <div x-data="{ show: false }">
                             <div x-show="! show">
-                                {{ \Illuminate\Support\Str::limit($comic->description, 150) }}
+                                {{ \Illuminate\Support\Str::limit($comic->description(), 150) }}
                                 <a href="#" @click.prevent="show = ! show" class="text-amber-500 hover:underline underline-offset-4">
                                     {{ __('Show all') }}
                                 </a>
                             </div>
                             <div x-cloak x-show="show">
-                                {{ $comic->description }}
+                                {{ $comic->description() }}
                             </div>
                         </div>
                     @else
-                        {{ $comic->description }}
+                        {{ $comic->description() }}
                     @endif
                 </div>
                 <div class="mt-8 space-x-2">

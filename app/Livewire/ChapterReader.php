@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Chapter;
-use App\Title;
+use App\Seo;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -26,7 +26,12 @@ class ChapterReader extends Component
 
     public function render(): View
     {
-        return view('livewire.chapter-reader')
-            ->title(Title::appendAppName("{$this->chapter->comic->name()} - {$this->chapter->title()}"));
+        Seo::title($this->chapter->comic->name());
+        Seo::description($this->chapter->comic->description());
+        Seo::keywords($this->chapter->comic->keywords()->all());
+        Seo::authors($this->chapter->comic->authors->pluck('name')->all());
+        Seo::image($this->chapter->comic->coverCdnUrl());
+
+        return view('livewire.chapter-reader');
     }
 }

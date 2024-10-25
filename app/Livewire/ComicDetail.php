@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Comic;
-use App\Title;
+use App\Seo;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
@@ -32,7 +32,12 @@ class ComicDetail extends Component
 
     public function render(): View
     {
-        return view('livewire.comic-detail')
-            ->title(Title::appendAppName($this->comic->name()));
+        Seo::title($this->comic->name());
+        Seo::description($this->comic->description());
+        Seo::keywords($this->comic->keywords()->all());
+        Seo::authors($this->comic->authors->pluck('name')->all());
+        Seo::image($this->comic->coverCdnUrl());
+
+        return view('livewire.comic-detail');
     }
 }

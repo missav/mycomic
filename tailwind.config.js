@@ -14,7 +14,6 @@ export default {
     extend: {},
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
-      serif: ['Halant', ...defaultTheme.fontFamily.sans],
     },
   },
   corePlugins: {

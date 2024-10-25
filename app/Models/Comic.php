@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 
 class Comic extends Model
 {
@@ -50,6 +51,21 @@ class Comic extends Model
         $locale = $locale ?? app()->getLocale();
 
         return $locale === 'cn' ? cn($this->name) : $this->name;
+    }
+
+    public function description(?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return $locale === 'cn' ? cn($this->description) : $this->description;
+    }
+
+    public function keywords(): Collection
+    {
+        return $this->tags->pluck('name')
+            ->merge($this->authors->pluck('name'))
+            ->add($this->country->text())
+            ->add($this->audience->text());
     }
 
     public function url(): string

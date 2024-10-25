@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Comic;
-use App\Title;
+use App\Seo;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
@@ -15,6 +15,8 @@ class ComicList extends Component
 {
     public function render(): View
     {
+        Seo::title(__('Comic database'));
+
         $comics = QueryBuilder::for(Comic::class)
             ->when(request('q'), fn (Builder $query, string $keyword) =>
                 $query->where('name', 'LIKE', "%{$keyword}%")
@@ -42,6 +44,6 @@ class ComicList extends Component
 
         return view('livewire.comic-list', [
             'comics' => $comics,
-        ])->title(Title::appendAppName(__('Comic database')));
+        ]);
     }
 }
