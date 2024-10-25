@@ -25,7 +25,9 @@ class BaseSitemap
             $model = str($modelClass)->classBasename()->plural()->lower()->__toString();
 
             for ($page = 1; $page <= $maxPage; $page++) {
-                $sitemapIndex->add(route('sitemaps.models.index', ['modelId' => $model, 'page' => $page]));
+                $sitemapIndex->add(
+                    route('sitemaps.models.index', ['modelId' => $model, 'page' => $page])
+                );
             }
         }
 
