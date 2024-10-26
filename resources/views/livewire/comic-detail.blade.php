@@ -140,7 +140,7 @@
         <flux:separator class="my-8" text="{{ __('Recommended for you') }}" />
         <div
             x-data='{ comics: placeholders(12) }'
-            x-init="$nextTick(async () => comics = await getRecommendations('desktop-home-recommended', 12));"
+            x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('comic-list-recommended'), 12));"
         >
             <x-comic-section></x-comic-section>
         </div>

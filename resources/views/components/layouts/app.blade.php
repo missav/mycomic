@@ -43,6 +43,12 @@
             cdn(path) {
                 return this.cdnUrl + path;
             },
+            isDesktop() {
+                return document.documentElement.clientWidth >= 1024;
+            },
+            prefixScenario(scenario) {
+                return (this.isDesktop() ? 'desktop' : 'mobile') + '-' + scenario;
+            },
             comicUrl(comic) {
                 let url = '{{ localizedRoute('comics.view', ['comic' => ':comic']) }}'.replace(':comic', comic.id);
 
