@@ -267,5 +267,6 @@
                 },
             });
         </script>
+        {!! \App\Seo::jsonLdScript() !!}
     </body>
 </html>

@@ -96,9 +96,4 @@ class Chapter extends Model
     {
         $this->update(['locked_at' => null]);
     }
-
-    public function isLocked(int $seconds = 1800): bool
-    {
-        return $this->locked_at && now()->subSeconds($seconds)->lessThanOrEqualTo($this->locked_at);
-    }
 }

@@ -6,15 +6,17 @@ use Illuminate\Support\Str;
 
 class Seo
 {
-    public static ?string $title = null;
+    protected static ?string $title = null;
 
-    public static ?string $description = null;
+    protected static ?string $description = null;
 
-    public static array $keywords = [];
+    protected static array $keywords = [];
 
-    public static array $authors = [];
+    protected static array $authors = [];
 
-    public static ?string $image = null;
+    protected static ?string $image = null;
+
+    protected static ?string $jsonLdScript = null;
 
     public static function title(?string $title = null): string
     {
@@ -75,11 +77,6 @@ class Seo
         return collect(static::$authors)->map(fn (string $author) => localized($author))->implode(', ');
     }
 
-    public static function site(): string
-    {
-        return localized(config('app.name'));
-    }
-
     public static function image(?string $image = null): string
     {
         if ($image) {
@@ -89,6 +86,20 @@ class Seo
         }
 
         return static::$image;
+    }
+
+    public static function jsonLdScript(?string $jsonLdScript = null): string
+    {
+        if ($jsonLdScript) {
+            static::$jsonLdScript = $jsonLdScript;
+        }
+
+        return static::$jsonLdScript ?? '';
+    }
+
+    public static function site(): string
+    {
+        return localized(config('app.name'));
     }
 
     public static function twitter(): string

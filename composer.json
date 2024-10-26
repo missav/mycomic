@@ -20,6 +20,7 @@
         "spatie/laravel-flare": "^1.0",
         "spatie/laravel-query-builder": "^6.2",
         "spatie/laravel-sitemap": "^7.2",
+        "spatie/schema-org": "^3.23",
         "symfony/dom-crawler": "^7.1",
         "tiacx/chinese-converter": "^1.0"
     },

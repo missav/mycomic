@@ -6,10 +6,10 @@ enum ComicCountry: string
 {
     case JAPAN = 'japan';
     case HONGKONG = 'hongkong';
-    case OTHER = 'other';
     case EUROPE = 'europe';
     case CHINA = 'china';
     case KOREA = 'korea';
+    case OTHER = 'other';
 
     public function text(?string $locale = null): string
     {
