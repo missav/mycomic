@@ -219,6 +219,15 @@
 
                     Cookies.set('user_uuid', window.user_uuid, { expires: 365 });
                 }
+
+                Livewire.hook('request', ({ fail }) => {
+                    fail(({ status, preventDefault }) => {
+                        if (status === 419) {
+                            window.location.reload();
+                            preventDefault();
+                        }
+                    })
+                })
             });
 
             document.addEventListener('livewire:navigate', () => {

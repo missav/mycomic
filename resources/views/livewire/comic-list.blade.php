@@ -34,9 +34,9 @@
                 <flux:modal.trigger name="filters">
                     <flux:button icon="adjustments-horizontal">{{ __('Filter') }}</flux:button>
                 </flux:modal.trigger>
-                <flux:modal name="filters" variant="flyout" class="space-y-6">
+                <flux:modal.menu name="filters" variant="flyout" class="space-y-6">
                     <x-comic-sidebar class="flex"></x-comic-sidebar>
-                </flux:modal>
+                </flux:modal.menu>
                 <flux:dropdown position="bottom" align="end">
                     @if (request()->get('sort') === '-update')
                         <flux:button icon="megaphone" icon-trailing="chevron-down">{{ __('Recent updates') }}</flux:button>

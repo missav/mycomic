@@ -1,6 +1,10 @@
 @script
     <script>
         window.pushTimeout(() => {
+            $wire.checkBookmark();
+        }, 50);
+
+        window.pushTimeout(() => {
             $wire.view();
 
             recombeeClient.send(new recombee.AddDetailView(window.user_uuid, {{ $comic->id }}, {
@@ -81,13 +85,15 @@
                         {{ $comic->description() }}
                     @endif
                 </div>
-                <div class="mt-8 space-x-2">
+                <div class="mt-8">
                     <flux:button icon="arrow-right-start-on-rectangle" variant="primary" ::href="appendRecommendId('{{ $comic->chapters->first()->url() }}')" href>
                         {{ __('Start reading') }}
                     </flux:button>
-                    <flux:button icon="bookmark" variant="filled">{{ __('Add to bookmark') }}</flux:button>
+                    <flux:modal.trigger name="login">
+                        <flux:button :icon="$hasBookmarked ? 'fire' : 'bookmark'" variant="filled" class="ml-2">{{ __('Bookmark') }}</flux:button>
+                    </flux:modal.trigger>
                     <flux:dropdown position="bottom" align="end">
-                        <flux:button icon="share" variant="ghost">{{ __('Share to friends') }}</flux:button>
+                        <flux:button icon="share" variant="ghost" class="ml-2">{{ __('Share to friends') }}</flux:button>
                         <flux:menu>
                             <flux:menu.item :href="$comic->shareUrl('whatsapp')" target="_blank">
                                 {{ __('Share via :channel', ['channel' => 'Whatsapp']) }}
@@ -149,4 +155,5 @@
         <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
         <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
     </div>
+    <x-auth-modal></x-auth-modal>
 </div>

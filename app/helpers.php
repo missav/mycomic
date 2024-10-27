@@ -61,3 +61,10 @@ if (! function_exists('cn')) {
         return \Tiacx\ChineseConverter::convert($text, 't2s');
     }
 }
+
+if (! function_exists('user')) {
+    function user(): ?\App\Models\User
+    {
+        return auth()->user();
+    }
+}

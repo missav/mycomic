@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Concerns\InteractsWithAuth;
 use App\Models\Comic;
 use App\Seo;
 use Carbon\Carbon;
@@ -14,18 +15,30 @@ use Spatie\SchemaOrg\Schema;
 
 class ComicDetail extends Component
 {
+    use InteractsWithAuth;
+
     public Comic $comic;
+
+    public bool $isLoggedIn = false;
+
+    public bool $hasBookmarked = false;
 
     #[Computed]
     public function recentUpdatedComics(): Collection
     {
-        return Comic::with('recentChapter')->orderByDesc('last_updated_on')->take(10)->get();
+        return Comic::with('recentChapter')->orderByDesc('last_updated_on')->orderBy('id')->take(10)->get();
     }
 
     #[Computed]
     public function recentPublishedComics(): Collection
     {
-        return Comic::with('recentChapter')->orderByDesc('id')->take(12)->get();
+        return Comic::with('recentChapter')->orderByDesc('id')->take(10)->get();
+    }
+
+    public function checkBookmark(): void
+    {
+        $this->isLoggedIn = (bool) user();
+        $this->hasBookmarked = user() && user()->records()->where('comic_id', $this->comic->id)->exists();
     }
 
     public function view(): void

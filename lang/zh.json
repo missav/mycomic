@@ -33,11 +33,18 @@
     "Switch language": "切換語言",
     "Recommended for you": "推薦給你",
     "Start reading": "開始閱讀",
-    "Add to bookmark": "加入收藏",
+    "Bookmark": "加入收藏",
     "Share to friends": "分享朋友",
     "Share via :channel": "以 :channel 分享",
     "m-d": "m月d日",
     "Last updated": "最後更新",
     "Decending": "倒序排列",
-    "Ascending": "升序排列"
+    "Ascending": "升序排列",
+    "Login": "登入",
+    "You can bookmark any comics with an account.": "註冊帳戶後你將可以收藏任何漫畫",
+    "Email": "電郵",
+    "Password": "密碼",
+    "Register": "註冊帳戶",
+    "Forget password": "忘記密碼",
+    "Confirm password": "確認密碼"
 }

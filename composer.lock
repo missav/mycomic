@@ -2537,12 +2537,12 @@
         },
         {
             "name": "livewire/flux-pro",
-            "version": "1.0.14",
+            "version": "1.0.15",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.fluxui.dev/download/9d44f4d1-92a6-4c9c-bcc4-6b3da0bc055d/flux-pro-1.0.14.zip",
-                "reference": "0f12a06411c9ed7d93c0f4d81ce45c9b7b9f2a7b",
-                "shasum": "2561e8832f580416d2a897a541ff037ca03af1bd"
+                "url": "https://composer.fluxui.dev/download/9d4c98da-42e1-4b63-bbfc-dff4f38793c8/flux-pro-1.0.15.zip",
+                "reference": "7f22b5875e382a919c158825ae7eba457e3a496b",
+                "shasum": "60fede86e2cdbbba924dc28ea8369e55f155e596"
             },
             "require": {
                 "illuminate/console": "^10.0|^11.0",
@@ -2590,7 +2590,7 @@
                 "livewire",
                 "ui"
             ],
-            "time": "2024-10-17T19:55:07+00:00"
+            "time": "2024-10-21T15:04:36+00:00"
         },
         {
             "name": "livewire/livewire",
