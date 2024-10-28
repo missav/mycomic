@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Comic;
+use App\Models\Record;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -15,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
         Model::preventLazyLoading();
+
+        Relation::morphMap([
+            'comic' => Comic::class,
+        ]);
 
         Http::macro('proxy', function (): PendingRequest {
             return Http::withoutVerifying()->withOptions([

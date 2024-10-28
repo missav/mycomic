@@ -21,6 +21,8 @@ class ComicDetail extends Component
 
     public bool $hasBookmarked = false;
 
+    public ?int $recentChapterId = null;
+
     public bool $isSynced = false;
 
     public array $availableActionsAfterLogin = ['bookmark'];
@@ -39,17 +41,14 @@ class ComicDetail extends Component
 
     public function sync(): void
     {
-        $this->isLoggedIn = (bool) user();
-        $this->hasBookmarked = user() && user()->records()
-                ->where('comic_id', $this->comic->id)
-                ->where('has_bookmarked', true)
-                ->exists();
-        $this->isSynced = true;
-    }
-
-    public function view(): void
-    {
         $this->comic->increment('views');
+
+        $record = user()->records()->where('comic_id', $this->comic->id)->first();
+
+        $this->isLoggedIn = (bool) user();
+        $this->hasBookmarked = $record && $record->has_bookmarked;
+        $this->recentChapterId = $record ? $record->chapter_id : null;
+        $this->isSynced = true;
     }
 
     public function bookmark(): void
@@ -66,10 +65,6 @@ class ComicDetail extends Component
     public function unbookmark(): void
     {
         $record = user()->records()->where('comic_id', $this->comic->id)->first();
-
-        if(! $record) {
-            return;
-        }
 
         if ($record->chapter_id) {
             $record->update(['has_bookmarked' => false]);
