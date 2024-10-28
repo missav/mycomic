@@ -86,7 +86,7 @@
             },
             getRecommendations(scenario, count) {
                 return new Promise(resolve => {
-                    recombeeClient.send(new recombee.RecommendItemsToUser(window.user_uuid, count, {
+                    recombeeClient.send(new recombee.RecommendItemsToUser(window.userUuid, count, {
                         scenario: scenario,
                         cascadeCreate: true,
                         returnProperties: true,
@@ -189,13 +189,13 @@
             };
 
             document.addEventListener('livewire:init', () => {
-                window.user_uuid = Cookies.get('user_uuid');
+                window.userUuid = Cookies.get('user_uuid');
 
-                if (! window.user_uuid) {
+                if (! window.userUuid) {
                     if (window.crypto && window.crypto.randomUUID) {
-                        window.user_uuid = window.crypto.randomUUID();
+                        window.userUuid = window.crypto.randomUUID();
                     } else {
-                        const generateUUID = () => {
+                        const generateUuid = () => {
                             let d = new Date().getTime();
                             let d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
 
@@ -214,11 +214,15 @@
                             });
                         }
 
-                        window.user_uuid = generateUUID();
+                        window.userUuid = generateUuid();
                     }
 
-                    Cookies.set('user_uuid', window.user_uuid, { expires: 365 });
+                    Cookies.set('user_uuid', window.userUuid, { expires: 365 });
                 }
+
+                Livewire.hook('commit.prepare', ({ component }) => {
+                    component.$wire.userUuid = window.userUuid;
+                });
 
                 Livewire.hook('request', ({ fail }) => {
                     fail(({ status, preventDefault }) => {

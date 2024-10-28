@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Concerns\WithUserUuid;
 use App\Models\Chapter;
+use App\Models\Record;
 use App\Seo;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -13,6 +15,8 @@ use Spatie\SchemaOrg\Schema;
 
 class ChapterReader extends Component
 {
+    use WithUserUuid;
+
     public Chapter $chapter;
 
     #[Computed]
@@ -25,6 +29,16 @@ class ChapterReader extends Component
     public function nextUrl(): ?string
     {
         return $this->chapter->next()?->url();
+    }
+
+    public function sync(): void
+    {
+        Record::updateOrCreate([
+            'user_id' => $this->userUuid,
+            'comic_id' => $this->chapter->comic->id,
+        ], [
+            'chapter_id' => $this->chapter->id,
+        ]);
     }
 
     public function render(): View

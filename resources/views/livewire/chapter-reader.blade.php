@@ -1,3 +1,11 @@
+@script
+    <script>
+        window.pushTimeout(() => {
+            $wire.sync();
+        }, 2000);
+    </script>
+@endscript
+
 <div x-data="{ showBottomControl: false }" class="pb-20">
     <flux:breadcrumbs>
         <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" wire:navigate />
@@ -23,7 +31,7 @@
                 @endif
                 @if ($i === $chapter->pages)
                     x-intersect.once="() => {
-                        recombeeClient.send(new recombee.AddPurchase(window.user_uuid, {{ $chapter->comic->id }}, {
+                        recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
                             cascadeCreate: true,
                             recommId: window.recommendId,
                         }));

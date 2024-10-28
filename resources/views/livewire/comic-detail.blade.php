@@ -1,13 +1,13 @@
 @script
     <script>
         window.pushTimeout(() => {
-            $wire.checkBookmark();
+            $wire.sync();
         }, 50);
 
         window.pushTimeout(() => {
             $wire.view();
 
-            recombeeClient.send(new recombee.AddDetailView(window.user_uuid, {{ $comic->id }}, {
+            recombeeClient.send(new recombee.AddDetailView(window.userUuid, {{ $comic->id }}, {
                 cascadeCreate: true,
                 recommId: window.recommendId,
             }));
@@ -86,13 +86,16 @@
                     @endif
                 </div>
                 <div class="mt-8">
-                    <flux:button icon="arrow-right-start-on-rectangle" variant="primary" ::href="appendRecommendId('{{ $comic->chapters->first()->url() }}')" href>
+                    <flux:button icon="arrow-right-start-on-rectangle" variant="danger" ::href="appendRecommendId('{{ $comic->chapters->first()->url() }}')" href>
                         {{ __('Start reading') }}
                     </flux:button>
-                    <flux:modal.trigger name="login">
-                        <flux:button :icon="$hasBookmarked ? 'fire' : 'bookmark'" variant="filled" class="ml-2">{{ __('Bookmark') }}</flux:button>
+                    <flux:button x-show="! $wire.isSynced" icon="bookmark" variant="filled" class="ml-2" disabled>{{ __('Bookmark') }}</flux:button>
+                    <flux:modal.trigger x-cloak x-show="$wire.isSynced && ! $wire.isLoggedIn" name="login">
+                        <flux:button icon="bookmark" variant="filled" class="ml-2" @click="$wire.actionAfterLogin = 'bookmark';">{{ __('Bookmark') }}</flux:button>
                     </flux:modal.trigger>
-                    <flux:dropdown position="bottom" align="end">
+                    <flux:button x-cloak x-show="$wire.isLoggedIn && $wire.hasBookmarked" wire:click="unbookmark" icon="check" variant="primary" class="ml-2">{{ __('Bookmarked') }}</flux:button>
+                    <flux:button x-cloak x-show="$wire.isLoggedIn && ! $wire.hasBookmarked" wire:click="bookmark" icon="bookmark" variant="filled" class="ml-2">{{ __('Bookmark') }}</flux:button>
+                    <flux:dropdown position="bottom" align="start">
                         <flux:button icon="share" variant="ghost" class="ml-2">{{ __('Share to friends') }}</flux:button>
                         <flux:menu>
                             <flux:menu.item :href="$comic->shareUrl('whatsapp')" target="_blank">

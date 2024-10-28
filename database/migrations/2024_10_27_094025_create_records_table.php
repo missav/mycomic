@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->uuid('user_id')->index();
             $table->unsignedBigInteger('comic_id')->index();
             $table->unsignedBigInteger('chapter_id')->nullable();
             $table->boolean('has_bookmarked')->default(false)->index();

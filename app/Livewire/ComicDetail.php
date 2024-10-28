@@ -19,9 +19,11 @@ class ComicDetail extends Component
 
     public Comic $comic;
 
-    public bool $isLoggedIn = false;
-
     public bool $hasBookmarked = false;
+
+    public bool $isSynced = false;
+
+    public array $availableActionsAfterLogin = ['bookmark'];
 
     #[Computed]
     public function recentUpdatedComics(): Collection
@@ -35,15 +37,47 @@ class ComicDetail extends Component
         return Comic::with('recentChapter')->orderByDesc('id')->take(10)->get();
     }
 
-    public function checkBookmark(): void
+    public function sync(): void
     {
         $this->isLoggedIn = (bool) user();
-        $this->hasBookmarked = user() && user()->records()->where('comic_id', $this->comic->id)->exists();
+        $this->hasBookmarked = user() && user()->records()
+                ->where('comic_id', $this->comic->id)
+                ->where('has_bookmarked', true)
+                ->exists();
+        $this->isSynced = true;
     }
 
     public function view(): void
     {
         $this->comic->increment('views');
+    }
+
+    public function bookmark(): void
+    {
+        user()->records()->updateOrCreate([
+            'comic_id' => $this->comic->id,
+        ], [
+            'has_bookmarked' => true,
+        ]);
+
+        $this->hasBookmarked = true;
+    }
+
+    public function unbookmark(): void
+    {
+        $record = user()->records()->where('comic_id', $this->comic->id)->first();
+
+        if(! $record) {
+            return;
+        }
+
+        if ($record->chapter_id) {
+            $record->update(['has_bookmarked' => false]);
+        } else {
+            $record->delete();
+        }
+
+        $this->hasBookmarked = false;
     }
 
     public function render(): View
