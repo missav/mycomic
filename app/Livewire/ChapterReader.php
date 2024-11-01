@@ -38,6 +38,7 @@ class ChapterReader extends Component
             'comic_id' => $this->chapter->comic->id,
         ], [
             'chapter_id' => $this->chapter->id,
+            'updated_at' => now(),
         ]);
     }
 

@@ -59,6 +59,10 @@
                 return this.appendRecommendId(url);
             },
             chapterUrl(chapter) {
+                if (! chapter.id) {
+                    chapter = { id: chapter };
+                }
+
                 let url = '{{ localizedRoute('chapters.view', ['chapter' => ':chapter']) }}'.replace(':chapter', chapter.id);
 
                 if (chapter.recommend_id) {
@@ -110,7 +114,7 @@
         x-init="$nextTick(() => {
             lozadObserve();
         })"
-        class="relative min-h-screen bg-white dark:bg-zinc-800"
+        class="relative min-h-screen bg-white dark:bg-zinc-800 dark"
     >
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ \App\Seo::gtmId() }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
@@ -120,8 +124,11 @@
             <flux:brand :href="localizedRoute('home')" class="hidden dark:flex" wire:navigate />
 
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
+                <flux:navbar.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('*.comics.index')" wire:navigate>
                     {{ __('Comic database') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="clock" :href="localizedRoute('records.index')" :current="request()->routeIs('*.records.index')" wire:navigate>
+                    {{ __('History') }}
                 </flux:navbar.item>
             </flux:navbar>
 
@@ -156,11 +163,14 @@
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="home" :href="localizedRoute('home')" :current="request()->routeIs('home')" wire:navigate>
+                <flux:navlist.item icon="home" :href="localizedRoute('home')" :current="request()->routeIs('*.home')" wire:navigate>
                     {{ __('Home') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('comics.index')" wire:navigate>
+                <flux:navlist.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('*.comics.index')" wire:navigate>
                     {{ __('Comic database') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="clock" :href="localizedRoute('records.index')" :current="request()->routeIs('*.records.index')" wire:navigate>
+                    {{ __('History') }}
                 </flux:navlist.item>
             </flux:navlist>
 
@@ -270,7 +280,7 @@
                 wantsDarkMode() {
                     let media = window.matchMedia('(prefers-color-scheme: dark)');
 
-                    if (window.localStorage.getItem('darkMode') === '') {
+                    if (! window.localStorage.getItem('darkMode')) {
                         return media.matches;
                     } else {
                         return JSON.parse(window.localStorage.getItem('darkMode'));

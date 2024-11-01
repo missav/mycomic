@@ -35,7 +35,7 @@
     "Start reading": "開始閱讀",
     "Continue reading": "繼續閱讀",
     "Bookmark": "加入收藏",
-    "Bookmarked": "已加入收藏",
+    "Bookmarked": "已加收藏",
     "Share to friends": "分享朋友",
     "Share via :channel": "以 :channel 分享",
     "m-d": "m月d日",
@@ -49,5 +49,13 @@
     "Password": "密碼",
     "Register": "註冊帳戶",
     "Forget password": "忘記密碼",
-    "Confirm password": "確認密碼"
+    "Confirm password": "確認密碼",
+    "History": "觀看記錄",
+    "Comic": "漫畫",
+    "Last read": "最後閱讀",
+    "Showing": "顯示",
+    "to": "至",
+    "of": " / 總數",
+    "results": "個結果",
+    "No records": "未有記錄"
 }

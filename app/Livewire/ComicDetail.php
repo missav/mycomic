@@ -3,19 +3,18 @@
 namespace App\Livewire;
 
 use App\Concerns\InteractsWithAuth;
+use App\Concerns\WithSidebar;
 use App\Models\Comic;
 use App\Seo;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Spatie\SchemaOrg\MultiTypedEntity;
 use Spatie\SchemaOrg\Schema;
 
 class ComicDetail extends Component
 {
-    use InteractsWithAuth;
+    use InteractsWithAuth, WithSidebar;
 
     public Comic $comic;
 
@@ -27,23 +26,11 @@ class ComicDetail extends Component
 
     public array $availableActionsAfterLogin = ['bookmark'];
 
-    #[Computed]
-    public function recentUpdatedComics(): Collection
-    {
-        return Comic::with('recentChapter')->orderByDesc('last_updated_on')->orderBy('id')->take(10)->get();
-    }
-
-    #[Computed]
-    public function recentPublishedComics(): Collection
-    {
-        return Comic::with('recentChapter')->orderByDesc('id')->take(10)->get();
-    }
-
     public function sync(): void
     {
         $this->comic->increment('views');
 
-        $record = user()->records()->where('comic_id', $this->comic->id)->first();
+        $record = user()?->records()->where('comic_id', $this->comic->id)->first();
 
         $this->isLoggedIn = (bool) user();
         $this->hasBookmarked = $record && $record->has_bookmarked;

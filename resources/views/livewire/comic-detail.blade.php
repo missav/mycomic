@@ -3,8 +3,7 @@
         window.pushTimeout(() => {
             $wire.sync().then(() => {
                 if ($wire.recentChapterId) {
-                    document.getElementById(`chapter_${$wire.recentChapterId}`).className = document.getElementById('start').className;
-                    document.getElementById('recent-chapter-title').innerText = document.getElementById(`chapter_${$wire.recentChapterId}`).innerText;
+                    document.getElementById('recent-chapter-title').innerText = document.getElementById('recent-chapter').innerText;
                 }
             });
         }, 10);
@@ -90,7 +89,7 @@
                 </div>
                 <div class="mt-8">
                     <flux:button x-show="! $wire.recentChapterId" icon="arrow-right-start-on-rectangle" variant="danger" ::href="appendRecommendId('{{ $comic->chapters->first()->url() }}')" href id="start">{{ __('Start reading') }}</flux:button>
-                    <flux:button x-cloak x-show="$wire.recentChapterId" icon="arrow-right-start-on-rectangle" variant="danger" ::href="appendRecommendId('{{ $comic->chapters->first()->url() }}')" href id="continue">{{ __('Continue reading') }} - <span id="recent-chapter-title"></span></flux:button>
+                    <flux:button x-cloak x-show="$wire.recentChapterId" icon="arrow-path" variant="danger" ::href="$wire.recentChapterId ? chapterUrl($wire.recentChapterId) : ''" href id="continue">{{ __('Continue reading') }} - <span id="recent-chapter-title"></span></flux:button>
                     <flux:button x-show="! $wire.isSynced" icon="bookmark" variant="filled" class="ml-2" disabled>{{ __('Bookmark') }}</flux:button>
                     <flux:modal.trigger x-cloak x-show="$wire.isSynced && ! $wire.isLoggedIn" name="login">
                         <flux:button icon="bookmark" variant="filled" class="ml-2" @click="$wire.actionAfterLogin = 'bookmark';">{{ __('Bookmark') }}</flux:button>
@@ -142,7 +141,7 @@
                     </flux:subheading>
                     <div class="grid grid-cols-3 gap-4">
                         <template x-for="chapter in chapters">
-                            <flux:button ::href="chapterUrl(chapter)" href x-text="chapter.title" ::id="`chapter_${chapter.id}`" wire:navigate>&nbsp;</flux:button>
+                            <flux:button ::href="chapterUrl(chapter)" href x-text="chapter.title" ::id="chapter.id === $wire.recentChapterId ? 'recent-chapter' : ''" wire:navigate>&nbsp;</flux:button>
                         </template>
                     </div>
                 </div>
