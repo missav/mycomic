@@ -240,8 +240,14 @@
                             window.location.reload();
                             preventDefault();
                         }
-                    })
-                })
+                    });
+                });
+
+                Livewire.on('user-uuid-updated', event => {
+                    window.userUuid = event.userUuid;
+
+                    Cookies.set('user_uuid', window.userUuid, { expires: 365 });
+                });
             });
 
             document.addEventListener('livewire:navigate', () => {

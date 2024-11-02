@@ -3,9 +3,12 @@
 namespace App\Concerns;
 
 use App\Models\User;
+use App\Recombee\Recombee;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Recombee\RecommApi\Requests\MergeUsers;
 
 trait InteractsWithAuth
 {
@@ -25,7 +28,10 @@ trait InteractsWithAuth
 
     public function register(): void
     {
-        $this->dispatch('modal-close');
+        if (user()) {
+            abort(403);
+        }
+
         $data = $this->validate([
             'actionAfterLogin' => ['nullable', Rule::in($this->availableActionsAfterLogin)],
             'name' => ['required', 'string', 'max:255'],
@@ -34,7 +40,7 @@ trait InteractsWithAuth
         ]);
 
         auth()->login(User::create([
-            'id' => $this->userUuid ?? Str::uuid(),
+            'id' => $this->getUserUuid() ?? Str::uuid(),
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -43,8 +49,53 @@ trait InteractsWithAuth
         $this->isLoggedIn = true;
         $this->dispatch('modal-close');
 
+        $this->reset('email', 'password');
+
+        $this->dispatch('user-uuid-updated', ['user_uuid' => user()->id]);
+
         if ($this->actionAfterLogin) {
             $this->{$this->actionAfterLogin}();
+        }
+    }
+
+    public function login(): void
+    {
+        if (user()) {
+            abort(403);
+        }
+
+        $data = $this->validate([
+            'actionAfterLogin' => ['nullable', Rule::in($this->availableActionsAfterLogin)],
+            'email' => ['required', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:4'],
+        ]);
+
+        $data = Arr::only($data, ['email', 'password']);
+
+        $originalUserUuid = $this->getUserUuid();
+
+        if (! auth()->attempt($data, true)) {
+            $this->addError('password', __('auth.failed'));
+            return;
+        }
+
+        request()->session()->regenerate();
+
+        $this->isLoggedIn = true;
+        $this->dispatch('modal-close');
+
+        $this->reset('email', 'password');
+
+        $this->dispatch('user-uuid-updated', userUuid: user()->id);
+
+        if ($this->actionAfterLogin) {
+            $this->{$this->actionAfterLogin}();
+        }
+
+        if ($originalUserUuid && $originalUserUuid !== user()->id) {
+            Recombee::send(new MergeUsers(user()->id, $originalUserUuid, [
+                'cascadeCreate' => true,
+            ]));
         }
     }
 }

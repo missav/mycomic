@@ -8,10 +8,8 @@ trait WithUserUuid
 
     protected function getUserUuid(): ?string
     {
-        if (auth()->check()) {
-            return user()->id;
-        }
-
-        return request()->cookies->get('user_uuid');
+        return user()?->id ??
+            $this->userUuid ??
+            request()->cookies->get('user_uuid');
     }
 }
