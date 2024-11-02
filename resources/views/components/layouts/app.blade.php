@@ -248,6 +248,13 @@
 
                     Cookies.set('user_uuid', window.userUuid, { expires: 365 });
                 });
+
+                Livewire.on('comic-bookmarked', event => {
+                    recombeeClient.send(new recombee.AddBookmark(window.userUuid, event.comicId, {
+                        cascadeCreate: false,
+                        recommId: window.recommendId,
+                    }));
+                });
             });
 
             document.addEventListener('livewire:navigate', () => {

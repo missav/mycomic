@@ -5,10 +5,12 @@ namespace App\Livewire;
 use App\Concerns\InteractsWithAuth;
 use App\Concerns\WithSidebar;
 use App\Models\Comic;
+use App\Recombee\Recombee;
 use App\Seo;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Recombee\RecommApi\Requests\DeleteBookmark;
 use Spatie\SchemaOrg\MultiTypedEntity;
 use Spatie\SchemaOrg\Schema;
 
@@ -47,6 +49,8 @@ class ComicDetail extends Component
         ]);
 
         $this->hasBookmarked = true;
+
+        $this->dispatch('comic-bookmarked', comicId: $this->comic->id);
     }
 
     public function unbookmark(): void
@@ -60,6 +64,8 @@ class ComicDetail extends Component
         }
 
         $this->hasBookmarked = false;
+
+        Recombee::send(new DeleteBookmark(user()->id, $record->comic_id));
     }
 
     public function render(): View
