@@ -55,5 +55,10 @@
     "to": "至",
     "of": " / 總數",
     "results": "個結果",
-    "No records": "未有記錄"
+    "No records": "未有記錄",
+    "Uh-oh!": "喔噢!",
+    "Back to home": "返回主頁",
+    "Not Found": "找不到頁面",
+    "Server Error": "伺服器發生錯誤",
+    "Service Unavailable": "服務不可用"
 }
