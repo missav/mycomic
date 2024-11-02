@@ -1,11 +1,11 @@
 <div class="flex items-stretch">
     <div class="w-3/4 grow">
+        <flux:breadcrumbs class="mb-4">
+            <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
+            <flux:breadcrumbs.item>{{ __('History') }}</flux:breadcrumbs.item>
+        </flux:breadcrumbs>
         @if ($records->isNotEmpty())
             <flux:table>
-                <flux:columns>
-                    <flux:column class="w-full">{{ __('Comic') }}</flux:column>
-                    <flux:column align="end">{{ __('Last read') }}</flux:column>
-                </flux:columns>
                 <flux:rows>
                     @foreach ($records as $record)
                         <flux:row :key="$record->id">

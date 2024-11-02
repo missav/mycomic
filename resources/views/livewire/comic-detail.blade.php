@@ -19,14 +19,19 @@
 
 <div class="flex items-stretch">
     <div class="w-3/4 grow">
+        <flux:breadcrumbs class="mb-4">
+            <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
+            <flux:breadcrumbs.item :href="localizedRoute('comics.index')">{{ __('Comic database') }}</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item>{{ $comic->name() }}</flux:breadcrumbs.item>
+        </flux:breadcrumbs>
         <flux:card class="flex flex-col sm:flex-row">
             <div class="sm:hidden aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-t-md shadow-lg dark:shadow-gray-500/40 -m-6 mb-6">
-                <img src="{{ $comic->coverCdnUrl() }}" alt="{{ $comic->name }}" class="object-cover object-top">
+                <img src="{{ $comic->coverCdnUrl() }}" alt="{{ $comic->name() }}" class="object-cover object-top">
             </div>
             <div class="grow">
                 <flux:subheading>{{ __(':year / :count chapters', ['year' => $comic->year, 'count' => $comic->chapters()->count()]) }}</flux:subheading>
                 <flux:heading size="xl">
-                    {{ $comic->name }}
+                    {{ $comic->name() }}
                 </flux:heading>
                 @if ($comic->is_ended)
                     <flux:badge color="lime" size="sm" class="mt-2">{{ __('Ended') }}</flux:badge>
