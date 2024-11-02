@@ -39,7 +39,7 @@ Schedule::command(\App\Console\Commands\DownloadAuthorCoverCommand::class)
     ->runInBackground();
 
 Schedule::command(\App\Console\Commands\SubmitRecombeeRecordCommand::class)
-    ->daily()
+    ->everyFiveMinutes()
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();
