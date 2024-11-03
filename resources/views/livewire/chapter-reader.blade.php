@@ -6,7 +6,7 @@
     </script>
 @endscript
 
-<div x-data="{ showBottomControl: false }" class="pb-20">
+<div wire:ignore x-data="{ showBottomControl: false }" class="pb-20">
     <flux:breadcrumbs>
         <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" wire:navigate />
         <flux:breadcrumbs.item :href="localizedRoute('comics.view', ['comic' => $chapter->comic])" wire:navigate>{{ $chapter->comic->name }}</flux:breadcrumbs.item>
@@ -15,7 +15,7 @@
 
     <x-chapter-control :chapter="$chapter" x-intersect="showBottomControl = false" x-intersect:leave="showBottomControl = true" class="justify-center py-5" />
 
-    <div>
+    <div class="-mx-6 sm:mx-0">
         @for ($i = 1; $i <= $chapter->pages; $i++)
             <img
                 wire:key="{{ $chapter->id }}-{{ $i }}"
@@ -39,6 +39,10 @@
                 @endif
             />
         @endfor
+    </div>
+
+    <div class="text-center py-6">
+        <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('Reached the bottom') }}</flux:badge>
     </div>
 
     <x-chapter-control :chapter="$chapter" x-show="showBottomControl" class="fixed bottom-0 left-0 right-0 justify-center py-5 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700" />
