@@ -137,16 +137,16 @@
 
             <flux:spacer />
 
-            <flux:navbar class="!gap-0 md:!gap-2">
-                <form action="{{ localizedRoute('comics.index') }}" method="get" class="!w-36 sm:!w-full">
-                    <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" />
+            <flux:navbar>
+                <form action="{{ localizedRoute('comics.index') }}" method="get">
+                    <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" class="w-36 sm:w-full" />
                 </form>
                 <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom">
                     <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" label="{{ __('Toggle dark mode') }}" x-data x-on:click.prevent="$store.darkMode.toggle()" />
                 </flux:tooltip>
                 <flux:dropdown position="bottom" align="end">
                     <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
-                        <flux:navbar.item class="hidden md:flex" :square="true">
+                        <flux:navbar.item :square="true">
                             <img width="20" height="20" src="{{ cdn('img/flags/' . \App\Enums\Locale::current()->value . '.png') }}" alt="{{ \App\Enums\Locale::current()->label() }}">
                         </flux:navbar.item>
                     </flux:tooltip>
