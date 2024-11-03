@@ -26,9 +26,9 @@
 <div class="flex items-stretch">
     <div class="w-3/4 grow">
         <flux:breadcrumbs class="mb-4">
-            <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
-            <flux:breadcrumbs.item :href="localizedRoute('comics.index')">{{ __('Comic database') }}</flux:breadcrumbs.item>
-            <flux:breadcrumbs.item>{{ $comic->name() }}</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" wire:navigate />
+            <flux:breadcrumbs.item :href="localizedRoute('comics.index')" class="whitespace-nowrap" wire:navigate>{{ __('Comic database') }}</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item><div class="truncate whitespace-nowrap w-64">{{ $comic->name() }}</div></flux:breadcrumbs.item>
         </flux:breadcrumbs>
         <flux:card class="flex flex-col sm:flex-row">
             <div class="sm:hidden aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-t-md shadow-lg dark:shadow-gray-500/40 -m-6 mb-6">
@@ -160,7 +160,12 @@
                     </flux:subheading>
                     <div class="grid grid-cols-3 gap-4">
                         <template x-for="chapter in chapters">
-                            <flux:button ::href="chapterUrl(chapter)" href x-text="chapter.title" ::id="chapter.id === $wire.recentChapterId ? 'recent-chapter' : ''" wire:navigate>&nbsp;</flux:button>
+                            <flux:button
+                                ::href="chapterUrl(chapter)"
+                                href
+                                ::id="chapter.id === $wire.recentChapterId ? 'recent-chapter' : ''"
+                                wire:navigate
+                            ><span x-text="chapter.title" class="!truncate"></span></flux:button>
                         </template>
                     </div>
                 </div>

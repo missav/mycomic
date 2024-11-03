@@ -9,8 +9,8 @@
 <div wire:ignore x-data="{ showBottomControl: false }" class="pb-20">
     <flux:breadcrumbs>
         <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" wire:navigate />
-        <flux:breadcrumbs.item :href="localizedRoute('comics.view', ['comic' => $chapter->comic])" wire:navigate>{{ $chapter->comic->name }}</flux:breadcrumbs.item>
-        <flux:breadcrumbs.item>{{ $chapter->title }}</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item :href="localizedRoute('comics.view', ['comic' => $chapter->comic])" class="whitespace-nowrap" wire:navigate>{{ \Illuminate\Support\Str::limit($chapter->comic->name, 20) }}</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item><div class="truncate whitespace-nowrap w-64">{{ $chapter->title }}</div></flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
     <x-chapter-control :chapter="$chapter" x-intersect="showBottomControl = false" x-intersect:leave="showBottomControl = true" class="justify-center py-5" />
