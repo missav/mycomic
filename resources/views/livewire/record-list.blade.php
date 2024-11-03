@@ -33,7 +33,13 @@
             </flux:table>
         @else
             <x-empty-state.list>
-                <flux:button variant="primary" disabled>{{ __('No records') }}</flux:button>
+{{--                <flux:button variant="primary" disabled>{{ __('No records') }}</flux:button>--}}
+                <flux:button
+                    variant="primary"
+                    @click="$dispatch('modal-show', { name: 'login' });"
+                >
+                    {{ __('Login to continue') }}
+                </flux:button>
             </x-empty-state.list>
         @endif
     </div>
@@ -41,4 +47,5 @@
         <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
         <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
     </div>
+    <x-auth-modal></x-auth-modal>
 </div>

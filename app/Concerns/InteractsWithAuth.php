@@ -4,6 +4,7 @@ namespace App\Concerns;
 
 use App\Models\User;
 use App\Recombee\Recombee;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -32,12 +33,17 @@ trait InteractsWithAuth
             abort(403);
         }
 
-        $data = $this->validate([
-            'actionAfterLogin' => ['nullable', Rule::in($this->availableActionsAfterLogin)],
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:4', 'confirmed'],
-        ]);
+        ];
+
+        if (property_exists($this, 'availableActionsAfterLogin')) {
+            $rules['actionAfterLogin'] = ['nullable', Rule::in($this->availableActionsAfterLogin)];
+        }
+
+        $data = $this->validate($rules);
 
         auth()->login(User::create([
             'id' => $this->getUserUuid() ?? Str::uuid(),
@@ -62,11 +68,16 @@ trait InteractsWithAuth
             abort(403);
         }
 
-        $data = $this->validate([
-            'actionAfterLogin' => ['nullable', Rule::in($this->availableActionsAfterLogin)],
+        $rules = [
             'email' => ['required', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:4'],
-        ]);
+        ];
+
+        if (property_exists($this, 'availableActionsAfterLogin')) {
+            $rules['actionAfterLogin'] = ['nullable', Rule::in($this->availableActionsAfterLogin)];
+        }
+
+        $data = $this->validate($rules);
 
         $data = Arr::only($data, ['email', 'password']);
 
@@ -89,9 +100,11 @@ trait InteractsWithAuth
         }
 
         if ($originalUserUuid && $originalUserUuid !== user()->id) {
-            Recombee::send(new MergeUsers(user()->id, $originalUserUuid, [
-                'cascadeCreate' => true,
-            ]));
+            try {
+                Recombee::send(new MergeUsers(user()->id, $originalUserUuid, [
+                    'cascadeCreate' => true,
+                ]));
+            } catch (Exception) {}
         }
     }
 }

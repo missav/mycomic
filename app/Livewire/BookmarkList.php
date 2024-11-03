@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Concerns\InteractsWithAuth;
 use App\Concerns\WithSidebar;
 use App\Concerns\WithUserUuid;
 use App\Models\Record;
@@ -12,7 +13,7 @@ use Livewire\WithPagination;
 
 class BookmarkList extends Component
 {
-    use WithPagination, WithUserUuid, WithSidebar;
+    use WithPagination, WithUserUuid, InteractsWithAuth, WithSidebar;
 
     public function render(): View
     {
