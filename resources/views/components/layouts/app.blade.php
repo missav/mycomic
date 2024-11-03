@@ -137,9 +137,9 @@
 
             <flux:spacer />
 
-            <flux:navbar class="gap-0 md:gap-2">
+            <flux:navbar class="!gap-0 md:!gap-2">
                 <form action="{{ localizedRoute('comics.index') }}" method="get">
-                    <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" />
+                    <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" class="w-4/5 sm:w-full ml-auto" />
                 </form>
                 <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom">
                     <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" label="{{ __('Toggle dark mode') }}" x-data x-on:click.prevent="$store.darkMode.toggle()" />
