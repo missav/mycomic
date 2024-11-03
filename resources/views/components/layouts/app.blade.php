@@ -118,7 +118,7 @@
     >
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ \App\Seo::gtmId() }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
-            <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-2" inset="left" />
+            <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-3" inset="left" />
 
             <flux:brand :href="localizedRoute('home')" class="dark:hidden" wire:navigate />
             <flux:brand :href="localizedRoute('home')" class="hidden dark:flex" wire:navigate />
@@ -138,11 +138,19 @@
             <flux:spacer />
 
             <flux:navbar>
-                <form action="{{ localizedRoute('comics.index') }}" method="get">
-                    <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" class="w-36 sm:w-full" />
+                <form action="{{ localizedRoute('comics.index') }}" method="get" class="hidden md:block">
+                    <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" />
                 </form>
+                <flux:tooltip content="{{ __('Search') }}" position="bottom">
+                    <flux:navbar.item
+                        class="md:hidden"
+                        icon="magnifying-glass"
+                        icon-variant="solid"
+                        @click="document.body.hasAttribute('data-show-stashed-sidebar') ? document.body.removeAttribute('data-show-stashed-sidebar') : document.body.setAttribute('data-show-stashed-sidebar', ''); document.getElementById('sidebar-search').focus();"
+                    />
+                </flux:tooltip>
                 <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom">
-                    <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" label="{{ __('Toggle dark mode') }}" x-data x-on:click.prevent="$store.darkMode.toggle()" />
+                    <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" x-data @click.prevent="$store.darkMode.toggle()" />
                 </flux:tooltip>
                 <flux:dropdown position="bottom" align="end">
                     <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
@@ -164,6 +172,10 @@
 
         <flux:sidebar stashable sticky class="lg:hidden bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+
+            <form action="{{ localizedRoute('comics.index') }}" method="get">
+                <flux:input icon="magnifying-glass" placeholder="{{ __('Search') }}..." size="sm" name="q" :value="request('q')" id="sidebar-search" />
+            </form>
 
             <flux:navlist variant="outline">
                 <flux:navlist.item icon="home" :href="localizedRoute('home')" :current="request()->routeIs('*.home')" wire:navigate>
