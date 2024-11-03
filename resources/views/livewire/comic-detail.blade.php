@@ -114,7 +114,7 @@
                         <flux:button x-cloak x-show="$wire.isSynced && ! $wire.isLoggedIn" icon="bookmark" variant="filled" @click="$wire.actionAfterLogin = 'bookmark'; $dispatch('modal-show', { name: 'login' });">{{ __('Bookmark') }}</flux:button>
                         <flux:button x-cloak x-show="$wire.isLoggedIn && $wire.hasBookmarked" wire:click="unbookmark" icon="check" variant="primary">{{ __('Bookmarked') }}</flux:button>
                         <flux:button x-cloak x-show="$wire.isLoggedIn && ! $wire.hasBookmarked" wire:click="bookmark" icon="bookmark" variant="filled">{{ __('Bookmark') }}</flux:button>
-                        <flux:dropdown position="bottom" align="start">
+                        <flux:dropdown position="bottom" align="center">
                             <flux:button icon="share" variant="ghost" class="w-full">{{ __('Share to friends') }}</flux:button>
                             <flux:menu>
                                 <flux:menu.item :href="$comic->shareUrl('whatsapp')" target="_blank">
