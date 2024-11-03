@@ -1,6 +1,6 @@
 <div x-cloak class="space-y-12">
     <div
-        x-data='{ comics: placeholders(6) }'
+        x-data='{ comics: placeholders(12) }'
         x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('home-recommended'), 12));"
     >
         <x-comic-section title="Recommended for you"></x-comic-section>
