@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Concerns\WithReviews;
 use App\Enums\ComicAudience;
 use App\Enums\ComicCountry;
 use App\FileSignature;
@@ -13,6 +14,8 @@ use Illuminate\Support\Collection;
 
 class Comic extends Model
 {
+    use WithReviews;
+
     public $incrementing = false;
 
     protected function casts(): array

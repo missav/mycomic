@@ -60,5 +60,13 @@
     "Back to home": "返回主頁",
     "Not Found": "找不到頁面",
     "Server Error": "伺服器發生錯誤",
-    "Service Unavailable": "服務不可用"
+    "Service Unavailable": "服務不可用",
+    "Review": "評價",
+    "Review data": "評價資料",
+    "Based on :count reviews": ":count 個評價",
+    ":current out of 5 stars": "5 星評價中得到 :current 星",
+    "star reviews": "星評價",
+    "Review text": "評語",
+    "Post review": "發表評價",
+    "Rating": "評分"
 }

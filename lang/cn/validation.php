@@ -149,5 +149,6 @@ return [
         'email' => '电邮',
         'password' => '密码',
         'password_confirmation' => '确认密码',
+        'rating' => '评分',
     ],
 ];

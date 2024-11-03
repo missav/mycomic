@@ -11,12 +11,12 @@ trait WithSidebar
     #[Computed]
     public function recentUpdatedComics(): Collection
     {
-        return Comic::with('recentChapter')->orderByDesc('last_updated_on')->orderBy('id')->take(10)->get();
+        return Comic::with('recentChapter')->has('chapters')->orderByDesc('last_updated_on')->orderBy('id')->take(10)->get();
     }
 
     #[Computed]
     public function recentPublishedComics(): Collection
     {
-        return Comic::with('recentChapter')->orderByDesc('id')->take(10)->get();
+        return Comic::with('recentChapter')->has('chapters')->orderByDesc('id')->take(10)->get();
     }
 }

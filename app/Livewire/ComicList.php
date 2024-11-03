@@ -37,6 +37,7 @@ class ComicList extends Component
                 AllowedSort::field('update', 'last_updated_on'),
                 AllowedSort::field('views', 'views'),
             ])
+            ->has('chapters')
             ->defaultSort('-id')
             ->orderByDesc('id')
             ->paginate(30)

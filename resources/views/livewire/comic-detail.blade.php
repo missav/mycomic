@@ -161,6 +161,67 @@
         </div>
     </div>
     <div class="w-1/4 ml-8 hidden lg:block text-white space-y-8">
+        <div>
+            <flux:heading size="lg">{{ __('Review') }}</flux:heading>
+            <div class="mt-3 flex items-center">
+                <div>
+                    <div class="flex items-center">
+                        @foreach (range(1, 5) as $rating)
+                            <svg class="h-5 w-5 flex-shrink-0 {{ $rating <= $this->averageRatings ? 'text-yellow-400': 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                            </svg>
+                        @endforeach
+                    </div>
+                    <p class="sr-only">{{ __(':current out of 5 stars') }}</p>
+                </div>
+                <p class="ml-2 text-sm text-gray-500 dark:text-white/80">{{ __('Based on :count reviews', ['count' => $this->ratings->sum()]) }}</p>
+            </div>
+            <div class="mt-6">
+                <h3 class="sr-only">{{ __('Review data') }}</h3>
+                <dl class="space-y-3">
+                    @foreach (range(5, 1) as $rating)
+                        <div class="flex items-center text-sm">
+                            <dt class="flex flex-1 items-center">
+                                <p class="w-3 font-medium text-gray-500 dark:text-white/80">{{ $rating }}<span class="sr-only"> {{ __('star reviews') }}</span></p>
+                                <div aria-hidden="true" class="ml-1 flex flex-1 items-center">
+                                    <svg class="h-5 w-5 flex-shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                                    </svg>
+                                    <div class="relative ml-3 flex-1">
+                                        <div class="h-3 rounded-full border border-gray-200 bg-gray-100"></div>
+                                        @if ($this->ratings->get($rating, 0) > 0)
+                                            <div style="width: calc({{ $this->ratings->get($rating, 0) }} / {{ $this->ratings->sum() }} * 100%)" class="absolute inset-y-0 rounded-full border border-yellow-400 bg-yellow-400"></div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </dt>
+                            <dd class="ml-3 w-10 text-right text-sm tabular-nums text-gray-500 dark:text-white/80">{{ $this->ratings->sum() === 0 ? 0 : ceil($this->ratings->get($rating, 0) / $this->ratings->sum() * 100) }}%</dd>
+                        </div>
+                    @endforeach
+                </dl>
+                <div class="text-center mt-6">
+                    <flux:modal.trigger name="review">
+                        <flux:button size="sm">{{ __('Post review') }}</flux:button>
+                    </flux:modal.trigger>
+                    <flux:modal name="review" class="md:w-96 space-y-6 text-left">
+                        <form wire:submit.prevent="review" class="space-y-6">
+                            <flux:radio.group :label="__('Rating')" wire:model="rating">
+                                <flux:radio value="5" label="★★★★★" />
+                                <flux:radio value="4" label="★★★★" />
+                                <flux:radio value="3" label="★★★" />
+                                <flux:radio value="2" label="★★" />
+                                <flux:radio value="1" label="★" />
+                            </flux:radio.group>
+                            <flux:textarea :label="__('Review text')" wire:model="text" />
+                            <div class="flex">
+                                <flux:spacer />
+                                <flux:button type="submit" variant="primary">{{ __('Post review') }}</flux:button>
+                            </div>
+                        </form>
+                    </flux:modal>
+                </div>
+            </div>
+        </div>
         <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
         <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
     </div>

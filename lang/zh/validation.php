@@ -149,5 +149,6 @@ return [
         'email' => '電郵',
         'password' => '密碼',
         'password_confirmation' => '確認密碼',
+        'rating' => '評分',
     ],
 ];

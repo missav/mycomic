@@ -9,6 +9,9 @@ use App\Recombee\Recombee;
 use App\Seo;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Recombee\RecommApi\Requests\DeleteBookmark;
 use Spatie\SchemaOrg\MultiTypedEntity;
@@ -27,6 +30,22 @@ class ComicDetail extends Component
     public bool $isSynced = false;
 
     public array $availableActionsAfterLogin = ['bookmark'];
+
+    public ?int $rating = null;
+
+    public string $text = '';
+
+    #[Computed]
+    public function ratings(): Collection
+    {
+        return $this->comic->ratings();
+    }
+
+    #[Computed]
+    public function averageRatings(): int
+    {
+        return $this->comic->averageRating();
+    }
 
     public function sync(): void
     {
@@ -66,6 +85,18 @@ class ComicDetail extends Component
         $this->hasBookmarked = false;
 
         Recombee::send(new DeleteBookmark(user()->id, $record->comic_id));
+    }
+
+    public function review(): void
+    {
+        $data = $this->validate([
+            'rating' => ['required', 'numeric', 'min:1', 'max:5'],
+            'text' => ['nullable', 'string', 'max:60000'],
+        ]);
+
+        $this->comic->reviews()->updateOrCreate([
+            
+        ]);
     }
 
     public function render(): View
