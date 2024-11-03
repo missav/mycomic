@@ -99,7 +99,7 @@
                     @endif
                 </div>
                 <div class="mt-8">
-                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3">
+                    <div x-cloak class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3">
                         <flux:button
                             icon="arrow-right-start-on-rectangle"
                             variant="danger"
@@ -107,13 +107,14 @@
                             href
                             id="start"
                         >
-                            <span x-text="$wire.recentChapterId ? '{{ __('Continue reading') }}' : '{{ __('Start reading') }}'"></span>
-                            <span x-show="$wire.recentChapterId"> - <span id="recent-chapter-title"></span></span>
+                            <div>
+                                <span x-text="$wire.recentChapterId ? '{{ __('Continue reading') }}' : '{{ __('Start reading') }}'"></span><span x-show="$wire.recentChapterId" id="recent-chapter-title"></span>
+                            </div>
                         </flux:button>
                         <flux:button x-show="! $wire.isSynced" icon="bookmark" variant="filled" disabled>{{ __('Bookmark') }}</flux:button>
-                        <flux:button x-cloak x-show="$wire.isSynced && ! $wire.isLoggedIn" icon="bookmark" variant="filled" @click="$wire.actionAfterLogin = 'bookmark'; $dispatch('modal-show', { name: 'login' });">{{ __('Bookmark') }}</flux:button>
-                        <flux:button x-cloak x-show="$wire.isLoggedIn && $wire.hasBookmarked" wire:click="unbookmark" icon="check" variant="primary">{{ __('Bookmarked') }}</flux:button>
-                        <flux:button x-cloak x-show="$wire.isLoggedIn && ! $wire.hasBookmarked" wire:click="bookmark" icon="bookmark" variant="filled">{{ __('Bookmark') }}</flux:button>
+                        <flux:button x-show="$wire.isSynced && ! $wire.isLoggedIn" icon="bookmark" variant="filled" @click="$wire.actionAfterLogin = 'bookmark'; $dispatch('modal-show', { name: 'login' });">{{ __('Bookmark') }}</flux:button>
+                        <flux:button x-show="$wire.isLoggedIn && $wire.hasBookmarked" wire:click="unbookmark" icon="check" variant="primary">{{ __('Bookmarked') }}</flux:button>
+                        <flux:button x-show="$wire.isLoggedIn && ! $wire.hasBookmarked" wire:click="bookmark" icon="bookmark" variant="filled">{{ __('Bookmark') }}</flux:button>
                         <flux:dropdown position="bottom" align="center">
                             <flux:button icon="share" variant="ghost" class="w-full">{{ __('Share to friends') }}</flux:button>
                             <flux:menu>
@@ -140,10 +141,9 @@
                 </div>
             </div>
         </flux:card>
-        <div class="mt-8 mb-12">
+        <div x-cloak class="mt-8 mb-12">
             @foreach ($comic->chapters->reverse()->groupBy(fn (\App\Models\Chapter $chapter) => $chapter->type()) as $group => $chapters)
                 <div
-                    x-cloak
                     x-data='{
                         chapters: @json(\App\Http\Resources\ChapterResource::collection($chapters)),
                         decending: true,
@@ -166,8 +166,11 @@
                 </div>
             @endforeach
         </div>
-        <flux:separator class="my-8" text="{{ __('Recommended for you') }}" />
+        <div x-cloak>
+            <flux:separator class="my-8" text="{{ __('Recommended for you') }}" />
+        </div>
         <div
+            x-cloak
             x-data='{ comics: placeholders(12) }'
             x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('comic-list-recommended'), 12));"
         >
@@ -188,7 +191,12 @@
                     </div>
                     <p class="sr-only">{{ __(':current out of 5 stars') }}</p>
                 </div>
-                <p class="ml-2 text-sm text-gray-500 dark:text-white/80">{{ __('Based on :count reviews', ['count' => $this->ratings->sum()]) }}</p>
+                <p class="ml-2 text-sm text-gray-500 dark:text-white/80">
+                    {{ __('Based on :count reviews', ['count' => $this->ratings->sum()]) }}
+                    @if ($reviews->isNotEmpty())
+                        [<a href="#" @click.prevent="$dispatch('modal-show', { name: 'text-reviews' })" class="text-amber-500 hover:underline underline-offset-4">{{ __('Detail') }}</a>]
+                    @endif
+                </p>
             </div>
             <div class="mt-6">
                 <h3 class="sr-only">{{ __('Review data') }}</h3>
@@ -217,27 +225,45 @@
                     <flux:modal.trigger name="review">
                         <flux:button size="sm">{{ __('Post review') }}</flux:button>
                     </flux:modal.trigger>
-                    <flux:modal name="review" class="md:w-96 space-y-6 text-left">
-                        <form wire:submit.prevent="review" class="space-y-6">
-                            <flux:radio.group :label="__('Rating')" wire:model="rating">
-                                <flux:radio value="5" label="★★★★★" />
-                                <flux:radio value="4" label="★★★★" />
-                                <flux:radio value="3" label="★★★" />
-                                <flux:radio value="2" label="★★" />
-                                <flux:radio value="1" label="★" />
-                            </flux:radio.group>
-                            <flux:textarea :label="__('Review text')" wire:model="text" />
-                            <div class="flex">
-                                <flux:spacer />
-                                <flux:button type="submit" variant="primary">{{ __('Post review') }}</flux:button>
-                            </div>
-                        </form>
-                    </flux:modal>
                 </div>
             </div>
         </div>
         <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
         <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
     </div>
+    @if ($reviews->isNotEmpty())
+        <flux:modal name="text-reviews" class="md:w-96 space-y-6 text-left">
+            @foreach ($reviews as $review)
+                <div class="space-y-2">
+                    <flux:heading>{{ $review->user?->name ?? __('Guest') }}</flux:heading>
+                    <div class="flex items-center">
+                        @foreach (range(1, 5) as $rating)
+                            <svg class="h-5 w-5 flex-shrink-0 {{ $rating <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                            </svg>
+                        @endforeach
+                    </div>
+                    <p class="sr-only">{{ __(':current out of 5 stars', ['current' => $review->rating]) }}</p>
+                    <flux:subheading>{{ $review->text }}</flux:subheading>
+                </div>
+            @endforeach
+        </flux:modal>
+    @endif
+    <flux:modal name="review" class="md:w-96 space-y-6 text-left">
+        <form wire:submit.prevent="review" class="space-y-6">
+            <flux:radio.group :label="__('Rating')" wire:model="rating">
+                <flux:radio value="5" label="★★★★★" />
+                <flux:radio value="4" label="★★★★" />
+                <flux:radio value="3" label="★★★" />
+                <flux:radio value="2" label="★★" />
+                <flux:radio value="1" label="★" />
+            </flux:radio.group>
+            <flux:textarea :label="__('Review text')" wire:model="text" />
+            <div class="flex">
+                <flux:spacer />
+                <flux:button type="submit" variant="primary">{{ __('Post review') }}</flux:button>
+            </div>
+        </form>
+    </flux:modal>
     <x-auth-modal></x-auth-modal>
 </div>

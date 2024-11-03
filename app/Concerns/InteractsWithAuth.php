@@ -48,10 +48,8 @@ trait InteractsWithAuth
 
         $this->isLoggedIn = true;
         $this->dispatch('modal-close');
-
-        $this->reset('email', 'password');
-
         $this->dispatch('user-uuid-updated', userUuid: user()->id);
+        $this->reset('email', 'password');
 
         if ($this->actionAfterLogin) {
             $this->{$this->actionAfterLogin}();
@@ -83,10 +81,8 @@ trait InteractsWithAuth
 
         $this->isLoggedIn = true;
         $this->dispatch('modal-close');
-
-        $this->reset('email', 'password');
-
         $this->dispatch('user-uuid-updated', userUuid: user()->id);
+        $this->reset('email', 'password');
 
         if ($this->actionAfterLogin) {
             $this->{$this->actionAfterLogin}();

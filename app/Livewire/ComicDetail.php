@@ -105,8 +105,11 @@ class ComicDetail extends Component
         ]);
 
         $this->comic->reviews()->updateOrCreate([
+            'user_id' => $this->getUserUuid(),
+        ], $data);
 
-        ]);
+        $this->dispatch('modal-close');
+        $this->reset('rating', 'text');
     }
 
     public function render(): View
@@ -144,6 +147,14 @@ class ComicDetail extends Component
 
         Seo::jsonLdScript($mte->toScript());
 
-        return view('livewire.comic-detail');
+        return view('livewire.comic-detail', [
+            'reviews' => $this->comic->reviews()
+                ->with('user')
+                ->whereNotNull('text')
+                ->where('text', '!=', '')
+                ->latest()
+                ->limit(50)
+                ->get(),
+        ]);
     }
 }
