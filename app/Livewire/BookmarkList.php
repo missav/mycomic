@@ -10,18 +10,18 @@ use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class RecordList extends Component
+class BookmarkList extends Component
 {
     use WithPagination, WithUserUuid, WithSidebar;
 
     public function render(): View
     {
-        Seo::title(__('History'));
+        Seo::title(__('My bookmarks'));
 
         $records = Record::query()
             ->with('comic.recentChapter', 'chapter')
             ->where('user_id', $this->getUserUuid())
-            ->whereNotNull('chapter_id')
+            ->where('has_bookmarked', 1)
             ->orderByDesc('updated_at')
             ->limit(50)
             ->get();

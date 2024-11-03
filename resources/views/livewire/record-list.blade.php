@@ -2,19 +2,29 @@
     <div class="w-3/4 grow">
         <flux:breadcrumbs class="mb-4">
             <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
-            <flux:breadcrumbs.item>{{ __('History') }}</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item>{{ \App\Seo::title(raw: true) }}</flux:breadcrumbs.item>
         </flux:breadcrumbs>
         @if ($records->isNotEmpty())
             <flux:table>
+                <flux:columns>
+                    <flux:column>{{ __('Comic') }}</flux:column>
+                    <flux:column>{{ __('Last updated') }}</flux:column>
+                    <flux:column></flux:column>
+                </flux:columns>
                 <flux:rows>
                     @foreach ($records as $record)
                         <flux:row :key="$record->id">
                             <flux:cell class="flex items-center gap-3">
                                 <flux:avatar size="xs" src="{{ $record->comic->coverCdnUrl() }}" />
                                 <div>
-                                    [<a href="{{ $record->chapter->url() }}" class="text-amber-500 hover:underline underline-offset-4" wire:navigate>{{ $record->chapter->title }}</a>]
+                                    @if ($record->chapter)
+                                        [<a href="{{ $record->chapter->url() }}" class="text-amber-500 hover:underline underline-offset-4" wire:navigate>{{ $record->chapter->title }}</a>]
+                                    @endif
                                     <a href="{{ $record->comic->url() }}" class="hover:underline underline-offset-4" title="{{ $record->comic->name }}" wire:navigate>{{ $record->comic->name }}</a>
                                 </div>
+                            </flux:cell>
+                            <flux:cell>
+                                <a href="{{ $record->comic->recentChapter->url() }}" class="text-amber-500 hover:underline underline-offset-4" wire:navigate>{{ $record->comic->recentChapter->title }}</a>
                             </flux:cell>
                             <flux:cell align="end" class="whitespace-nowrap">{{ localized($record->updated_at->diffForHumans()) }}</flux:cell>
                         </flux:row>

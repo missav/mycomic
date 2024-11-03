@@ -127,6 +127,9 @@
                 <flux:navbar.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('*.comics.index')" wire:navigate>
                     {{ __('Comic database') }}
                 </flux:navbar.item>
+                <flux:navbar.item icon="bookmark" :href="localizedRoute('bookmarks.index')" :current="request()->routeIs('*.bookmarks.index')" wire:navigate>
+                    {{ __('My bookmarks') }}
+                </flux:navbar.item>
                 <flux:navbar.item icon="clock" :href="localizedRoute('records.index')" :current="request()->routeIs('*.records.index')" wire:navigate>
                     {{ __('History') }}
                 </flux:navbar.item>
@@ -168,6 +171,9 @@
                 </flux:navlist.item>
                 <flux:navlist.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('*.comics.index')" wire:navigate>
                     {{ __('Comic database') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="bookmark" :href="localizedRoute('bookmarks.index')" :current="request()->routeIs('*.bookmarks.index')" wire:navigate>
+                    {{ __('My bookmarks') }}
                 </flux:navlist.item>
                 <flux:navlist.item icon="clock" :href="localizedRoute('records.index')" :current="request()->routeIs('*.records.index')" wire:navigate>
                     {{ __('History') }}

@@ -18,10 +18,14 @@ class Seo
 
     protected static ?string $jsonLdScript = null;
 
-    public static function title(?string $title = null): string
+    public static function title(?string $title = null, bool $raw = false): string
     {
         if ($title) {
             static::$title = $title;
+        }
+
+        if ($raw) {
+            return localized(static::$title);
         }
 
         $appName = config('app.name');
