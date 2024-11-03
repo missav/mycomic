@@ -28,7 +28,7 @@
         <flux:breadcrumbs class="mb-4">
             <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" wire:navigate />
             <flux:breadcrumbs.item :href="localizedRoute('comics.index')" class="whitespace-nowrap" wire:navigate>{{ __('Comic database') }}</flux:breadcrumbs.item>
-            <flux:breadcrumbs.item><div class="truncate whitespace-nowrap w-64">{{ $comic->name() }}</div></flux:breadcrumbs.item>
+            <flux:breadcrumbs.item><div class="truncate whitespace-nowrap w-64">{{ \Illuminate\Support\Str::limit($comic->name(), 20) }}</div></flux:breadcrumbs.item>
         </flux:breadcrumbs>
         <flux:card class="flex flex-col sm:flex-row">
             <div class="sm:hidden aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-t-md shadow-lg dark:shadow-gray-500/40 -m-6 mb-6">
