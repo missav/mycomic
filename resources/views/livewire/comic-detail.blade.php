@@ -94,12 +94,18 @@
                 </div>
                 <div class="mt-8">
                     <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-3">
-                        <flux:button x-show="! $wire.recentChapterId" icon="arrow-right-start-on-rectangle" variant="danger" ::href="appendRecommendId('{{ $comic->chapters->first()->url() }}')" href id="start">{{ __('Start reading') }}</flux:button>
-                        <flux:button x-cloak x-show="$wire.recentChapterId" icon="arrow-path" variant="danger" ::href="$wire.recentChapterId ? chapterUrl($wire.recentChapterId) : ''" href id="continue" class="!ml-0 !mt-0">{{ __('Continue reading') }} - <span id="recent-chapter-title"></span></flux:button>
+                        <flux:button
+                            icon="arrow-right-start-on-rectangle"
+                            variant="danger"
+                            ::href="$wire.recentChapterId ? chapterUrl($wire.recentChapterId) : appendRecommendId('{{ $comic->chapters->first()->url() }}')"
+                            href
+                            id="start"
+                        >
+                            <span x-text="$wire.recentChapterId ? '{{ __('Continue reading') }}' : '{{ __('Start reading') }}'"></span>
+                            <span x-show="$wire.recentChapterId">- <span id="recent-chapter-title"></span></span>
+                        </flux:button>
                         <flux:button x-show="! $wire.isSynced" icon="bookmark" variant="filled" disabled>{{ __('Bookmark') }}</flux:button>
-                        <flux:modal.trigger x-cloak x-show="$wire.isSynced && ! $wire.isLoggedIn" name="login">
-                            <flux:button icon="bookmark" variant="filled" @click="$wire.actionAfterLogin = 'bookmark';">{{ __('Bookmark') }}</flux:button>
-                        </flux:modal.trigger>
+                        <flux:button x-cloak x-show="$wire.isSynced && ! $wire.isLoggedIn" icon="bookmark" variant="filled" @click="$wire.actionAfterLogin = 'bookmark'; $dispatch('modal-show', { name: 'login' });">{{ __('Bookmark') }}</flux:button>
                         <flux:button x-cloak x-show="$wire.isLoggedIn && $wire.hasBookmarked" wire:click="unbookmark" icon="check" variant="primary">{{ __('Bookmarked') }}</flux:button>
                         <flux:button x-cloak x-show="$wire.isLoggedIn && ! $wire.hasBookmarked" wire:click="bookmark" icon="bookmark" variant="filled">{{ __('Bookmark') }}</flux:button>
                         <flux:dropdown position="bottom" align="start">
