@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Concerns\InteractsWithAuth;
 use App\Concerns\WithSidebar;
 use App\Models\Comic;
+use App\Models\Record;
 use App\Recombee\Recombee;
 use App\Seo;
 use Carbon\Carbon;
@@ -51,11 +52,14 @@ class ComicDetail extends Component
     {
         $this->comic->increment('views');
 
-        $record = user()?->records()->where('comic_id', $this->comic->id)->first();
+        $record = Record::query()
+            ->where('user_id', $this->userUuid)
+            ->where('comic_id', $this->comic->id)
+            ->first();
 
         $this->isLoggedIn = (bool) user();
         $this->hasBookmarked = $record && $record->has_bookmarked;
-        $this->recentChapterId = $record ? $record->chapter_id : null;
+        $this->recentChapterId = $record?->chapter_id;
         $this->isSynced = true;
     }
 
@@ -95,7 +99,7 @@ class ComicDetail extends Component
         ]);
 
         $this->comic->reviews()->updateOrCreate([
-            
+
         ]);
     }
 
