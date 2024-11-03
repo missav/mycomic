@@ -109,6 +109,7 @@ class ComicDetail extends Component
         ], $data);
 
         $this->dispatch('modal-close');
+        $this->dispatch('reviewed', comicId: $this->comic->id, rating: $this->rating);
         $this->reset('rating', 'text');
     }
 

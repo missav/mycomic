@@ -261,6 +261,13 @@
                         recommId: window.recommendId,
                     }));
                 });
+
+                Livewire.on('reviewed', event => {
+                    recombeeClient.send(new recombee.AddRating(window.userUuid, event.comicId, (event.rating - 3) / 2, {
+                        cascadeCreate: true,
+                        recommId: window.recommendId,
+                    }));
+                });
             });
 
             document.addEventListener('livewire:navigate', () => {
