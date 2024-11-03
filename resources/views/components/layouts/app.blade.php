@@ -201,7 +201,7 @@
             document.addEventListener('livewire:init', () => {
                 window.userUuid = Cookies.get('user_uuid');
 
-                if (! window.userUuid) {
+                if (! window.userUuid || window.userUuid.length !== 36) {
                     if (window.crypto && window.crypto.randomUUID) {
                         window.userUuid = window.crypto.randomUUID();
                     } else {

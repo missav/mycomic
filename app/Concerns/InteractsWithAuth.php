@@ -51,7 +51,7 @@ trait InteractsWithAuth
 
         $this->reset('email', 'password');
 
-        $this->dispatch('user-uuid-updated', ['user_uuid' => user()->id]);
+        $this->dispatch('user-uuid-updated', userUuid: user()->id);
 
         if ($this->actionAfterLogin) {
             $this->{$this->actionAfterLogin}();

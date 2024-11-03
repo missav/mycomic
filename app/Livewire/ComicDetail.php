@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Concerns\InteractsWithAuth;
+use App\Concerns\SyncUserUuid;
 use App\Concerns\WithSidebar;
 use App\Models\Comic;
 use App\Models\Record;
@@ -11,7 +12,6 @@ use App\Seo;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Recombee\RecommApi\Requests\DeleteBookmark;
@@ -20,7 +20,7 @@ use Spatie\SchemaOrg\Schema;
 
 class ComicDetail extends Component
 {
-    use InteractsWithAuth, WithSidebar;
+    use SyncUserUuid, InteractsWithAuth, WithSidebar;
 
     public Comic $comic;
 
@@ -50,10 +50,12 @@ class ComicDetail extends Component
 
     public function sync(): void
     {
+        $this->syncUserUuid();
+
         $this->comic->increment('views');
 
         $record = Record::query()
-            ->where('user_id', $this->userUuid)
+            ->where('user_id', $this->getUserUuid())
             ->where('comic_id', $this->comic->id)
             ->first();
 
@@ -65,7 +67,8 @@ class ComicDetail extends Component
 
     public function bookmark(): void
     {
-        user()->records()->updateOrCreate([
+        Record::updateOrCreate([
+            'user_id' => $this->getUserUuid(),
             'comic_id' => $this->comic->id,
         ], [
             'has_bookmarked' => true,
@@ -78,7 +81,10 @@ class ComicDetail extends Component
 
     public function unbookmark(): void
     {
-        $record = user()->records()->where('comic_id', $this->comic->id)->first();
+        $record = Record::query()
+            ->where('user_id', $this->getUserUuid())
+            ->where('comic_id', $this->comic->id)
+            ->first();
 
         if ($record->chapter_id) {
             $record->update(['has_bookmarked' => false]);

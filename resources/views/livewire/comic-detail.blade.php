@@ -1,10 +1,16 @@
 @script
     <script>
         window.pushTimeout(() => {
-            $wire.sync().then(() => {
-                if ($wire.recentChapterId) {
-                    document.getElementById('recent-chapter-title').innerText = document.getElementById('recent-chapter').innerText;
-                }
+            $wire.sync();
+
+            Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+                succeed(({ snapshot, effect }) => {
+                    if ($wire.recentChapterId) {
+                        setTimeout(() => {
+                            document.getElementById('recent-chapter-title').innerText = document.getElementById('recent-chapter').innerText;
+                        }, 10);
+                    }
+                });
             });
         }, 10);
 
@@ -102,7 +108,7 @@
                             id="start"
                         >
                             <span x-text="$wire.recentChapterId ? '{{ __('Continue reading') }}' : '{{ __('Start reading') }}'"></span>
-                            <span x-show="$wire.recentChapterId">- <span id="recent-chapter-title"></span></span>
+                            <span x-show="$wire.recentChapterId"> - <span id="recent-chapter-title"></span></span>
                         </flux:button>
                         <flux:button x-show="! $wire.isSynced" icon="bookmark" variant="filled" disabled>{{ __('Bookmark') }}</flux:button>
                         <flux:button x-cloak x-show="$wire.isSynced && ! $wire.isLoggedIn" icon="bookmark" variant="filled" @click="$wire.actionAfterLogin = 'bookmark'; $dispatch('modal-show', { name: 'login' });">{{ __('Bookmark') }}</flux:button>

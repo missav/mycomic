@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Concerns\SyncUserUuid;
 use App\Concerns\WithUserUuid;
 use App\Models\Chapter;
 use App\Models\Record;
@@ -15,7 +16,7 @@ use Spatie\SchemaOrg\Schema;
 
 class ChapterReader extends Component
 {
-    use WithUserUuid;
+    use SyncUserUuid, WithUserUuid;
 
     public Chapter $chapter;
 
@@ -33,8 +34,10 @@ class ChapterReader extends Component
 
     public function sync(): void
     {
+        $this->syncUserUuid();
+
         Record::updateOrCreate([
-            'user_id' => $this->userUuid,
+            'user_id' => $this->getUserUuid(),
             'comic_id' => $this->chapter->comic->id,
         ], [
             'chapter_id' => $this->chapter->id,
