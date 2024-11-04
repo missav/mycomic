@@ -53,6 +53,7 @@ class DownloadComicCover
     {
         return Http::withHeader('referer', 'https://tw.manhuagui.com/')
             ->get("https://cf.mhgui.com/cpic/h/{$comic->id}.jpg")
+            ->throw()
             ->resource();
     }
 }
