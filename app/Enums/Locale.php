@@ -23,6 +23,11 @@ enum Locale: string
         };
     }
 
+    public function flagUrl(): string
+    {
+        return cdn('img/flags/' . $this->value . '.png');
+    }
+
     public static function current(): Locale
     {
         return Locale::from(app()->getLocale());

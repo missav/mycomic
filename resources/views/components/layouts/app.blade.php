@@ -30,7 +30,8 @@
         <meta name="twitter:site" content="{{ \App\Seo::twitter() }}" />
         <meta name="twitter:creator" content="{{ \App\Seo::twitter() }}" />
         <title>{{ \App\Seo::title() }}</title>
-        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link rel="preconnect" href="{{ cdn() }}">
+        <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="{{ cdn('img/favicon.png') }}">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -154,13 +155,13 @@
                 <flux:dropdown position="bottom" align="end">
                     <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
                         <flux:navbar.item :square="true">
-                            <img width="20" height="20" src="{{ cdn('img/flags/' . \App\Enums\Locale::current()->value . '.png') }}" alt="{{ \App\Enums\Locale::current()->label() }}">
+                            <img width="20" height="20" src="{{ \App\Enums\Locale::current()->flagUrl() }}" alt="{{ \App\Enums\Locale::current()->label() }}">
                         </flux:navbar.item>
                     </flux:tooltip>
                     <flux:menu>
                         @foreach (\App\Enums\Locale::cases() as $locale)
                             <flux:menu.item :href="localizedRoute($locale)">
-                                <img width="14" height="14" src="{{ cdn("img/flags/{$locale->value}.png") }}" alt="{{ $locale->label() }}" class="mr-2">
+                                <img width="14" height="14" src="{{ $locale->flagUrl() }}" alt="{{ $locale->label() }}" class="mr-2">
                                 {{ $locale->label() }}
                             </flux:menu.item>
                         @endforeach
