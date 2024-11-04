@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('comics', function (Blueprint $table) {
-            $table->unsignedInteger('views')->default(0)->index()->after('initial');
+        Schema::create('page_views', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('comic_id')->index();
+            $table->unsignedInteger('views')->default(0);
+            $table->date('created_at')->index();
+
+            $table->index(['comic_id', 'created_at']);
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('comics', function (Blueprint $table) {
-            $table->dropColumn('views');
-        });
+        Schema::dropIfExists('page_views');
     }
 };

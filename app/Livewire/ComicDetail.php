@@ -52,7 +52,7 @@ class ComicDetail extends Component
     {
         $this->syncUserUuid();
 
-        $this->comic->increment('views');
+        $this->comic->views();
 
         $record = Record::query()
             ->where('user_id', $this->getUserUuid())

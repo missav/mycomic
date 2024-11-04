@@ -43,3 +43,9 @@ Schedule::command(\App\Console\Commands\SubmitRecombeeRecordCommand::class)
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();
+
+Schedule::command(\App\Console\Commands\SyncPageViewCommand::class)
+    ->dailyAt('05:11')
+    ->withoutOverlapping()
+    ->onOneServer()
+    ->runInBackground();

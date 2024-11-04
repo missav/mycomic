@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('comics', function (Blueprint $table) {
-            $table->unsignedInteger('views')->default(0)->index()->after('initial');
+            $table->unsignedInteger('views_1d')->default(0)->index()->after('views');
+            $table->unsignedInteger('views_7d')->default(0)->index()->after('views_1d');
+            $table->unsignedInteger('views_30d')->default(0)->index()->after('views_7d');
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('comics', function (Blueprint $table) {
-            $table->dropColumn('views');
+            //
         });
     }
 };

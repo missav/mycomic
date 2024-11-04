@@ -16,6 +16,8 @@ class Comic extends Model
 {
     use WithReviews;
 
+    const CACHE_VIEWS = 5;
+
     public $incrementing = false;
 
     protected function casts(): array
@@ -128,6 +130,32 @@ class Comic extends Model
             'cover_image_path' => $this->coverImagePath(),
             'last_updated_on' => $this->last_updated_on,
         ];
+    }
+
+    public function views(): void
+    {
+        $date = now()->toDateString();
+        $pageViewQuery = PageView::where('comic_id', $this->id)->where('created_at', $date);
+
+        if (! $pageViewQuery->increment('views')) {
+            $pageViewQuery->forceCreate([
+                'comic_id' => $this->id,
+                'views' => 1,
+                'created_at' => $date,
+            ]);
+        }
+
+        $cacheKey = "item:views:{$this->id}";
+
+        $cachedViews = cache()->increment($cacheKey);
+
+        if ($cachedViews < static::CACHE_VIEWS) {
+            return;
+        }
+
+        $this->increment('views', $cachedViews);
+
+        cache()->forget($cacheKey);
     }
 
     public static function sourceUrl(int $id, string $subdomain = 'tw'): string
