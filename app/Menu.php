@@ -13,6 +13,11 @@ class Menu
                 'text' => 'Comic database',
             ],
             [
+                'icon' => 'chart-bar',
+                'route' => 'rank',
+                'text' => 'Ranking',
+            ],
+            [
                 'icon' => 'bookmark',
                 'route' => 'bookmarks.index',
                 'text' => 'My bookmarks',

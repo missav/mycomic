@@ -11,16 +11,13 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ComicList extends Component
+class RankList extends Component
 {
     public function render(): View
     {
-        Seo::title(__('Comic database'));
+        Seo::title(__('Ranking'));
 
         $comics = QueryBuilder::for(Comic::class)
-            ->when(request('q'), fn (Builder $query, string $keyword) =>
-                $query->where('name', 'LIKE', "%{$keyword}%")
-            )
             ->allowedFilters([
                 AllowedFilter::exact('country'),
                 AllowedFilter::exact('audience'),
@@ -33,17 +30,16 @@ class ComicList extends Component
                 ),
             ])
             ->allowedSorts([
-                AllowedSort::field('publish', 'id'),
-                AllowedSort::field('update', 'last_updated_on'),
-                AllowedSort::field('views', 'views'),
+                AllowedSort::field('day', 'views_1d'),
+                AllowedSort::field('week', 'views_7d'),
+                AllowedSort::field('month', 'views_30d'),
             ])
             ->has('chapters')
-            ->defaultSort('-id')
+            ->defaultSort('-views_1d')
             ->orderBy('id')
-            ->paginate(30)
-            ->appends(request()->query());
+            ->paginate(50);
 
-        return view('livewire.comic-list', [
+        return view('livewire.rank-list', [
             'comics' => $comics,
         ]);
     }
