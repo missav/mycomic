@@ -8,7 +8,7 @@
             <flux:table>
                 <flux:columns>
                     <flux:column>{{ __('Comic') }}</flux:column>
-                    <flux:column>{{ __('Last updated') }}</flux:column>
+                    <flux:column>{{ __('Recent chapter') }}</flux:column>
                     <flux:column></flux:column>
                 </flux:columns>
                 <flux:rows>

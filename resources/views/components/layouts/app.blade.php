@@ -40,6 +40,7 @@
     <body
         x-data="{
             cdnUrl: '{{ config('app.cdn_url') }}',
+            maxComicId: {{ \App\Models\Comic::maxId() }},
             cdn(path) {
                 return this.cdnUrl + path;
             },
@@ -123,14 +124,13 @@
             <x-logo />
 
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('*.comics.index')" wire:navigate>
-                    {{ __('Comic database') }}
-                </flux:navbar.item>
-                <flux:navbar.item icon="bookmark" :href="localizedRoute('bookmarks.index')" :current="request()->routeIs('*.bookmarks.index')" wire:navigate>
-                    {{ __('My bookmarks') }}
-                </flux:navbar.item>
-                <flux:navbar.item icon="clock" :href="localizedRoute('records.index')" :current="request()->routeIs('*.records.index')" wire:navigate>
-                    {{ __('History') }}
+                @foreach (\App\Menu::main() as $item)
+                    <flux:navbar.item icon="{{ $item['icon'] }}" :href="localizedRoute($item['route'])" :current="request()->routeIs('*.' . $item['route'])" wire:navigate>
+                        {{ __($item['text']) }}
+                    </flux:navbar.item>
+                @endforeach
+                <flux:navbar.item icon="arrow-path" ::href="comicUrl({ id: Math.floor(Math.random() * maxComicId) })" href wire:navigate>
+                    {{ __('Random comic') }}
                 </flux:navbar.item>
             </flux:navbar>
 
@@ -180,14 +180,13 @@
                 <flux:navlist.item icon="home" :href="localizedRoute('home')" :current="request()->routeIs('*.home')" wire:navigate>
                     {{ __('Home') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('*.comics.index')" wire:navigate>
-                    {{ __('Comic database') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="bookmark" :href="localizedRoute('bookmarks.index')" :current="request()->routeIs('*.bookmarks.index')" wire:navigate>
-                    {{ __('My bookmarks') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="clock" :href="localizedRoute('records.index')" :current="request()->routeIs('*.records.index')" wire:navigate>
-                    {{ __('History') }}
+                @foreach (\App\Menu::main() as $item)
+                    <flux:navlist.item icon="{{ $item['icon'] }}" :href="localizedRoute($item['route'])" :current="request()->routeIs('*.' . $item['route'])" wire:navigate>
+                        {{ __($item['text']) }}
+                    </flux:navlist.item>
+                @endforeach
+                <flux:navlist.item icon="arrow-path" ::href="comicUrl({ id: Math.floor(Math.random() * maxComicId) })" href wire:navigate>
+                    {{ __('Random comic') }}
                 </flux:navlist.item>
             </flux:navlist>
 

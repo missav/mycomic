@@ -162,4 +162,9 @@ class Comic extends Model
     {
         return "https://{$subdomain}.manhuagui.com/comic/{$id}/";
     }
+
+    public static function maxId(): int
+    {
+        return cache()->remember('comics_max_id', 3600, fn () => Comic::max('id'));
+    }
 }
