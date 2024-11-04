@@ -120,4 +120,14 @@ class Seo
     {
         return 'GTM-NBDC4TBL';
     }
+
+    public static function reset(): void
+    {
+        static::$title = null;
+        static::$description = null;
+        static::$keywords = [];
+        static::$authors = [];
+        static::$image = null;
+        static::$jsonLdScript = null;
+    }
 }
