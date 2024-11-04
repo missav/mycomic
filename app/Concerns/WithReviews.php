@@ -31,7 +31,7 @@ trait WithReviews
         return $this->ratings;
     }
 
-    public function averageRating(): int
+    public function calculateAverageRating(): int
     {
         $totalRating = $this->ratings()
             ->map(fn (int $total, int $rating) => $total * $rating)
@@ -41,6 +41,6 @@ trait WithReviews
             return 0;
         }
 
-        return floor($totalRating / $this->ratings()->sum());
+        return round($totalRating / $this->ratings()->sum(), 2);
     }
 }

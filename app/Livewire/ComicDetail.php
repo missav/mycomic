@@ -42,12 +42,6 @@ class ComicDetail extends Component
         return $this->comic->ratings();
     }
 
-    #[Computed]
-    public function averageRatings(): int
-    {
-        return $this->comic->averageRating();
-    }
-
     public function sync(): void
     {
         $this->syncUserUuid();
@@ -107,6 +101,10 @@ class ComicDetail extends Component
         $this->comic->reviews()->updateOrCreate([
             'user_id' => $this->getUserUuid(),
         ], $data);
+
+        $this->comic->update([
+            'average_rating' => $this->comic->calculateAverageRating(),
+        ]);
 
         $this->dispatch('modal-close');
         $this->dispatch('reviewed', comicId: $this->comic->id, rating: $this->rating);
