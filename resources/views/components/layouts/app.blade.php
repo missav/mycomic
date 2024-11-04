@@ -120,8 +120,7 @@
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
             <flux:sidebar.toggle class="lg:hidden mr-2" icon="bars-3" inset="left" />
 
-            <flux:brand :href="localizedRoute('home')" class="dark:hidden" wire:navigate />
-            <flux:brand :href="localizedRoute('home')" class="hidden dark:flex" wire:navigate />
+            <x-logo />
 
             <flux:navbar class="-mb-px max-lg:hidden">
                 <flux:navbar.item icon="book-open" :href="localizedRoute('comics.index')" :current="request()->routeIs('*.comics.index')" wire:navigate>
@@ -201,6 +200,64 @@
 
         <flux:main container class="mt-14">
             {{ $slot }}
+
+            @if (! request()->routeIs('*.chapters.view'))
+                <footer>
+                    <div class="text-center py-16">
+                        <flux:button variant="subtle" icon="arrow-up-circle" square @click="window.scrollTo({ top: 0, behavior: 'smooth' });" />
+                    </div>
+                    <div>
+                        <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                            <div>
+                                <div class="mb-4">
+                                    <x-logo />
+                                </div>
+                                <flux:subheading class="text-balance">{{ \App\Seo::about() }}</flux:subheading>
+                            </div>
+                            <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+                                <div class="md:grid md:grid-cols-2 md:gap-8">
+                                    <div>
+                                        <flux:heading size="lg">{{ __('Sort') }}</flux:heading>
+                                        <ul role="list" class="mt-6 space-y-4">
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', null)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Recent published') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', '-update')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Recent updates') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', '-views')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Most views') }}</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="mt-10 md:mt-0">
+                                        <flux:heading size="lg">{{ __('Audience') }}</flux:heading>
+                                        <ul role="list" class="mt-6 space-y-4">
+                                            @foreach (\App\Enums\ComicAudience::cases() as $comicAudience)
+                                                <li><a href="{{ localizedRoute('comics.index', request()->append('filter.audience', $comicAudience->value)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ $comicAudience->text() }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="md:grid md:grid-cols-2 md:gap-8">
+                                    <div>
+                                        <flux:heading size="lg">{{ __('Region') }}</flux:heading>
+                                        <ul role="list" class="mt-6 space-y-4">
+                                            @foreach (\App\Enums\ComicCountry::cases() as $comicCountry)
+                                                <li><a href="{{ localizedRoute('comics.index', request()->append('filter.country', $comicCountry->value)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ $comicCountry->text() }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <div class="mt-10 md:mt-0">
+                                        <flux:heading size="lg">{{ __('Progress') }}</flux:heading>
+                                        <ul role="list" class="mt-6 space-y-4">
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('filter.end', '0')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Ongoing') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('filter.end', '1')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Ended') }}</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
+                            <p class="text-sm/6 text-gray-400">&copy; {{ now()->year }} {{ \App\Seo::site() }}</p>
+                        </div>
+                    </div>
+                </footer>
+            @endif
         </flux:main>
 
         @livewireScripts

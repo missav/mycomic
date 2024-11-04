@@ -39,9 +39,14 @@ class Seo
             static::$description = $description;
         }
 
-        $fallbackDescription = 'MYCOMIC 我的漫畫擁有海量中文化漫畫，每日為你即時更新日本漫畫，韓國漫畫，國產漫畫與歐美漫畫。';
+        return static::$description
+            ? localized(Str::limit(static::$description, 150))
+            : static::about();
+    }
 
-        return localized(Str::limit(static::$description ?? $fallbackDescription, 150));
+    public static function about(): string
+    {
+        return localized('MYCOMIC 我的漫畫擁有海量中文化漫畫，每日為你即時更新日本漫畫，韓國漫畫，國產漫畫與歐美漫畫。');
     }
 
     public static function keywords(?array $keywords = null): string

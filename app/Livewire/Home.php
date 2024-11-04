@@ -12,7 +12,7 @@ class Home extends Component
     #[Computed]
     public function recentUpdatedComics(): Collection
     {
-        return Comic::has('chapters')->orderByDesc('last_updated_on')->take(12)->get();
+        return Comic::has('chapters')->orderByDesc('last_updated_on')->orderBy('id')->take(12)->get();
     }
 
     #[Computed]
