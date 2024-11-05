@@ -19,13 +19,7 @@ class ComicList extends Component
 
         $comics = QueryBuilder::for(Comic::class)
             ->when(request('q'), fn (Builder $query, string $keyword) =>
-                $query
-                    ->where(fn (Builder $query) => $query
-                        ->orWhere('name', 'like', "%{$keyword}%")
-                        ->orWhere('original_name', 'like', "%{$keyword}%")
-                        ->orWhere('aliases', 'like', "%{$keyword}%")
-                    )
-                    ->orderBy('id')
+                $query->orWhere('search_keywords', 'like', "%{$keyword}%")->orderBy('id')
             )
             ->allowedFilters([
                 AllowedFilter::exact('country'),
