@@ -158,6 +158,20 @@ class Comic extends Model
         cache()->forget($cacheKey);
     }
 
+    public function generateSearchKeywords(): void
+    {
+        $searchKeywords = collect([
+            $this->name,
+            $this->original_name,
+            $this->aliases,
+            cn($this->name),
+            cn($this->original_name),
+            cn($this->aliases),
+        ])->filter()->implode(', ');
+
+        $this->update(['search_keywords' => $searchKeywords]);
+    }
+
     public static function sourceUrl(int $id, string $subdomain = 'tw'): string
     {
         return "https://{$subdomain}.manhuagui.com/comic/{$id}/";

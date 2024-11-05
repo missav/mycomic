@@ -86,6 +86,8 @@ class ImportComicCommand extends Command
             'last_updated_on' => $comicData->get('last_updated_on'),
         ]);
 
+        $comic->generateSearchKeywords();
+
         $authorIds = collect($comicData->get('authors'))
             ->map(fn (array $author) => Author::updateOrCreate(['id' => $author['id']], ['name' => $author['text']]))
             ->pluck('id');
