@@ -82,5 +82,9 @@
     "Daily rank": "日排行",
     "Weekly rank": "週排行",
     "Monthly rank": "月排行",
-    "All-time rank": "總排行"
+    "All-time rank": "歷史排行",
+    "Daily": "日",
+    "Weekly": "週",
+    "Monthly": "月",
+    "All-time": "歷史"
 }

@@ -39,31 +39,20 @@
             <flux:modal.menu name="filters" variant="flyout" class="space-y-6">
                 <x-comic-sidebar route="rank" class="flex"></x-comic-sidebar>
             </flux:modal.menu>
-            <flux:dropdown position="bottom" align="end">
-                @if (request()->get('sort') === '-week')
-                    <flux:button icon="chart-bar" icon-trailing="chevron-down">{{ __('Weekly rank') }}</flux:button>
-                @elseif (request()->get('sort') === '-week')
-                    <flux:button icon="chart-bar" icon-trailing="chevron-down">{{ __('Weekly rank') }}</flux:button>
-                @elseif (request()->get('sort') === '-month')
-                    <flux:button icon="chart-bar" icon-trailing="chevron-down">{{ __('Monthly rank') }}</flux:button>
-                @else
-                    <flux:button icon="chart-bar" icon-trailing="chevron-down">{{ __('Daily rank') }}</flux:button>
-                @endif
-                <flux:menu>
-                    <flux:menu.item :href="localizedRoute('rank', request()->append('sort', null))">
-                        {{ __('Daily rank') }}
-                    </flux:menu.item>
-                    <flux:menu.item :href="localizedRoute('rank', request()->append('sort', '-week'))">
-                        {{ __('Weekly rank') }}
-                    </flux:menu.item>
-                    <flux:menu.item :href="localizedRoute('rank', request()->append('sort', '-month'))">
-                        {{ __('Monthly rank') }}
-                    </flux:menu.item>
-                    <flux:menu.item :href="localizedRoute('rank', request()->append('sort', '-views'))">
-                        {{ __('All-time rank') }}
-                    </flux:menu.item>
-                </flux:menu>
-            </flux:dropdown>
+            <flux:navbar class="!py-0">
+                <flux:navbar.item :href="localizedRoute('rank', request()->append('sort', null))" :current="! request()->has('sort')">
+                    {{ ! request()->has('sort') ? __('Daily rank') : __('Daily') }}
+                </flux:navbar.item>
+                <flux:navbar.item :href="localizedRoute('rank', request()->append('sort', '-week'))" :current="request()->get('sort') === '-week'">
+                    {{ request()->get('sort') === '-week' ? __('Weekly rank') : __('Weekly') }}
+                </flux:navbar.item>
+                <flux:navbar.item :href="localizedRoute('rank', request()->append('sort', '-month'))" :current="request()->get('sort') === '-month'">
+                    {{ request()->get('sort') === '-month' ? __('Monthly rank') : __('Monthly') }}
+                </flux:navbar.item>
+                <flux:navbar.item :href="localizedRoute('rank', request()->append('sort', '-views'))" :current="request()->get('sort') === '-views'">
+                    {{ request()->get('sort') === '-views' ? __('All-time rank') : __('All-time') }}
+                </flux:navbar.item>
+            </flux:navbar>
         </div>
         <flux:table class="mb-8">
             <flux:columns>
