@@ -66,7 +66,7 @@
                     </flux:badge>
                 </a>
             @endif
-            <x-comic-section class="mb-8"></x-comic-section>
+            <x-comic-thumbnails class="mb-8"></x-comic-thumbnails>
             <div>
                 {{ $comics->links() }}
             </div>

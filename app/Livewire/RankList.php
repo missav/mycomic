@@ -18,6 +18,7 @@ class RankList extends Component
         Seo::title(__('Ranking'));
 
         $comics = QueryBuilder::for(Comic::class)
+            ->with('authors', 'recentChapter')
             ->allowedFilters([
                 AllowedFilter::exact('country'),
                 AllowedFilter::exact('audience'),

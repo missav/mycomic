@@ -51,7 +51,7 @@
                             {!! $comic
                                 ->authors
                                 ->map(fn (\App\Models\Author $author) =>
-                                    '<a href="' . $author->url() . '" class="hover:underline underline-offset-4">' . $author->name . '</a>'
+                                    '<a href="' . $author->url() . '" class="hover:underline underline-offset-4" wire:navigate>' . $author->name . '</a>'
                                 )
                                 ->implode(', ') !!}
                         </span>
@@ -68,16 +68,16 @@
                             {!! $comic
                                 ->tags
                                 ->map(fn (\App\Models\Tag $tag) =>
-                                    '<a href="' . $tag->url() . '" class="hover:underline underline-offset-4">' . $tag->name . '</a>'
+                                    '<a href="' . $tag->url() . '" class="hover:underline underline-offset-4" wire:navigate>' . $tag->name . '</a>'
                                 )
-                                ->add('<a href="' . $comic->audienceUrl() . '" class="hover:underline underline-offset-4">' . $comic->audience->text() . '</a>')
+                                ->add('<a href="' . $comic->audienceUrl() . '" class="hover:underline underline-offset-4" wire:navigate>' . $comic->audience->text() . '</a>')
                                 ->implode(', ') !!}
                         </span>
                     </div>
                     <div>
                         <label class="text-sm text-zinc-500 dark:text-white/50">{{ __('Region') }}:</label>
                         <span class="text-sm text-zinc-800 dark:text-white">
-                            {!! '<a href="' . $comic->countryUrl() . '" class="hover:underline underline-offset-4">' . $comic->country->text() . '</a>' !!}
+                            {!! '<a href="' . $comic->countryUrl() . '" class="hover:underline underline-offset-4" wire:navigate>' . $comic->country->text() . '</a>' !!}
                         </span>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
             x-data='{ comics: placeholders(12) }'
             x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('comic-list-recommended'), 12));"
         >
-            <x-comic-section></x-comic-section>
+            <x-comic-thumbnails></x-comic-thumbnails>
         </div>
     </div>
     <div class="w-1/4 ml-8 hidden lg:block text-white space-y-8">
