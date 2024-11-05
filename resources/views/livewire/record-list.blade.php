@@ -44,8 +44,8 @@
         @endif
     </div>
     <div class="w-1/4 ml-8 hidden lg:block text-white space-y-8">
-        <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
-        <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
+        <x-comic-text-section title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics->take(10)"></x-comic-text-section>
+        <x-comic-text-section title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics->take(10)"></x-comic-text-section>
     </div>
     <x-auth-modal></x-auth-modal>
 </div>

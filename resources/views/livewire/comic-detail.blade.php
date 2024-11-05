@@ -246,21 +246,21 @@
                     <flux:tab name="alltime">{{ __('All-time') }}</flux:tab>
                 </flux:tabs>
                 <flux:tab.panel name="day" class="!pt-4">
-                    <x-comic-text-list :url="localizedRoute('rank')" :comics="$this->dailyRankComics"></x-comic-text-list>
+                    <x-comic-text-section :url="localizedRoute('rank')" :comics="$this->dailyRankComics->take(10)"></x-comic-text-section>
                 </flux:tab.panel>
                 <flux:tab.panel name="week" class="!pt-4">
-                    <x-comic-text-list :url="localizedRoute('rank', ['sort' => '-week'])" :comics="$this->weeklyRankComics"></x-comic-text-list>
+                    <x-comic-text-section :url="localizedRoute('rank', ['sort' => '-week'])" :comics="$this->weeklyRankComics->take(10)"></x-comic-text-section>
                 </flux:tab.panel>
                 <flux:tab.panel name="month" class="!pt-4">
-                    <x-comic-text-list :url="localizedRoute('rank', ['sort' => '-month'])" :comics="$this->monthlyRankComics"></x-comic-text-list>
+                    <x-comic-text-section :url="localizedRoute('rank', ['sort' => '-month'])" :comics="$this->monthlyRankComics->take(10)"></x-comic-text-section>
                 </flux:tab.panel>
                 <flux:tab.panel name="alltime" class="!pt-4">
-                    <x-comic-text-list :url="localizedRoute('rank', ['sort' => '-views'])" :comics="$this->allTimeRankComics"></x-comic-text-list>
+                    <x-comic-text-section :url="localizedRoute('rank', ['sort' => '-views'])" :comics="$this->allTimeRankComics->take(10)"></x-comic-text-section>
                 </flux:tab.panel>
             </flux:tab.group>
         </div>
-        <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
-        <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
+        <x-comic-text-section title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics->take(10)"></x-comic-text-section>
+        <x-comic-text-section title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics->take(10)"></x-comic-text-section>
     </div>
     @if ($reviews->isNotEmpty())
         <flux:modal name="text-reviews" class="md:w-96 space-y-6 text-left">
