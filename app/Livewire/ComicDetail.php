@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Concerns\InteractsWithAuth;
 use App\Concerns\SyncUserUuid;
-use App\Concerns\WithSidebar;
+use App\Concerns\WithPresetComics;
 use App\Models\Comic;
 use App\Models\Record;
 use App\Recombee\Recombee;
@@ -20,7 +20,7 @@ use Spatie\SchemaOrg\Schema;
 
 class ComicDetail extends Component
 {
-    use SyncUserUuid, InteractsWithAuth, WithSidebar;
+    use SyncUserUuid, InteractsWithAuth, WithPresetComics;
 
     public Comic $comic;
 

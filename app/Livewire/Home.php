@@ -2,10 +2,10 @@
 
 namespace App\Livewire;
 
-use App\Concerns\WithSidebar;
+use App\Concerns\WithPresetComics;
 use Livewire\Component;
 
 class Home extends Component
 {
-    use WithSidebar;
+    use WithPresetComics;
 }

@@ -6,7 +6,7 @@ use App\Models\Comic;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 
-trait WithSidebar
+trait WithPresetComics
 {
     #[Computed]
     public function dailyRankComics(): Collection

@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Concerns\WithSidebar;
+use App\Concerns\WithPresetComics;
 use App\Concerns\WithUserUuid;
 use App\Models\Record;
 use App\Seo;
@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 
 class RecordList extends Component
 {
-    use WithPagination, WithUserUuid, WithSidebar;
+    use WithPagination, WithUserUuid, WithPresetComics;
 
     public function render(): View
     {
