@@ -23,7 +23,7 @@ class Tag extends Model
 
     public function url(): string
     {
-        return localizedRoute('comics.index', ['tag' => $this->name]);
+        return localizedRoute('comics.index', ['filter' => ['tag' => $this->slug]]);
     }
 
     public static function cached(): array

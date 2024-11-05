@@ -80,12 +80,12 @@ class Comic extends Model
 
     public function audienceUrl(): string
     {
-        return localizedRoute('comics.index', ['audience' => $this->audience]);
+        return localizedRoute('comics.index', ['filter' => ['audience' => $this->audience]]);
     }
 
     public function countryUrl(): string
     {
-        return localizedRoute('comics.index', ['country' => $this->country]);
+        return localizedRoute('comics.index', ['filter' => ['country' => $this->country]]);
     }
 
     public function coverImagePath(): string

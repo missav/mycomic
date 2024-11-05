@@ -26,6 +26,7 @@ class ComicList extends Component
                 AllowedFilter::exact('audience'),
                 AllowedFilter::exact('end', 'is_ended'),
                 AllowedFilter::exact('tag', 'tags.slug'),
+                AllowedFilter::exact('author', 'authors.name'),
                 AllowedFilter::callback('year', fn (Builder $query, string $value) =>
                     str_ends_with($value, 'x') ?
                         $query->where('year', 'LIKE', substr($value, 0, -1) . '%') :

@@ -36,6 +36,6 @@ class Author extends Model
 
     public function url(): string
     {
-        return localizedRoute('comics.index', ['author' => $this->name]);
+        return localizedRoute('comics.index', ['filter' => ['author' => $this->name]]);
     }
 }
