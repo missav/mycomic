@@ -5,7 +5,9 @@
 ])
 
 <div class="space-y-2.5">
-    <flux:separator :text="__($title)" />
+    @if ($title)
+        <flux:separator :text="__($title)" />
+    @endif
     @foreach ($comics as $comic)
         <div class="flex">
             <div class="truncate grow text-sm text-zinc-500 dark:text-zinc-300">
@@ -18,6 +20,6 @@
         </div>
     @endforeach
     <div class="text-center pt-2">
-        <flux:button size="xs" :href="$url">{{ __('View more') }}</flux:button>
+        <flux:button size="xs" :href="$url" wire:navigate>{{ __('View more') }}</flux:button>
     </div>
 </div>

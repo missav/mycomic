@@ -236,6 +236,29 @@
                 </div>
             </div>
         </div>
+        <div>
+            <flux:separator :text="__('Ranking')" />
+            <flux:tab.group>
+                <flux:tabs variant="segmented" size="sm" class="w-full mt-2">
+                    <flux:tab name="day">{{ __('Daily') }}</flux:tab>
+                    <flux:tab name="week">{{ __('Weekly') }}</flux:tab>
+                    <flux:tab name="month">{{ __('Monthly') }}</flux:tab>
+                    <flux:tab name="alltime">{{ __('All-time') }}</flux:tab>
+                </flux:tabs>
+                <flux:tab.panel name="day" class="!pt-4">
+                    <x-comic-text-list :url="localizedRoute('rank')" :comics="$this->dailyRankComics"></x-comic-text-list>
+                </flux:tab.panel>
+                <flux:tab.panel name="week" class="!pt-4">
+                    <x-comic-text-list :url="localizedRoute('rank', ['sort' => '-week'])" :comics="$this->weeklyRankComics"></x-comic-text-list>
+                </flux:tab.panel>
+                <flux:tab.panel name="month" class="!pt-4">
+                    <x-comic-text-list :url="localizedRoute('rank', ['sort' => '-month'])" :comics="$this->monthlyRankComics"></x-comic-text-list>
+                </flux:tab.panel>
+                <flux:tab.panel name="alltime" class="!pt-4">
+                    <x-comic-text-list :url="localizedRoute('rank', ['sort' => '-views'])" :comics="$this->allTimeRankComics"></x-comic-text-list>
+                </flux:tab.panel>
+            </flux:tab.group>
+        </div>
         <x-comic-text-list title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" :comics="$this->recentUpdatedComics"></x-comic-text-list>
         <x-comic-text-list title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" :comics="$this->recentPublishedComics"></x-comic-text-list>
     </div>

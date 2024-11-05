@@ -7,7 +7,7 @@
         <flux:input label="{{ __('Email') }}" wire:model="email" />
         <flux:field>
             <flux:label>{{ __('Password') }}</flux:label>
-            <flux:input type="password" wire:model="password" viewable />
+            <flux:input type="password" wire:model="password" viewable autocomplete />
             <flux:error name="password" />
             <flux:description>
                 <a href="#" class="text-amber-500 hover:underline underline-offset-4">{{ __('Forget password') }}</a>
@@ -30,8 +30,8 @@
         </div>
         <flux:input label="{{ __('Name') }}" wire:model="name" />
         <flux:input label="{{ __('Email') }}" wire:model="email" />
-        <flux:input label="{{ __('Password') }}" type="password" wire:model="password" viewable />
-        <flux:input label="{{ __('Confirm password') }}" type="password" wire:model="password_confirmation" viewable />
+        <flux:input label="{{ __('Password') }}" type="password" wire:model="password" viewable autocomplete />
+        <flux:input label="{{ __('Confirm password') }}" type="password" wire:model="password_confirmation" viewable autocomplete />
         <div class="flex">
             <flux:modal.trigger name="login">
                 <flux:button type="button" variant="filled" @click="$dispatch('modal-close')">{{ __('Login') }}</flux:button>
