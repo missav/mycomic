@@ -65,6 +65,13 @@
                         <flux:badge.close />
                     </flux:badge>
                 </a>
+            @elseif (request('filter.author'))
+                <a href="{{ localizedRoute('comics.index', request()->append('filter.author', null)) }}" wire:navigate>
+                    <flux:badge class="mb-6" size="lg" color="amber">
+                        {{ __('Author: :author', ['author' => request('filter.author')]) }}
+                        <flux:badge.close />
+                    </flux:badge>
+                </a>
             @endif
             <x-comic-thumbnails class="mb-8"></x-comic-thumbnails>
             <div>
