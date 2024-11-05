@@ -2,6 +2,7 @@
     'title' => null,
     'url' => null,
     'lozad' => false,
+    'half' => true,
 ])
 
 @if ($title || $url)
@@ -16,7 +17,7 @@
 @endif
 <div {{ $attributes->merge(['class' => 'grid grid-cols-3 md:grid-cols-6 gap-x-2 lg:gap-x-4 xl:gap-x-6 gap-y-6 lg:gap-y-8']) }}>
     <template x-for="(comic, index) in comics">
-        <div class="group relative" :class="index >= comics.length / 2 ? 'hidden md:block' : ''">
+        <div class="group relative" @if ($half) :class="index >= comics.length / 2 ? 'hidden md:block' : ''" @endif>
             <div class="aspect-w-3 aspect-h-4 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
                 <a :href="comic.id ? comicUrl(comic) : '#'" wire:navigate>
                     <img

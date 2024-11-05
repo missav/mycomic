@@ -1,4 +1,7 @@
 <div x-cloak class="space-y-12">
+    <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($this->featuredComics)) }'>
+        <x-comic-thumbnails :half="false"></x-comic-thumbnails>
+    </div>
     <div
         x-data='{ comics: placeholders(12) }'
         x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('home-recommended'), 12));"

@@ -9,6 +9,14 @@ use Livewire\Attributes\Computed;
 trait WithPresetComics
 {
     #[Computed]
+    public function featuredComics(): Collection
+    {
+        return cache()->remember('featured_comics', 3600, fn () =>
+            Comic::with('recentChapter')->has('chapters')->where('featured_rank', '>', 0)->orderBy('featured_rank')->take(12)->get()
+        );
+    }
+
+    #[Computed]
     public function dailyRankComics(): Collection
     {
         return cache()->remember('daily_rank_comics', 3600, fn () =>
