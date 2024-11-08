@@ -58,13 +58,19 @@ class ChapterReader extends Component
         $mte->breadcrumbList()
             ->itemListElement([
                 Schema::listItem()->position(1)->name(__('Comic database'))->item(
-                    Schema::thing()->url(localizedRoute('comics.index'))
+                    Schema::thing()
+                        ->identifier(localizedRoute('comics.index'))
+                        ->url(localizedRoute('comics.index'))
                 ),
                 Schema::listItem()->position(2)->name($this->chapter->comic->name())->item(
-                    Schema::thing()->url(localizedRoute('comics.view', ['comic' => $this->chapter->comic]))
+                    Schema::thing()
+                        ->identifier(localizedRoute('comics.view', ['comic' => $this->chapter->comic]))
+                        ->url(localizedRoute('comics.view', ['comic' => $this->chapter->comic]))
                 ),
                 Schema::listItem()->position(3)->name($this->chapter->title())->item(
-                    Schema::thing()->url(localizedRoute('chapters.view', ['chapter' => $this->chapter]))
+                    Schema::thing()
+                        ->identifier(localizedRoute('chapters.view', ['chapter' => $this->chapter]))
+                        ->url(localizedRoute('chapters.view', ['chapter' => $this->chapter]))
                 ),
             ]);
 
