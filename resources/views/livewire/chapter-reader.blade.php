@@ -10,7 +10,8 @@
     wire:ignore
     x-data='{
         pages: @json($pages),
-        firstPageLoaded: false,
+        loadedFirstPage: false,
+        reachedEnd: false,
         currentPage: 1,
         selectedPage: 1,
         showBottomControl: false,
@@ -43,15 +44,24 @@
         },
     }'
     x-init="() => {
+        const waitForFirstPage = () => {
+            const firstPage = document.getElementById('page_1');
+
+            if (firstPage && firstPage.complete) {
+                loadedFirstPage = true;
+                return;
+            }
+
+            setTimeout(() => {
+                waitForFirstPage();
+            }, 100);
+        };
+
         showPage(1);
         showPage(2);
         showPage(3);
 
-        $nextTick(() => {
-            document.getElementById('page_1').onload = () => {
-                firstPageLoaded = true;
-            };
-        });
+        waitForFirstPage();
     }"
     class="pb-20"
 >
@@ -77,11 +87,14 @@
                 :alt="'{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title]) }}'.replace(':page', page.number)"
                 :src="page.show ? page.url : ''"
                 class="w-full mx-auto scroll-mt-16"
-                :class="page.show ? 'h-auto' : 'h-screen'"
                 x-intersect:enter="() => {
-                    if (firstPageLoaded) {
+                    if (loadedFirstPage) {
                         showPage(page.number + 1);
                         showPage(page.number + 2);
+                    }
+
+                    if (page.number === pages.length) {
+                        reachedEnd = true;
                     }
                 }"
                 x-intersect.once="() => {
@@ -96,7 +109,7 @@
         </template>
     </div>
 
-    <div class="text-center py-6">
+    <div x-cloak x-show="reachedEnd" class="text-center py-6">
         <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('The end of this chapter') }}</flux:badge>
     </div>
 
