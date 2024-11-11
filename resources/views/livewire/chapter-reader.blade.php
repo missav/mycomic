@@ -27,10 +27,10 @@
             history.pushState("", document.title, `${window.location.pathname}${window.location.search}#p${window.currentPage}`);
         },
         markCurrentPage() {
-            const currentPage = pages.filter(page => page.viewable).sort((a, b) => b.number - a.number)[0];
+            const currentPage = this.pages.filter(page => page.viewable).sort((a, b) => b.number - a.number)[0];
 
             if (currentPage) {
-                markPage(currentPage.number);
+                this.markPage(currentPage.number);
             }
         },
         prevPage() {
@@ -56,8 +56,11 @@
     x-init="() => {
         if (window.currentPage) {
             jumpToPage(window.currentPage);
-            showPage(window.currentPage);
-            showPage(window.currentPage + 1);
+
+            setTimeout(() => {
+                showPage(window.currentPage);
+                showPage(parseInt(window.currentPage) + 1);
+            }, 500);
         }
     }"
     class="pb-20"
@@ -86,17 +89,18 @@
                 class="w-full mx-auto scroll-mt-16"
                 x-intersect:enter="() => {
                     page.viewable = true;
-                    showPage(page.number);
-                    showPage(page.number + 1);
-                    if (pages.filter(page => page.viewable).sort((a, b) => b.number - a.number)[0]) {
-                        markPage(pages.filter(page => page.viewable).sort((a, b) => b.number - a.number)[0].number);
-                    }
+
+                    markCurrentPage();
+
+                    setTimeout(() => {
+                        showPage(page.number);
+                        showPage(parseInt(page.number) + 1);
+                    }, 500);
                 }"
                 x-intersect:leave="() => {
                     page.viewable = false;
-                    if (pages.filter(page => page.viewable).sort((a, b) => b.number - a.number)[0]) {
-                        markPage(pages.filter(page => page.viewable).sort((a, b) => b.number - a.number)[0].number);
-                    }
+
+                    markCurrentPage();
                 }"
                 x-intersect.once="() => {
                     if (page.number === pages.length) {
