@@ -10,6 +10,7 @@
     wire:ignore
     x-data='{
         pages: @json($pages),
+        firstPageLoaded: false,
         currentPage: 1,
         selectedPage: 1,
         showBottomControl: false,
@@ -35,16 +36,22 @@
 
             this.jumpToPage(this.currentPage + 1);
         },
-        showPage(index) {
-            if (this.pages[index]) {
-                this.pages[index].show = true;
+        showPage(number) {
+            if (this.pages[number - 1]) {
+                this.pages[number - 1].show = true;
             }
         },
     }'
     x-init="() => {
-        showPage(currentPage - 1);
-        showPage(currentPage);
-        showPage(currentPage + 1);
+        showPage(1);
+        showPage(2);
+        showPage(3);
+
+        $nextTick(() => {
+            document.getElementById('page_1').onload = () => {
+                firstPageLoaded = true;
+            };
+        });
     }"
     class="pb-20"
 >
@@ -70,9 +77,12 @@
                 :alt="'{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title]) }}'.replace(':page', page.number)"
                 :src="page.show ? page.url : ''"
                 class="w-full mx-auto scroll-mt-16"
+                :class="page.show ? 'h-auto' : 'h-screen'"
                 x-intersect:enter="() => {
-                    showPage(page.number);
-                    showPage(page.number + 1);
+                    if (firstPageLoaded) {
+                        showPage(page.number + 1);
+                        showPage(page.number + 2);
+                    }
                 }"
                 x-intersect.once="() => {
                     if (page.number === pages.length) {
@@ -87,7 +97,7 @@
     </div>
 
     <div class="text-center py-6">
-        <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('Reached the bottom') }}</flux:badge>
+        <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('The end of this chapter') }}</flux:badge>
     </div>
 
     <x-chapter-control
