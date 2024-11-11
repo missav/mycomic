@@ -267,13 +267,10 @@
             window.timeouts = [];
 
             window.recommendId = null;
-            window.currentPage = 1;
 
             if (window.location.hash.slice(1).length === 32) {
                 window.recommendId = window.location.hash.slice(1);
                 history.pushState('', document.title, `${window.location.pathname}${window.location.search}`);
-            } else if (window.location.hash.substring(0, 2) === '#p') {
-                window.currentPage = window.location.hash.substring(2);
             }
 
             if (history.scrollRestoration) {

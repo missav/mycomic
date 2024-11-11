@@ -9,35 +9,31 @@
 <div
     wire:ignore
     x-data='{
-        showBottomControl: false,
-        selectedPage: window.currentPage,
         pages: @json($pages),
+        currentPage: 1,
+        selectedPage: 1,
+        showBottomControl: false,
         jumpToPage(page) {
             this.pages[page - 1].show = true;
-            this.markPage(page);
+            this.currentPage = page;
+            this.selectedPage = page;
             this.$nextTick(() => {
                 document.getElementById(`page_${page}`).scrollIntoView();
             });
         },
-        markPage(page) {
-            window.currentPage = page;
-            this.selectedPage = page;
-
-            history.pushState("", document.title, `${window.location.pathname}${window.location.search}#p${window.currentPage}`);
-        },
         prevPage() {
-            if (window.currentPage <= 1) {
+            if (this.currentPage <= 1) {
                 return;
             }
 
-            this.jumpToPage(parseInt(window.currentPage) - 1);
+            this.jumpToPage(this.currentPage - 1);
         },
         nextPage() {
-            if (window.currentPage >= this.pages.length) {
+            if (this.currentPage >= this.pages.length) {
                 return;
             }
 
-            this.jumpToPage(parseInt(window.currentPage) + 1);
+            this.jumpToPage(this.currentPage + 1);
         },
         showPage(index) {
             if (this.pages[index]) {
@@ -46,12 +42,9 @@
         },
     }'
     x-init="() => {
-        if (window.currentPage) {
-            jumpToPage(window.currentPage);
-
-            showPage(window.currentPage);
-            showPage(parseInt(window.currentPage) + 1);
-        }
+        showPage(currentPage - 1);
+        showPage(currentPage);
+        showPage(currentPage + 1);
     }"
     class="pb-20"
 >
@@ -79,7 +72,7 @@
                 class="w-full mx-auto scroll-mt-16"
                 x-intersect:enter="() => {
                     showPage(page.number);
-                    showPage(parseInt(page.number) + 1);
+                    showPage(page.number + 1);
                 }"
                 x-intersect.once="() => {
                     if (page.number === pages.length) {

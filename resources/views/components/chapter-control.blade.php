@@ -5,7 +5,7 @@
     <flux:button size="sm" icon="chevron-left" @click="prevPage">{{ __('Prev page') }}</flux:button>
     <flux:select
         x-model="selectedPage"
-        x-on:change="() => { jumpToPage(selectedPage); }"
+        x-on:change="() => { jumpToPage(parseInt(selectedPage)); }"
         size="sm"
         variant="listbox"
         searchable
