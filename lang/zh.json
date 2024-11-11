@@ -2,8 +2,10 @@
     "Home": "主頁",
     "Toggle dark mode": "切換夜間模式",
     ":comic - :chapter: Page :page": ":comic - :chapter: 第:page頁",
-    "Prev": "上一話",
-    "Next": "下一話",
+    "Prev chapter": "上集",
+    "Next chapter": "下集",
+    "Prev page": "上頁",
+    "Next page": "下頁",
     "Index": "目錄",
     ":year / :count chapters": ":year / 共 :count 話",
     "Author": "原創作者",
@@ -88,5 +90,7 @@
     "Monthly": "月",
     "All-time": "歷史",
     "More": "更多",
-    "Author: :author": "作者: :author"
+    "Author: :author": "作者: :author",
+    "Page: :page": "第 :page 頁",
+    "Page": "頁數"
 }

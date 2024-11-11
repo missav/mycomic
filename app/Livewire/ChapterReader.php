@@ -91,6 +91,15 @@ class ChapterReader extends Component
 
         Seo::jsonLdScript($mte->toScript());
 
-        return view('livewire.chapter-reader');
+        $pages = collect(range(1, $this->chapter->pages))->map(fn (int $page) => [
+            'number' => $page,
+            'url' => $this->chapter->pageCdnUrl($page),
+            'viewable' => false,
+            'show' => false,
+        ])->all();
+
+        return view('livewire.chapter-reader', [
+            'pages' => $pages,
+        ]);
     }
 }
