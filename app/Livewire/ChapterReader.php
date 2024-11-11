@@ -94,7 +94,6 @@ class ChapterReader extends Component
         $pages = collect(range(1, $this->chapter->pages))->map(fn (int $page) => [
             'number' => $page,
             'url' => $this->chapter->pageCdnUrl($page),
-            'viewable' => false,
             'show' => false,
         ])->all();
 
