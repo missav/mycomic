@@ -56,6 +56,8 @@
     x-init="() => {
         if (window.currentPage) {
             jumpToPage(window.currentPage);
+            showPage(window.currentPage);
+            showPage(window.currentPage + 1);
         }
     }"
     class="pb-20"
