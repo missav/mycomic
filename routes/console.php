@@ -38,11 +38,11 @@ Schedule::command(\App\Console\Commands\DownloadAuthorCoverCommand::class)
     ->onOneServer()
     ->runInBackground();
 
-//Schedule::command(\App\Console\Commands\SubmitRecombeeRecordCommand::class)
-//    ->everyFiveMinutes()
-//    ->withoutOverlapping()
-//    ->onOneServer()
-//    ->runInBackground();
+Schedule::command(\App\Console\Commands\SubmitRecombeeRecordCommand::class)
+    ->everyFiveMinutes()
+    ->withoutOverlapping()
+    ->onOneServer()
+    ->runInBackground();
 
 Schedule::command(\App\Console\Commands\SyncPageViewCommand::class)
     ->dailyAt('05:11')
