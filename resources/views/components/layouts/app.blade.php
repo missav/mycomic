@@ -319,15 +319,6 @@
                     component.$wire.userUuid = window.userUuid;
                 });
 
-                Livewire.hook('request', ({ fail }) => {
-                    fail(({ status, preventDefault }) => {
-                        if (status === 419) {
-                            window.location.reload();
-                            preventDefault();
-                        }
-                    });
-                });
-
                 Livewire.on('user-uuid-updated', event => {
                     window.userUuid = event.userUuid;
 
