@@ -54,7 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'cdn_url' => 'https://cubbid.com',
+    'cdn_url' => env('CDN_URL'),
 
     'proxy_url' => env('PROXY_URL'),
 
