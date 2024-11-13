@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Http\Controllers;
 
 use App\Models\Comic;
 use App\Seo;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Livewire\Component;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ComicList extends Component
+class ComicList
 {
-    public function render(): View
+    public function __invoke(): View
     {
         Seo::title(__('Comic database'));
 
@@ -43,7 +42,7 @@ class ComicList extends Component
             ->paginate(30)
             ->appends(request()->query());
 
-        return view('livewire.comic-list', [
+        return view('comic-list', [
             'comics' => $comics,
         ]);
     }

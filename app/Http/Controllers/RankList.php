@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Http\Controllers;
 
 use App\Models\Comic;
 use App\Seo;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Livewire\Component;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class RankList extends Component
+class RankList
 {
-    public function render(): View
+    public function __invoke(): View
     {
         Seo::title(__('Ranking'));
 
@@ -40,7 +39,7 @@ class RankList extends Component
             ->orderBy('id')
             ->paginate(50);
 
-        return view('livewire.rank-list', [
+        return view('rank-list', [
             'comics' => $comics,
         ]);
     }

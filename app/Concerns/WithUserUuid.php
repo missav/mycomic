@@ -4,12 +4,13 @@ namespace App\Concerns;
 
 trait WithUserUuid
 {
-    public ?string $userUuid = null;
-
     protected function getUserUuid(): ?string
     {
-        return user()?->id ??
-            $this->userUuid ??
-            request()->cookies->get('user_uuid');
+        return user()?->id ?? request()->cookies->get('user_uuid');
+    }
+
+    protected function responseUserUuid(array $data = []): array
+    {
+        return array_merge(['userUuid' => $this->getUserUuid()], $data);
     }
 }

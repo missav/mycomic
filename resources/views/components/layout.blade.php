@@ -35,13 +35,13 @@
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="{{ cdn('img/favicon.png') }}">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @livewireStyles
         @fluxStyles
     </head>
     <body
         x-data="{
             cdnUrl: '{{ config('app.cdn_url') }}',
             maxComicId: {{ \App\Models\Comic::maxId() }},
+            loginAction: null,
             cdn(path) {
                 return this.cdnUrl + path;
             },
@@ -90,6 +90,13 @@
                     rootMargin: '0px 0px 500px 0px',
                 }).observe();
             },
+            syncUserUuid(userUuid) {
+                if (userUuid) {
+                    window.userUuid = userUuid;
+
+                    Cookies.set('user_uuid', window.userUuid, { expires: 365 });
+                }
+            },
             getRecommendations(scenario, count) {
                 return new Promise(resolve => {
                     recombeeClient.send(new recombee.RecommendItemsToUser(window.userUuid, count, {
@@ -115,7 +122,7 @@
         }"
         x-init="$nextTick(() => {
             lozadObserve();
-        })"
+        });"
         class="relative min-h-screen bg-white dark:bg-zinc-800 dark"
     >
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ \App\Seo::gtmId() }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -126,11 +133,11 @@
 
             <flux:navbar class="-mb-px max-lg:hidden">
                 @foreach (\App\Menu::main() as $item)
-                    <flux:navbar.item icon="{{ $item['icon'] }}" :href="localizedRoute($item['route'])" :current="request()->routeIs('*.' . $item['route'])" wire:navigate>
+                    <flux:navbar.item icon="{{ $item['icon'] }}" :href="localizedRoute($item['route'])" :current="request()->routeIs('*.' . $item['route'])">
                         {{ __($item['text']) }}
                     </flux:navbar.item>
                 @endforeach
-                <flux:navbar.item icon="arrow-path" ::href="comicUrl({ id: Math.floor(Math.random() * maxComicId) })" href wire:navigate>
+                <flux:navbar.item icon="arrow-path" ::href="comicUrl({ id: Math.floor(Math.random() * maxComicId) })" href>
                     {{ __('Random comic') }}
                 </flux:navbar.item>
             </flux:navbar>
@@ -178,15 +185,15 @@
             </form>
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="home" :href="localizedRoute('home')" :current="request()->routeIs('*.home')" wire:navigate>
+                <flux:navlist.item icon="home" :href="localizedRoute('home')" :current="request()->routeIs('*.home')">
                     {{ __('Home') }}
                 </flux:navlist.item>
                 @foreach (\App\Menu::main() as $item)
-                    <flux:navlist.item icon="{{ $item['icon'] }}" :href="localizedRoute($item['route'])" :current="request()->routeIs('*.' . $item['route'])" wire:navigate>
+                    <flux:navlist.item icon="{{ $item['icon'] }}" :href="localizedRoute($item['route'])" :current="request()->routeIs('*.' . $item['route'])">
                         {{ __($item['text']) }}
                     </flux:navlist.item>
                 @endforeach
-                <flux:navlist.item icon="arrow-path" ::href="comicUrl({ id: Math.floor(Math.random() * maxComicId) })" href wire:navigate>
+                <flux:navlist.item icon="arrow-path" ::href="comicUrl({ id: Math.floor(Math.random() * maxComicId) })" href>
                     {{ __('Random comic') }}
                 </flux:navlist.item>
             </flux:navlist>
@@ -219,16 +226,16 @@
                                     <div>
                                         <flux:heading size="lg">{{ __('Sort') }}</flux:heading>
                                         <ul role="list" class="mt-6 space-y-4">
-                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', null)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Recent published') }}</a></li>
-                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', '-update')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Recent updates') }}</a></li>
-                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', '-views')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Most views') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', null)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white">{{ __('Recent published') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', '-update')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white">{{ __('Recent updates') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('sort', '-views')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white">{{ __('Most views') }}</a></li>
                                         </ul>
                                     </div>
                                     <div class="mt-10 md:mt-0">
                                         <flux:heading size="lg">{{ __('Audience') }}</flux:heading>
                                         <ul role="list" class="mt-6 space-y-4">
                                             @foreach (\App\Enums\ComicAudience::cases() as $comicAudience)
-                                                <li><a href="{{ localizedRoute('comics.index', request()->append('filter.audience', $comicAudience->value)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ $comicAudience->text() }}</a></li>
+                                                <li><a href="{{ localizedRoute('comics.index', request()->append('filter.audience', $comicAudience->value)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white">{{ $comicAudience->text() }}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>
@@ -238,15 +245,15 @@
                                         <flux:heading size="lg">{{ __('Region') }}</flux:heading>
                                         <ul role="list" class="mt-6 space-y-4">
                                             @foreach (\App\Enums\ComicCountry::cases() as $comicCountry)
-                                                <li><a href="{{ localizedRoute('comics.index', request()->append('filter.country', $comicCountry->value)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ $comicCountry->text() }}</a></li>
+                                                <li><a href="{{ localizedRoute('comics.index', request()->append('filter.country', $comicCountry->value)) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white">{{ $comicCountry->text() }}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>
                                     <div class="mt-10 md:mt-0">
                                         <flux:heading size="lg">{{ __('Progress') }}</flux:heading>
                                         <ul role="list" class="mt-6 space-y-4">
-                                            <li><a href="{{ localizedRoute('comics.index', request()->append('filter.end', '0')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Ongoing') }}</a></li>
-                                            <li><a href="{{ localizedRoute('comics.index', request()->append('filter.end', '1')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white" wire:navigate>{{ __('Ended') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('filter.end', '0')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white">{{ __('Ongoing') }}</a></li>
+                                            <li><a href="{{ localizedRoute('comics.index', request()->append('filter.end', '1')) }}" class="text-sm/6 hover:text-gray-700 dark:text-gray-400 hover:dark:text-white">{{ __('Ended') }}</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -259,139 +266,7 @@
                 </footer>
             @endif
         </flux:main>
-
-        @livewireScripts
         @fluxScripts
-
-        <script>
-            window.timeouts = [];
-
-            window.recommendId = null;
-
-            if (window.location.hash.slice(1).length === 32) {
-                window.recommendId = window.location.hash.slice(1);
-                history.pushState('', document.title, `${window.location.pathname}${window.location.search}`);
-            }
-
-            if (history.scrollRestoration) {
-                history.scrollRestoration = 'manual';
-            }
-        </script>
-
-        <script data-navigate-once>
-            window.pushTimeout = (callback, ms) => {
-                window.timeouts.push(setTimeout(callback, ms));
-            };
-
-            document.addEventListener('livewire:init', () => {
-                window.userUuid = Cookies.get('user_uuid');
-
-                if (! window.userUuid || window.userUuid.length !== 36) {
-                    if (window.crypto && window.crypto.randomUUID) {
-                        window.userUuid = window.crypto.randomUUID();
-                    } else {
-                        const generateUuid = () => {
-                            let d = new Date().getTime();
-                            let d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
-
-                            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-                                let r = Math.random() * 16;
-
-                                if (d > 0) {
-                                    r = (d + r) % 16 | 0;
-                                    d = Math.floor(d / 16);
-                                } else {
-                                    r = (d2 + r) % 16 | 0;
-                                    d2 = Math.floor(d2 / 16);
-                                }
-
-                                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-                            });
-                        }
-
-                        window.userUuid = generateUuid();
-                    }
-
-                    Cookies.set('user_uuid', window.userUuid, { expires: 365 });
-                }
-
-                Livewire.hook('commit.prepare', ({ component }) => {
-                    component.$wire.userUuid = window.userUuid;
-                });
-
-                Livewire.on('user-uuid-updated', event => {
-                    window.userUuid = event.userUuid;
-
-                    Cookies.set('user_uuid', window.userUuid, { expires: 365 });
-                });
-
-                Livewire.on('comic-bookmarked', event => {
-                    recombeeClient.send(new recombee.AddBookmark(window.userUuid, event.comicId, {
-                        cascadeCreate: false,
-                        recommId: window.recommendId,
-                    }));
-                });
-
-                Livewire.on('reviewed', event => {
-                    recombeeClient.send(new recombee.AddRating(window.userUuid, event.comicId, (event.rating - 3) / 2, {
-                        cascadeCreate: true,
-                        recommId: window.recommendId,
-                    }));
-                });
-            });
-
-            document.addEventListener('livewire:navigate', () => {
-                window.timeouts.forEach(timeout => {
-                    clearTimeout(timeout);
-                });
-            });
-
-            document.addEventListener('livewire:navigated', () => {
-                Alpine.store('darkMode').applyToBody();
-            });
-
-            Alpine.store('darkMode', {
-                on: false,
-
-                toggle() {
-                    this.on = ! this.on;
-                },
-
-                init() {
-                    this.on = this.wantsDarkMode();
-
-                    Alpine.effect(() => {
-                        document.dispatchEvent(new CustomEvent('dark-mode-toggled', { detail: { isDark: this.on }, bubbles: true }));
-
-                        this.applyToBody();
-                    })
-
-                    let media = window.matchMedia('(prefers-color-scheme: dark)');
-
-                    media.addEventListener('change', e => {
-                        this.on = media.matches;
-                    })
-                },
-
-                wantsDarkMode() {
-                    let media = window.matchMedia('(prefers-color-scheme: dark)');
-
-                    if (! window.localStorage.getItem('darkMode')) {
-                        return media.matches;
-                    } else {
-                        return JSON.parse(window.localStorage.getItem('darkMode'));
-                    }
-                },
-
-                applyToBody() {
-                    let state = this.on;
-
-                    window.localStorage.setItem('darkMode', JSON.stringify(state));
-
-                    state ? document.body.classList.add('dark') : document.body.classList.remove('dark');
-                },
-            });
-        </script>
         {!! \App\Seo::jsonLdScript() !!}
     </body>
 </html>

@@ -146,6 +146,7 @@ return [
     */
 
     'attributes' => [
+        'name' => '名称',
         'email' => '电邮',
         'password' => '密码',
         'password_confirmation' => '确认密码',

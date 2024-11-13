@@ -1,13 +1,45 @@
-<flux:modal name="login" class="md:w-96 space-y-6">
-    <form wire:submit.prevent="login" class="space-y-6">
+<flux:modal
+    x-data="{
+        loading: false,
+        errors: {},
+        email: '',
+        password: '',
+    }"
+    name="login"
+    class="md:w-96"
+>
+    <form
+        @submit.prevent="
+            loading = true;
+            errors = {};
+
+            axios.post('{{ localizedRoute('login') }}', { email, password })
+                .then(response => {
+                    if (loginAction) {
+                        loginAction();
+                        loginAction = null;
+                        $dispatch('modal-close');
+                    } else {
+                        window.location.reload();
+                    }
+                })
+                .catch(error => {
+                    errors = error.response.data.errors;
+                    loading = false;
+                });
+        "
+        class="space-y-6"
+        method="post"
+    >
         <div>
             <flux:heading size="lg">{{ __('Login') }}</flux:heading>
             <flux:subheading>{{ __('You can bookmark any comics with an account.') }}</flux:subheading>
         </div>
-        <flux:input label="{{ __('Email') }}" wire:model="email" />
+        <x-error-summary></x-error-summary>
+        <flux:input label="{{ __('Email') }}" x-model="email" />
         <flux:field>
             <flux:label>{{ __('Password') }}</flux:label>
-            <flux:input type="password" wire:model="password" viewable autocomplete />
+            <flux:input type="password" x-model="password" viewable autocomplete />
             <flux:error name="password" />
             <flux:description>
                 <a href="#" class="text-amber-500 hover:underline underline-offset-4">{{ __('Forget password') }}</a>
@@ -18,26 +50,64 @@
                 <flux:button type="button" variant="filled" @click="$dispatch('modal-close')">{{ __('Register') }}</flux:button>
             </flux:modal.trigger>
             <flux:spacer />
-            <flux:button type="submit" variant="primary">{{ __('Login') }}</flux:button>
+            <flux:button type="submit" variant="primary" ::disabled="loading" loadable>
+                {{ __('Login') }}>
+            </flux:button>
         </div>
     </form>
 </flux:modal>
-<flux:modal name="register" class="md:w-96">
-    <form wire:submit.prevent="register" class="space-y-6">
+<flux:modal
+    x-data="{
+        loading: false,
+        errors: {},
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+    }"
+    name="register"
+    class="md:w-96"
+>
+    <form
+        @submit.prevent="
+            loading = true;
+            errors = {};
+
+            axios.post('{{ localizedRoute('register') }}', { name, email, password, password_confirmation })
+                .then(response => {
+                    if (loginAction) {
+                        loginAction();
+                        loginAction = null;
+                        $dispatch('modal-close');
+                    } else {
+                        window.location.reload();
+                    }
+                })
+                .catch(error => {
+                    errors = error.response.data.errors;
+                    loading = false;
+                });
+        "
+        class="space-y-6"
+        method="post"
+    >
         <div>
             <flux:heading size="lg">{{ __('Register') }}</flux:heading>
             <flux:subheading>{{ __('You can bookmark any comics with an account.') }}</flux:subheading>
         </div>
-        <flux:input label="{{ __('Name') }}" wire:model="name" />
-        <flux:input label="{{ __('Email') }}" wire:model="email" />
-        <flux:input label="{{ __('Password') }}" type="password" wire:model="password" viewable autocomplete />
-        <flux:input label="{{ __('Confirm password') }}" type="password" wire:model="password_confirmation" viewable autocomplete />
+        <x-error-summary></x-error-summary>
+        <flux:input label="{{ __('Name') }}" x-model="name" />
+        <flux:input label="{{ __('Email') }}" x-model="email" />
+        <flux:input label="{{ __('Password') }}" type="password" x-model="password" viewable autocomplete />
+        <flux:input label="{{ __('Confirm password') }}" type="password" x-model="password_confirmation" viewable autocomplete />
         <div class="flex">
             <flux:modal.trigger name="login">
                 <flux:button type="button" variant="filled" @click="$dispatch('modal-close')">{{ __('Login') }}</flux:button>
             </flux:modal.trigger>
             <flux:spacer />
-            <flux:button type="submit" variant="primary">{{ __('Register') }}</flux:button>
+            <flux:button type="submit" variant="primary" ::disabled="loading" loadable>
+                {{ __('Register') }}
+            </flux:button>
         </div>
     </form>
 </flux:modal>

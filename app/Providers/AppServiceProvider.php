@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\Comic;
-use App\Models\Record;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Client\PendingRequest;
@@ -19,10 +18,14 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
         Model::preventLazyLoading();
 
-        Relation::morphMap([
-            'comic' => Comic::class,
-        ]);
+        Relation::morphMap(['comic' => Comic::class]);
 
+        $this->registerHttpMacros();
+        $this->registerRequestMacros();
+    }
+
+    protected function registerHttpMacros(): void
+    {
         Http::macro('proxy', function (): PendingRequest {
             return Http::withoutVerifying()->withOptions([
                 'proxy' => [
@@ -31,7 +34,10 @@ class AppServiceProvider extends ServiceProvider
                 ],
             ]);
         });
+    }
 
+    protected function registerRequestMacros(): void
+    {
         Request::macro('append', function (string $key, ?string $value, array $except = ['page']): array {
             $data = request()->except($except);
 

@@ -1,33 +1,33 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Http\Controllers;
 
 use App\Concerns\WithPresetComics;
 use App\Concerns\WithUserUuid;
 use App\Models\Record;
 use App\Seo;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
-use Livewire\WithPagination;
 
-class RecordList extends Component
+class BookmarkList
 {
-    use WithPagination, WithUserUuid, WithPresetComics;
+    use WithUserUuid, WithPresetComics;
 
-    public function render(): View
+    public function __invoke(): View
     {
-        Seo::title(__('History'));
+        Seo::title(__('My bookmarks'));
 
         $records = Record::query()
             ->with('comic.recentChapter', 'chapter')
             ->where('user_id', $this->getUserUuid())
-            ->whereNotNull('chapter_id')
+            ->where('has_bookmarked', 1)
             ->orderByDesc('updated_at')
             ->limit(50)
             ->get();
 
-        return view('livewire.record-list', [
+        return view('record-list', [
             'records' => $records,
+            'recentUpdatedComics' => $this->recentUpdatedComics(),
+            'recentPublishedComics' => $this->recentPublishedComics(),
         ]);
     }
 }

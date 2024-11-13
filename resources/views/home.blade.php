@@ -1,5 +1,6 @@
+<x-layout>
 <div x-cloak class="space-y-12">
-    <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($this->featuredComics)) }'>
+    <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($featuredComics)) }'>
         <x-comic-thumbnails :half="false"></x-comic-thumbnails>
     </div>
     <div
@@ -35,25 +36,26 @@
             <flux:rows>
                 <flux:row>
                     <flux:cell>
-                        <x-comic-text-list :comics="$this->recentUpdatedComics" />
+                        <x-comic-text-list :comics="$recentUpdatedComics" />
                     </flux:cell>
                     <flux:cell>
-                        <x-comic-text-list :comics="$this->dailyRankComics" />
+                        <x-comic-text-list :comics="$dailyRankComics" />
                     </flux:cell>
                     <flux:cell>
-                        <x-comic-text-list :comics="$this->weeklyRankComics" />
+                        <x-comic-text-list :comics="$weeklyRankComics" />
                     </flux:cell>
                     <flux:cell>
-                        <x-comic-text-list :comics="$this->allTimeRankComics" />
+                        <x-comic-text-list :comics="$allTimeRankComics" />
                     </flux:cell>
                 </flux:row>
             </flux:rows>
         </flux:table>
     </div>
-    <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($this->recentUpdatedComics)) }'>
+    <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($recentUpdatedComics)) }'>
         <x-comic-thumbnails title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" lozad></x-comic-thumbnails>
     </div>
-    <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($this->recentPublishedComics)) }'>
+    <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($recentPublishedComics)) }'>
         <x-comic-thumbnails title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" lozad></x-comic-thumbnails>
     </div>
 </div>
+</x-layout>
