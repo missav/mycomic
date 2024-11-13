@@ -86,8 +86,7 @@
                     x-show="page.show"
                     :id="`page_${page.number}`"
                     :alt="'{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title]) }}'.replace(':page', page.number)"
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=="
-                    :src="page.show ? page.url : ''"
+                    :src="page.show ? page.url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=='"
                     class="w-full mx-auto scroll-mt-16"
                     x-intersect:enter="() => {
                         if (loadedFirstPage) {
