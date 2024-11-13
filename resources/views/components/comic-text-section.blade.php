@@ -10,6 +10,6 @@
     @endif
     <x-comic-text-list :comics="$comics" />
     <div class="text-center pt-2">
-        <flux:button size="xs" :href="$url" wire:navigate>{{ __('View more') }}</flux:button>
+        <flux:button size="xs" :href="$url">{{ __('View more') }}</flux:button>
     </div>
 </div>

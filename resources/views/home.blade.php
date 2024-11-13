@@ -15,22 +15,22 @@
                 <flux:column>
                     {{ __('Recent updates') }}
                     <flux:spacer />
-                    <a href="{{ localizedRoute('comics.index', ['sort' => '-update']) }}" class="text-amber-500 hover:underline underline-offset-4" wire:navigate>{{ __('More') }}</a>
+                    <a href="{{ localizedRoute('comics.index', ['sort' => '-update']) }}" class="text-amber-500 hover:underline underline-offset-4">{{ __('More') }}</a>
                 </flux:column>
                 <flux:column>
                     {{ __('Daily rank') }}
                     <flux:spacer />
-                    <a href="{{ localizedRoute('rank') }}" class="text-amber-500 hover:underline underline-offset-4" wire:navigate>{{ __('More') }}</a>
+                    <a href="{{ localizedRoute('rank') }}" class="text-amber-500 hover:underline underline-offset-4">{{ __('More') }}</a>
                 </flux:column>
                 <flux:column>
                     {{ __('Weekly rank') }}
                     <flux:spacer />
-                    <a href="{{ localizedRoute('rank', ['sort' => '-week']) }}" class="text-amber-500 hover:underline underline-offset-4" wire:navigate>{{ __('More') }}</a>
+                    <a href="{{ localizedRoute('rank', ['sort' => '-week']) }}" class="text-amber-500 hover:underline underline-offset-4">{{ __('More') }}</a>
                 </flux:column>
                 <flux:column>
                     {{ __('All-time rank') }}
                     <flux:spacer />
-                    <a href="{{ localizedRoute('rank', ['sort' => '-views']) }}" class="text-amber-500 hover:underline underline-offset-4" wire:navigate>{{ __('More') }}</a>
+                    <a href="{{ localizedRoute('rank', ['sort' => '-views']) }}" class="text-amber-500 hover:underline underline-offset-4">{{ __('More') }}</a>
                 </flux:column>
             </flux:columns>
             <flux:rows>

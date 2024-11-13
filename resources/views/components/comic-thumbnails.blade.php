@@ -19,7 +19,7 @@
     <template x-for="(comic, index) in comics">
         <div class="group relative" @if ($half) :class="index >= comics.length / 2 ? 'hidden md:block' : ''" @endif>
             <div class="aspect-w-3 aspect-h-4 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
-                <a :href="comic.id ? comicUrl(comic) : '#'" wire:navigate>
+                <a :href="comic.id ? comicUrl(comic) : '#'">
                     <img
                         @if ($lozad)
                             :data-src="cdn(comic.cover_image_path)"
@@ -34,7 +34,7 @@
             </div>
             <div class="mt-2 text-center">
                 <flux:subheading class="truncate">
-                    <a :href="comicUrl(comic)" x-text="comic.name ? comic.name : '&nbsp;'" wire:navigate></a>
+                    <a :href="comicUrl(comic)" x-text="comic.name ? comic.name : '&nbsp;'"></a>
                 </flux:subheading>
             </div>
         </div>

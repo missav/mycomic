@@ -11,7 +11,6 @@
         <flux:navlist.item
             :href="localizedRoute($route, request()->append('filter.country', null))"
             :current="! request()->has('filter.country')"
-            wire:navigate
         >
             {{ __('All') }}
         </flux:navlist.item>
@@ -19,7 +18,6 @@
             <flux:navlist.item
                 :href="localizedRoute($route, request()->append('filter.country', $comicCountry->value))"
                 :current="request('filter.country') === $comicCountry->value"
-                wire:navigate
             >
                 {{ $comicCountry->text() }}
             </flux:navlist.item>
@@ -29,7 +27,6 @@
         <flux:navlist.item
             :href="localizedRoute($route, request()->append('filter.tag', null))"
             :current="! request()->has('filter.tag')"
-            wire:navigate
         >
             {{ __('All') }}
         </flux:navlist.item>
@@ -37,7 +34,6 @@
             <flux:navlist.item
                 :href="localizedRoute($route, request()->append('filter.tag', $slug))"
                 :current="request('filter.tag') === $slug"
-                wire:navigate
             >
                 {{ $name }}
             </flux:navlist.item>
@@ -47,7 +43,6 @@
         <flux:navlist.item
             :href="localizedRoute($route, request()->append('filter.audience', null))"
             :current="! request()->has('filter.audience')"
-            wire:navigate
         >
             {{ __('All') }}
         </flux:navlist.item>
@@ -55,7 +50,6 @@
             <flux:navlist.item
                 :href="localizedRoute($route, request()->append('filter.audience', $comicAudience->value))"
                 :current="request('filter.audience') === $comicAudience->value"
-                wire:navigate
             >
                 {{ $comicAudience->text() }}
             </flux:navlist.item>
@@ -65,7 +59,6 @@
         <flux:navlist.item
             :href="localizedRoute($route, request()->append('filter.year', null))"
             :current="! request()->has('filter.year')"
-            wire:navigate
         >
             {{ __('All') }}
         </flux:navlist.item>
@@ -73,7 +66,6 @@
             <flux:navlist.item
                 :href="localizedRoute($route, request()->append('filter.year', $year))"
                 :current="request('filter.year') === (string) $year"
-                wire:navigate
             >
                 {{ __($year) }}
             </flux:navlist.item>
@@ -83,21 +75,18 @@
         <flux:navlist.item
             :href="localizedRoute($route, request()->append('filter.end', null))"
             :current="! request()->has('filter.end')"
-            wire:navigate
         >
             {{ __('All') }}
         </flux:navlist.item>
         <flux:navlist.item
             :href="localizedRoute($route, request()->append('filter.end', '0'))"
             :current="request('filter.end') === '0'"
-            wire:navigate
         >
             {{ __('Ongoing') }}
         </flux:navlist.item>
         <flux:navlist.item
             :href="localizedRoute($route, request()->append('filter.end', '1'))"
             :current="request('filter.end') === '1'"
-            wire:navigate
         >
             {{ __('Ended') }}
         </flux:navlist.item>
