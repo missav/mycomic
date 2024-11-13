@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(replace: [
             EncryptCookies::class => EncryptCookiesExceptUserUuid::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            '*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         \Spatie\LaravelFlare\Facades\Flare::handles($exceptions);
