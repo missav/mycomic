@@ -63,7 +63,6 @@ class ChapterReader
         $pages = collect(range(1, $chapter->pages))->map(fn (int $page) => [
             'number' => $page,
             'url' => $chapter->pageCdnUrl($page),
-            'show' => false,
         ])->all();
 
         return view('chapter-reader', [

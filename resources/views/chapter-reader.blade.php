@@ -2,59 +2,11 @@
     <div
         x-data='{
             pages: @json($pages),
-            loadedFirstPage: false,
+            preload: 3,
             reachedEnd: false,
-            currentPage: 1,
-            selectedPage: 1,
             showBottomControl: false,
-            jumpToPage(page) {
-                this.pages[page - 1].show = true;
-                this.currentPage = page;
-                this.selectedPage = page;
-                this.$nextTick(() => {
-                    document.getElementById(`page_${page}`).scrollIntoView();
-                });
-            },
-            prevPage() {
-                if (this.currentPage <= 1) {
-                    return;
-                }
-
-                this.jumpToPage(this.currentPage - 1);
-            },
-            nextPage() {
-                if (this.currentPage >= this.pages.length) {
-                    return;
-                }
-
-                this.jumpToPage(this.currentPage + 1);
-            },
-            showPage(number) {
-                if (this.pages[number - 1]) {
-                    this.pages[number - 1].show = true;
-                }
-            },
         }'
         x-init="$nextTick(() => {
-            const waitForFirstPage = () => {
-                const firstPage = document.getElementById('page_1');
-
-                if (firstPage && firstPage.complete) {
-                    loadedFirstPage = true;
-                    return;
-                }
-
-                setTimeout(() => {
-                    waitForFirstPage();
-                }, 100);
-            };
-
-            @foreach (range(1, min(3, $chapter->pages)) as $page)
-                showPage({{ $page }});
-            @endforeach
-
-            waitForFirstPage();
-
             setTimeout(() => {
                 axios.post('{{ route('chapters.sync', ['chapter' => $chapter]) }}').then(response => {
                     syncUserUuid(response.data.userUuid);
@@ -82,23 +34,11 @@
             <div x-data="{ loaded: false }" x-show="! loaded" x-init="setTimeout(() => loaded = true, 1000)" class="w-full h-screen"></div>
             <template x-for="page in pages" :key="`page_${page.number}`">
                 <img
-                    x-cloak
-                    x-show="page.show"
-                    :id="`page_${page.number}`"
-                    :alt="'{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title]) }}'.replace(':page', page.number)"
-                    :src="page.show ? page.url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=='"
+                    :src="page.number <= preload ? page.url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=='"
+                    :data-src="page.url"
                     class="w-full mx-auto scroll-mt-16"
-                    x-intersect:enter="() => {
-                        if (loadedFirstPage) {
-                            showPage(page.number + 1);
-                            showPage(page.number + 2);
-                            showPage(page.number + 3);
-                        }
-
-                        if (page.number === pages.length) {
-                            reachedEnd = true;
-                        }
-                    }"
+                    :class="page.number <= preload ? '' : 'lozad'"
+                    :alt="'{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title]) }}'.replace(':page', page.number)"
                     x-intersect.once="() => {
                         if (page.number === pages.length) {
                             recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
