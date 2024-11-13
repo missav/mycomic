@@ -13,7 +13,7 @@
                 });
             }, 2000);
         });"
-        class="pb-20"
+        class="pb-16"
     >
         <flux:breadcrumbs>
             <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
@@ -51,7 +51,7 @@
             </template>
         </div>
 
-        <div x-cloak x-show="reachedEnd" class="text-center py-6">
+        <div class="text-center py-8">
             <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('The end of this chapter') }}</flux:badge>
         </div>
 
