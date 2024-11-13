@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layout>
     <div class="grid place-content-center px-4">
         <div class="text-center">
             <h1 class="text-9xl font-black text-gray-200 dark:text-gray-700">@yield('code')</h1>
@@ -11,4 +11,4 @@
             </flux:button>
         </div>
     </div>
-</x-layouts.app>
+</x-layout>
