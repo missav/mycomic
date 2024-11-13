@@ -49,9 +49,9 @@
                 }, 100);
             };
 
-            showPage(1);
-            showPage(2);
-            showPage(3);
+            @foreach (range(1, min(3, $chapter->pages)) as $page)
+                showPage({{ $page }});
+            @endforeach
 
             waitForFirstPage();
 
@@ -79,18 +79,21 @@
         />
 
         <div class="-mx-6 sm:mx-0">
+            <div x-data="{ loaded: false }" x-show="! loaded" x-init="setTimeout(() => loaded = true, 1000)" class="w-full h-screen"></div>
             <template x-for="page in pages" :key="`page_${page.number}`">
                 <img
                     x-cloak
                     x-show="page.show"
                     :id="`page_${page.number}`"
                     :alt="'{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title]) }}'.replace(':page', page.number)"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=="
                     :src="page.show ? page.url : ''"
                     class="w-full mx-auto scroll-mt-16"
                     x-intersect:enter="() => {
                         if (loadedFirstPage) {
                             showPage(page.number + 1);
                             showPage(page.number + 2);
+                            showPage(page.number + 3);
                         }
 
                         if (page.number === pages.length) {
