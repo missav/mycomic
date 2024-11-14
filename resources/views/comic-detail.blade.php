@@ -24,6 +24,13 @@
                     }
                 });
             }, 100);
+
+            setTimeout(() => {
+                recombeeClient.send(new recombee.AddDetailView(window.userUuid, {{ $comic->id }}, {
+                    cascadeCreate: true,
+                    recommId: window.recommendId,
+                }));
+            }, 3000);
         });"
         class="flex items-stretch"
     >
