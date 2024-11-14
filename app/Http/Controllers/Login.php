@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Concerns\WithUserUuid;
+use App\Models\Record;
 use App\Recombee\Recombee;
 use Exception;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -31,6 +32,8 @@ class Login
         request()->session()->regenerate();
 
         if ($originalUserUuid && $originalUserUuid !== user()->id) {
+            Record::whereUserId($originalUserUuid)->update(['user_id' => user()->id]);
+
             try {
                 Recombee::send(new MergeUsers(user()->id, $originalUserUuid, [
                     'cascadeCreate' => true,
