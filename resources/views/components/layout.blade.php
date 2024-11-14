@@ -98,33 +98,43 @@
                     Cookies.set('user_uuid', window.userUuid, { expires: 365 });
                 }
             },
-            getRecommendations(scenario, count) {
-                return new Promise(resolve => {
-                    recombeeClient.send(new recombee.RecommendItemsToUser(window.userUuid, count, {
-                        scenario: scenario,
-                        cascadeCreate: true,
-                        returnProperties: true,
-                        includedProperties: [
-                            this.locale === 'zh' ? 'name' : 'name_cn',
-                            'recent_chapter_id',
-                            this.locale === 'zh' ? 'recent_chapter_title' : 'recent_chapter_title_cn',
-                            'recent_chapter_title_cn',
-                            'cover_image_path',
-                        ],
-                    })).then(response => {
-                        const recommendations = response.recomms.map(item => {
-                            item.values.id = item.id;
-                            item.values.recommend_id = response.recommId;
+            getRecommendations(scenario, count, comicId) {
+                const data = {
+                    scenario: scenario,
+                    cascadeCreate: true,
+                    returnProperties: true,
+                    includedProperties: [
+                        this.locale === 'zh' ? 'name' : 'name_cn',
+                        'recent_chapter_id',
+                        this.locale === 'zh' ? 'recent_chapter_title' : 'recent_chapter_title_cn',
+                        'recent_chapter_title_cn',
+                        'cover_image_path',
+                    ],
+                };
 
-                            if (this.locale === 'cn') {
-                                item.values.name = item.values.name_cn;
-                                item.values.recent_chapter_title = item.values.recent_chapter_title_cn;
-                            }
+                const transformResponse = response => response.recomms.map(item => {
+                    item.values.id = item.id;
+                    item.values.recommend_id = response.recommId;
 
-                            return item.values;
+                    if (this.locale === 'cn') {
+                        item.values.name = item.values.name_cn;
+                        item.values.recent_chapter_title = item.values.recent_chapter_title_cn;
+                    }
+
+                    return item.values;
+                });
+
+                if (comicId) {
+                    return new Promise(resolve => {
+                        recombeeClient.send(new recombee.RecommendItemsToItem(comicId, window.userUuid, count, data)).then(response => {
+                            resolve(transformResponse(response));
                         });
+                    });
+                }
 
-                        resolve(recommendations);
+                return new Promise(resolve => {
+                    recombeeClient.send(new recombee.RecommendItemsToUser(window.userUuid, count, data)).then(response => {
+                        resolve(transformResponse(response));
                     });
                 });
             },

@@ -229,7 +229,7 @@
             <div
                 x-cloak
                 x-data='{ comics: placeholders(12) }'
-                x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('comic-list-recommended'), 12));"
+                x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('watch-next'), 12, {{ $comic->id }}));"
             >
                 <x-comic-thumbnails></x-comic-thumbnails>
             </div>
