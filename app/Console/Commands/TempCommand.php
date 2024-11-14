@@ -15,6 +15,7 @@ class TempCommand extends Command
     public function handle(): void
     {
         Comic::query()
+            ->with('recentChapter')
             ->whereNull('recent_chapter_id')
             ->chunkById(1000, function (Collection $comics) {
                 $comics->each(function (Comic $comic) {
