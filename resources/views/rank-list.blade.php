@@ -85,13 +85,13 @@
                                     ->implode(', ') !!}
                             </flux:cell>
                             <flux:cell class="hidden lg:table-cell">
-                                <a href="{{ $comic->recentChapter->url() }}" class="text-amber-500 hover:underline underline-offset-4">
-                                    {{ \Illuminate\Support\Str::limit($comic->recentChapter->title(), 8) }}
+                                <a href="{{ $comic->recentChapterUrl() }}" class="text-amber-500 hover:underline underline-offset-4">
+                                    {{ \Illuminate\Support\Str::limit($comic->recentChapterTitle(), 8) }}
                                 </a>
                             </flux:cell>
                             <flux:cell class="table-cell lg:hidden" align="end">
-                                <a href="{{ $comic->recentChapter->url() }}" class="text-amber-500 hover:underline underline-offset-4">
-                                    {{ \Illuminate\Support\Str::limit($comic->recentChapter->title(), 8) }}
+                                <a href="{{ $comic->recentChapterUrl() }}" class="text-amber-500 hover:underline underline-offset-4">
+                                    {{ \Illuminate\Support\Str::limit($comic->recentChapterTitle(), 8) }}
                                 </a>
                             </flux:cell>
                             <flux:cell class="hidden lg:table-cell font-mono">{{ $comic->last_updated_on->toDateString() }}</flux:cell>

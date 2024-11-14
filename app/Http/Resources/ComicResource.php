@@ -11,8 +11,11 @@ class ComicResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->name(),
+            'recent_chapter_id' => $this->recent_chapter_id,
+            'recent_chapter_title' => $this->recentChapterTitle(),
             'cover_image_path' => $this->coverImagePath(),
+            'is_ended' => $this->is_ended,
         ];
     }
 }

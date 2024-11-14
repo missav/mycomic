@@ -99,6 +99,11 @@ class Comic extends Model
         return localizedRoute('comics.index', ['filter' => ['country' => $this->country]]);
     }
 
+    public function recentChapterUrl(): string
+    {
+        return localizedRoute('chapters.view', ['chapter' => $this->recent_chapter_id]);
+    }
+
     public function coverImagePath(): string
     {
         return FileSignature::append("/comics/{$this->id}.jpg");

@@ -25,7 +25,7 @@
                                     </div>
                                 </flux:cell>
                                 <flux:cell>
-                                    <a href="{{ $record->comic->recentChapter->url() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->comic->recentChapter->title }}</a>
+                                    <a href="{{ $record->comic->recentChapterUrl() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->comic->recentChapterTitle() }}</a>
                                 </flux:cell>
                                 <flux:cell align="end" class="whitespace-nowrap">{{ localized($record->updated_at->diffForHumans()) }}</flux:cell>
                             </flux:row>

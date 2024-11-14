@@ -39,6 +39,7 @@
     </head>
     <body
         x-data="{
+            locale: '{{ app()->getLocale() }}',
             cdnUrl: '{{ config('app.cdn_url') }}',
             maxComicId: {{ \App\Models\Comic::maxId() }},
             loginAction: null,
@@ -104,13 +105,21 @@
                         cascadeCreate: true,
                         returnProperties: true,
                         includedProperties: [
-                            'name',
+                            this.locale === 'zh' ? 'name' : 'name_cn',
+                            'recent_chapter_id',
+                            this.locale === 'zh' ? 'recent_chapter_title' : 'recent_chapter_title_cn',
+                            'recent_chapter_title_cn',
                             'cover_image_path',
                         ],
                     })).then(response => {
                         const recommendations = response.recomms.map(item => {
                             item.values.id = item.id;
                             item.values.recommend_id = response.recommId;
+
+                            if (this.locale === 'cn') {
+                                item.values.name = item.values.name_cn;
+                                item.values.recent_chapter_title = item.values.recent_chapter_title_cn;
+                            }
 
                             return item.values;
                         });
