@@ -35,7 +35,6 @@
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="{{ cdn('img/favicon.png') }}">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @fluxStyles
     </head>
     <body
         x-data="{

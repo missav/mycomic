@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AddEarlyHintsLinkHeaders;
 use App\Http\Middleware\EncryptCookiesExceptUserUuid;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
@@ -13,7 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(replace: [
+        $middleware->web(append: [
+            AddEarlyHintsLinkHeaders::class,
+        ], replace: [
             EncryptCookies::class => EncryptCookiesExceptUserUuid::class,
         ]);
 

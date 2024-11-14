@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Concerns\WithPresetComics;
+use App\LinkHeader;
 use App\Models\Comic;
 use App\Seo;
 use Carbon\Carbon;
@@ -16,6 +17,8 @@ class ComicDetail
 
     public function __invoke(Comic $comic): View
     {
+        LinkHeader::addPreconnect($comic->coverCdnUrl());
+
         Seo::title($comic->name());
         Seo::description($comic->description());
         Seo::keywords($comic->keywords()->all());

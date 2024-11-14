@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Concerns\WithUserUuid;
+use App\LinkHeader;
 use App\Models\Chapter;
 use App\Seo;
 use Carbon\Carbon;
@@ -16,6 +17,10 @@ class ChapterReader
 
     public function __invoke(Chapter $chapter): View
     {
+        foreach (range(1, min(3, $chapter->pages)) as $page) {
+            LinkHeader::addPreconnect($chapter->pageCdnUrl($page));
+        }
+
         Seo::title($chapter->comic->name());
         Seo::description($chapter->comic->description());
         Seo::keywords($chapter->comic->keywords()->all());
