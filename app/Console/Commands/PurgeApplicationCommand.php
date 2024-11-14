@@ -5,15 +5,15 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class ResetApplicationCommand extends Command
+class PurgeApplicationCommand extends Command
 {
-    protected $signature = 'reset';
+    protected $signature = 'purge';
 
-    protected $description = 'Reset application command';
+    protected $description = 'Purge application command';
 
     public function handle(): void
     {
-        if (! $this->confirm('Are you sure to reset the application?')) {
+        if (! $this->confirm('Are you sure to purge the application?')) {
             return;
         }
 
