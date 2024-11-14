@@ -110,6 +110,13 @@ class ImportComicCommand extends Command
             ])
         );
 
+        if ($recentChapter = $comic->recentChapter) {
+            $comic->update([
+                'recent_chapter_id' => $recentChapter->id,
+                'recent_chapter_title' => $recentChapter->title,
+            ]);
+        }
+
         if (! $comic->has_downloaded_cover) {
             DownloadComicCover::dispatch($comic);
         }

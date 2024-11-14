@@ -127,6 +127,8 @@ class Comic extends Model
             'audience_text_cn' => $this->audience->text('cn'),
             'year' => $this->year,
             'is_ended' => $this->is_ended,
+            'recent_chapter_id' => $this->recent_chapter_id,
+            'recent_chapter_title' => $this->recent_chapter_title,
             'cover_image_path' => $this->coverImagePath(),
             'last_updated_on' => $this->last_updated_on,
         ];
