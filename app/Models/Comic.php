@@ -73,6 +73,17 @@ class Comic extends Model
             ->add($this->audience->text());
     }
 
+    public function recentChapterTitle(?string $locale = null): ?string
+    {
+        if (! $this->recent_chapter_title) {
+            return null;
+        }
+
+        $locale = $locale ?? app()->getLocale();
+
+        return $locale === 'cn' ? cn($this->recent_chapter_title) : $this->recent_chapter_title;
+    }
+
     public function url(): string
     {
         return localizedRoute('comics.view', ['comic' => $this]);
@@ -128,7 +139,8 @@ class Comic extends Model
             'year' => $this->year,
             'is_ended' => $this->is_ended,
             'recent_chapter_id' => $this->recent_chapter_id,
-            'recent_chapter_title' => $this->recent_chapter_title,
+            'recent_chapter_title' => $this->recentChapterTitle('zh'),
+            'recent_chapter_title_cn' => $this->recentChapterTitle('cn'),
             'cover_image_path' => $this->coverImagePath(),
             'last_updated_on' => $this->last_updated_on,
         ];
