@@ -31,7 +31,7 @@
                         class="lozad w-full h-full object-cover object-top lg:h-full lg:w-full -z-10"
                     >
                     <div x-cloak x-show="comic.recent_chapter_title" class="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black to-30% flex items-end justify-center px-3">
-                        <div x-text="comic.recent_chapter_title" class="text-white text-sm pb-3 truncate"></div>
+                        <div x-text="comic.recent_chapter_title + (comic.is_ended ? ' [{{ __('End') }}]' : '')" class="text-white text-sm pb-3 truncate"></div>
                     </div>
                 </a>
             </div>
