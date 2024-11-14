@@ -1,11 +1,18 @@
 <x-layout>
     <div
         x-data="{
+            comicId: {{ $comic->id }},
             loading: false,
             isSynced: false,
             isLoggedIn: false,
             hasBookmarked: false,
             recentChapterId: null,
+            sendRecombeeAddBookmark() {
+                recombeeClient.send(new recombee.AddBookmark(window.userUuid, this.comicId, {
+                    cascadeCreate: false,
+                    recommId: window.recommendId,
+                }));
+            },
         }"
         x-init="$nextTick(() => {
             setTimeout(() => {
@@ -26,7 +33,7 @@
             }, 100);
 
             setTimeout(() => {
-                recombeeClient.send(new recombee.AddDetailView(window.userUuid, {{ $comic->id }}, {
+                recombeeClient.send(new recombee.AddDetailView(window.userUuid, comicId, {
                     cascadeCreate: true,
                     recommId: window.recommendId,
                 }));
@@ -133,6 +140,8 @@
                                             isLoggedIn = true;
                                             hasBookmarked = true;
                                             loading = false;
+
+                                            sendRecombeeAddBookmark();
                                         });
                                     };
 
@@ -168,6 +177,8 @@
                                         syncUserUuid(response.data.userUuid);
                                         hasBookmarked = true;
                                         loading = false;
+
+                                        sendRecombeeAddBookmark();
                                     });
                                 "
                                 ::disabled="loading"
@@ -236,7 +247,7 @@
             <div
                 x-cloak
                 x-data='{ comics: placeholders(12) }'
-                x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('watch-next'), 12, {{ $comic->id }}));"
+                x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('watch-next'), 12, comicId));"
             >
                 <x-comic-thumbnails></x-comic-thumbnails>
             </div>
@@ -356,7 +367,12 @@
 
                     axios.post('{{ route('comics.review', ['comic' => $comic]) }}', { rating, text })
                         .then(response => {
-                            window.location.reload();
+                            recombeeClient.send(new recombee.AddRating(window.userUuid, comicId, (rating - 3) / 2, {
+                                cascadeCreate: true,
+                                recommId: window.recommendId,
+                            })).then(() => {
+                                window.location.reload();
+                            });
                         })
                         .catch(error => {
                             errors = error.response.data.errors;
