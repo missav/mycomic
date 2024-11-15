@@ -141,7 +141,7 @@
         x-init="$nextTick(() => {
             lozadObserve();
         });"
-        class="relative min-h-screen bg-white dark:bg-zinc-800 dark"
+        class="relative min-h-screen bg-slate-50 dark:bg-zinc-800 dark"
     >
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ \App\Seo::gtmId() }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <flux:header container class="fixed top-0 left-0 right-0 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
@@ -172,6 +172,7 @@
                         icon="magnifying-glass"
                         icon-variant="solid"
                         @click="document.body.hasAttribute('data-show-stashed-sidebar') ? document.body.removeAttribute('data-show-stashed-sidebar') : document.body.setAttribute('data-show-stashed-sidebar', ''); document.getElementById('sidebar-search').focus();"
+                        :aria-label="__('Search')"
                     />
                 </flux:tooltip>
                 <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom">
