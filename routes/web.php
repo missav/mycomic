@@ -15,6 +15,7 @@ Route::post('/comics/{comic}', \App\Http\Controllers\SyncComic::class)->name('co
 Route::post('/comics/{comic}/bookmark', \App\Http\Controllers\BookmarkComic::class)->name('comics.bookmark');
 Route::delete('/comics/{comic}/bookmark', \App\Http\Controllers\UnbookmarkComic::class)->name('comics.unbookmark');
 Route::post('/comics/{comic}/review', \App\Http\Controllers\ReviewComic::class)->name('comics.review');
+Route::post('/logout', \App\Http\Controllers\Logout::class)->name('logout');
 
 Route::post('/chapters/{chapter}', \App\Http\Controllers\SyncChapter::class)->name('chapters.sync');
 

@@ -93,5 +93,6 @@
     "Author: :author": "作者: :author",
     "Page: :page": "第 :page 页",
     "Page": "页数",
-    "End": "完"
+    "End": "完",
+    "Logout": "登出"
 }

@@ -1,10 +1,19 @@
 <x-layout>
     <div class="flex items-stretch">
         <div class="w-3/4 grow">
-            <flux:breadcrumbs class="mb-4">
-                <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
-                <flux:breadcrumbs.item>{{ \App\Seo::title(raw: true) }}</flux:breadcrumbs.item>
-            </flux:breadcrumbs>
+            <div class="flex justify-between items-center mb-4">
+                <flux:breadcrumbs>
+                    <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
+                    <flux:breadcrumbs.item>{{ \App\Seo::title(raw: true) }}</flux:breadcrumbs.item>
+                </flux:breadcrumbs>
+                @if (request()->routeIs('*bookmarks.index') && auth()->check())
+                    <flux:button
+                        @click="axios.post('{{ route('logout') }}').then(response => window.location.reload());"
+                        variant="filled"
+                        size="sm"
+                    >{{ __('Logout') }}</flux:button>
+                @endif
+            </div>
             @if ($records->isNotEmpty())
                 <flux:table>
                     <flux:columns>
@@ -30,7 +39,7 @@
                                 <flux:cell>
                                     <a href="{{ $record->comic->recentChapterUrl() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->comic->recentChapterTitle() }}</a>
                                 </flux:cell>
-                                <flux:cell class="whitespace-nowrap hidden sm:table-cell text-right">
+                                <flux:cell class="whitespace-nowrap hidden sm:table-cell">
                                     {{ localized($record->updated_at->diffForHumans()) }}
                                 </flux:cell>
                             </flux:row>
