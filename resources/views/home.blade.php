@@ -1,7 +1,7 @@
 <x-layout>
     <div class="space-y-12">
-        <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($featuredComics)) }'>
-            <x-comic-thumbnails :half="false"></x-comic-thumbnails>
+        <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($featuredComics->skip(1))) }'>
+            <x-comic-thumbnails :comics="$featuredComics->take(1)" :half="false"></x-comic-thumbnails>
         </div>
         <div
             x-data='{ comics: placeholders(12) }'
