@@ -22,6 +22,8 @@
         "spatie/laravel-sitemap": "^7.2",
         "spatie/schema-org": "^3.23",
         "symfony/dom-crawler": "^7.1",
+        "symfony/http-client": "^7.1",
+        "symfony/mailgun-mailer": "^7.1",
         "tiacx/chinese-converter": "^1.0"
     },
     "require-dev": {

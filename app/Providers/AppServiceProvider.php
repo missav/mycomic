@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Comic;
+use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Client\PendingRequest;
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->registerHttpMacros();
         $this->registerRequestMacros();
+        $this->registerResetPassword();
     }
 
     protected function registerHttpMacros(): void
@@ -44,6 +47,16 @@ class AppServiceProvider extends ServiceProvider
             Arr::set($data, $key, $value);
 
             return $data;
+        });
+    }
+
+    protected function registerResetPassword(): void
+    {
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
+            return localizedRoute('bookmarks.index', [
+                'email' => $user->email,
+                'token' => $token,
+            ]);
         });
     }
 }

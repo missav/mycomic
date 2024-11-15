@@ -49,3 +49,5 @@ Schedule::command(\App\Console\Commands\SyncPageViewCommand::class)
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();
+
+Schedule::command('auth:clear-resets')->everyFifteenMinutes();

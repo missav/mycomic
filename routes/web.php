@@ -15,9 +15,11 @@ Route::post('/comics/{comic}', \App\Http\Controllers\SyncComic::class)->name('co
 Route::post('/comics/{comic}/bookmark', \App\Http\Controllers\BookmarkComic::class)->name('comics.bookmark');
 Route::delete('/comics/{comic}/bookmark', \App\Http\Controllers\UnbookmarkComic::class)->name('comics.unbookmark');
 Route::post('/comics/{comic}/review', \App\Http\Controllers\ReviewComic::class)->name('comics.review');
-Route::post('/logout', \App\Http\Controllers\Logout::class)->name('logout');
 
 Route::post('/chapters/{chapter}', \App\Http\Controllers\SyncChapter::class)->name('chapters.sync');
+
+Route::post('/logout', \App\Http\Controllers\Logout::class)->name('logout');
+Route::post('/reset', \App\Http\Controllers\ResetPassword::class)->name('reset');
 
 Route::get('/sitemap.xml', \App\Http\Controllers\BaseSitemap::class)->name('sitemaps.index');
 Route::get('/sitemap_pages.xml', \App\Http\Controllers\PageSitemap::class)->name('sitemaps.pages.index');

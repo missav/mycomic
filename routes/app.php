@@ -10,3 +10,4 @@ Route::get('/records', \App\Http\Controllers\RecordList::class)->name('records.i
 
 Route::post('/register', \App\Http\Controllers\Register::class)->name('register')->middleware('guest');
 Route::post('/login', \App\Http\Controllers\Login::class)->name('login')->middleware('guest');
+Route::post('/forget', \App\Http\Controllers\ForgetPassword::class)->name('forget')->middleware('guest');

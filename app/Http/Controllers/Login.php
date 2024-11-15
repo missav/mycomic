@@ -6,24 +6,23 @@ use App\Concerns\WithUserUuid;
 use App\Models\Record;
 use App\Recombee\Recombee;
 use Exception;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Validation\ValidationException;
 use Recombee\RecommApi\Requests\MergeUsers;
 
 class Login
 {
-    use ValidatesRequests, WithUserUuid;
+    use WithUserUuid;
 
     public function __invoke()
     {
-        $data = $this->validateWith([
+        $credentials = request()->validate([
             'email' => ['required', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:4'],
         ]);
 
         $originalUserUuid = $this->getUserUuid();
 
-        if (! auth()->attempt($data, true)) {
+        if (! auth()->attempt($credentials, true)) {
             throw ValidationException::withMessages([
                 'password' => __('auth.failed'),
             ]);

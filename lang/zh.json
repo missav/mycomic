@@ -94,5 +94,16 @@
     "Page: :page": "第 :page 頁",
     "Page": "頁數",
     "End": "完",
-    "Logout": "登出"
+    "Logout": "登出",
+    "Reset password": "重設密碼",
+    "We will send you an email to let you reset the password.": "我們會發送密碼重設電郵給你",
+    "Hello!": "你好!",
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "如果你未能點擊「:actionText」按鈕，請複製及貼上以下網址到瀏覽器的網址欄中:",
+    "Reset Password Notification": "密碼重設通知",
+    "You are receiving this email because we received a password reset request for your account.": "我們收到關於你帳戶的密碼重設申請",
+    "Reset Password": "重設密碼",
+    "This password reset link will expire in :count minutes.": "此密碼重設連結將於 :count 分鐘內失效",
+    "If you did not request a password reset, no further action is required.": "如果你並沒有申請密碼重設，你無須採取任何行動",
+    "Don't have an account?": "未有帳戶?",
+    "Back to login": "返回登入"
 }

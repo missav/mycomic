@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Concerns\WithUserUuid;
 use App\Models\Comic;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class ReviewComic
 {
-    use ValidatesRequests, WithUserUuid;
+    use WithUserUuid;
 
     public function __invoke(Comic $comic): array
     {
-        $data = $this->validateWith([
+        $data = request()->validate([
             'rating' => ['required', 'numeric', 'min:1', 'max:5'],
             'text' => ['nullable', 'string', 'max:60000'],
         ]);

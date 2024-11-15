@@ -94,5 +94,7 @@
     "Page: :page": "第 :page 页",
     "Page": "页数",
     "End": "完",
-    "Logout": "登出"
+    "Logout": "登出",
+    "Reset password": "重设密码",
+    "We will send you an email to let you reset the password.": "我们会发送密码重设电邮给你"
 }
