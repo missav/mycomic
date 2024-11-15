@@ -8,26 +8,31 @@
             @if ($records->isNotEmpty())
                 <flux:table>
                     <flux:columns>
-                        <flux:column>{{ __('Comic') }}</flux:column>
+                        <flux:column class="w-full">{{ __('Comic') }}</flux:column>
+                        <flux:column>{{ __('History') }}</flux:column>
                         <flux:column>{{ __('Recent chapter') }}</flux:column>
-                        <flux:column></flux:column>
+                        <flux:column class="hidden sm:table-cell"></flux:column>
                     </flux:columns>
                     <flux:rows>
                         @foreach ($records as $record)
                             <flux:row :key="$record->id">
                                 <flux:cell class="flex items-center gap-3">
                                     <flux:avatar size="xs" src="{{ $record->comic->coverCdnUrl() }}" />
-                                    <div>
-                                        @if ($record->chapter)
-                                            [<a href="{{ $record->chapter->url() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->chapter->title }}</a>]
-                                        @endif
-                                        <a href="{{ $record->comic->url() }}" class="hover:underline underline-offset-4" title="{{ $record->comic->name }}">{{ $record->comic->name }}</a>
-                                    </div>
+                                    <a href="{{ $record->comic->url() }}" class="hover:underline underline-offset-4" title="{{ $record->comic->name }}">{{ $record->comic->name }}</a>
+                                </flux:cell>
+                                <flux:cell>
+                                    @if ($record->chapter)
+                                        <a href="{{ $record->chapter->url() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->chapter->title }}</a>
+                                    @else
+                                        -
+                                    @endif
                                 </flux:cell>
                                 <flux:cell>
                                     <a href="{{ $record->comic->recentChapterUrl() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->comic->recentChapterTitle() }}</a>
                                 </flux:cell>
-                                <flux:cell align="end" class="whitespace-nowrap">{{ localized($record->updated_at->diffForHumans()) }}</flux:cell>
+                                <flux:cell class="whitespace-nowrap hidden sm:table-cell text-right">
+                                    {{ localized($record->updated_at->diffForHumans()) }}
+                                </flux:cell>
                             </flux:row>
                         @endforeach
                     </flux:rows>
