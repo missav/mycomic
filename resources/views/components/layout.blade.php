@@ -37,6 +37,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body
+        x-cloak
         x-data="{
             locale: '{{ app()->getLocale() }}',
             cdnUrl: '{{ config('app.cdn_url') }}',

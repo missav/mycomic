@@ -1,5 +1,5 @@
 <x-layout>
-    <div x-cloak class="space-y-12">
+    <div class="space-y-12">
         <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($featuredComics)) }'>
             <x-comic-thumbnails :half="false"></x-comic-thumbnails>
         </div>
