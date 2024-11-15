@@ -288,7 +288,6 @@
                 </footer>
             @endif
         </flux:main>
-        @fluxScripts
         {!! \App\Seo::jsonLdScript() !!}
     </body>
 </html>
