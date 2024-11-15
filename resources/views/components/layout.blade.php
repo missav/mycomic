@@ -12,7 +12,7 @@
         <link rel="alternate" hreflang="zh-Hans" href="{{ localizedRoute(\App\Enums\Locale::CN) }}" />
         <link rel="alternate" hreflang="x-default" href="{{ localizedRoute(\App\Enums\Locale::from(config('app.fallback_locale'))) }}" />
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
         <meta name="description" content="{{ \App\Seo::description() }}" />
         <meta name="keywords" content="{{ \App\Seo::keywords() }}" />
         <meta name="author" content="{{ \App\Seo::authors() }}">
@@ -278,7 +278,7 @@
                             </div>
                         </div>
                         <div class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
-                            <p class="text-sm/6 text-gray-400">&copy; {{ now()->year }} {{ \App\Seo::site() }}</p>
+                            <p class="text-sm/6 text-gray-500">&copy; {{ now()->year }} {{ \App\Seo::site() }}</p>
                         </div>
                     </div>
                 </footer>

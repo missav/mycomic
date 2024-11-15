@@ -42,7 +42,7 @@
             <flux:input type="password" x-model="password" viewable autocomplete />
             <flux:error name="password" />
             <flux:description>
-                <a href="#" class="text-amber-500 hover:underline underline-offset-4">{{ __('Forget password') }}</a>
+                <a href="#" class="text-orange-600 dark:text-amber-500 hover:underline underline-offset-4">{{ __('Forget password') }}</a>
             </flux:description>
         </flux:field>
         <div class="flex">

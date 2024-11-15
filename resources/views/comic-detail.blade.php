@@ -103,7 +103,7 @@
                             <div x-data="{ show: false }">
                                 <div x-show="! show">
                                     {{ \Illuminate\Support\Str::limit($comic->description(), 150) }}
-                                    <a href="#" @click.prevent="show = ! show" class="text-amber-500 hover:underline underline-offset-4">
+                                    <a href="#" @click.prevent="show = ! show" class="text-orange-600 dark:text-amber-500 hover:underline underline-offset-4">
                                         {{ __('Show all') }}
                                     </a>
                                 </div>
@@ -272,7 +272,7 @@
                     <p class="text-sm text-gray-500 dark:text-white/80">
                         {{ __('Based on :count reviews', ['count' => $comic->ratings()->sum()]) }}
                         @if ($reviews->isNotEmpty())
-                            [<a href="#" @click.prevent="$dispatch('modal-show', { name: 'text-reviews' })" class="text-amber-500 hover:underline underline-offset-4">{{ __('Detail') }}</a>]
+                            [<a href="#" @click.prevent="$dispatch('modal-show', { name: 'text-reviews' })" class="text-orange-600 dark:text-amber-500 hover:underline underline-offset-4">{{ __('Detail') }}</a>]
                         @endif
                     </p>
                 </div>

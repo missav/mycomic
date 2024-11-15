@@ -31,13 +31,13 @@
                                 </flux:cell>
                                 <flux:cell>
                                     @if ($record->chapter)
-                                        <a href="{{ $record->chapter->url() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->chapter->title }}</a>
+                                        <a href="{{ $record->chapter->url() }}" class="text-orange-600 dark:text-amber-500 hover:underline underline-offset-4">{{ $record->chapter->title }}</a>
                                     @else
                                         -
                                     @endif
                                 </flux:cell>
                                 <flux:cell>
-                                    <a href="{{ $record->comic->recentChapterUrl() }}" class="text-amber-500 hover:underline underline-offset-4">{{ $record->comic->recentChapterTitle() }}</a>
+                                    <a href="{{ $record->comic->recentChapterUrl() }}" class="text-orange-600 dark:text-amber-500 hover:underline underline-offset-4">{{ $record->comic->recentChapterTitle() }}</a>
                                 </flux:cell>
                                 <flux:cell class="whitespace-nowrap hidden sm:table-cell">
                                     {{ localized($record->updated_at->diffForHumans()) }}
