@@ -175,7 +175,7 @@
                     />
                 </flux:tooltip>
                 <flux:tooltip content="{{ __('Toggle dark mode') }}" position="bottom">
-                    <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" x-data @click.prevent="$store.darkMode.toggle()" />
+                    <flux:navbar.item class="hidden md:flex" icon="moon" icon-variant="solid" x-data @click.prevent="$store.darkMode.toggle()" :aria-label="__('Toggle dark mode')" />
                 </flux:tooltip>
                 <flux:dropdown position="bottom" align="end">
                     <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
@@ -229,7 +229,9 @@
             @if (! request()->routeIs('*.chapters.view'))
                 <footer>
                     <div class="text-center py-16">
-                        <flux:button variant="subtle" icon="arrow-up-circle" square @click="window.scrollTo({ top: 0, behavior: 'smooth' });" />
+                        <flux:tooltip :content="__('Back to the top')">
+                            <flux:button variant="subtle" icon="arrow-up-circle" square @click="window.scrollTo({ top: 0, behavior: 'smooth' });" :aria-label="__('Back to the top')" />
+                        </flux:tooltip>
                     </div>
                     <div>
                         <div class="xl:grid xl:grid-cols-3 xl:gap-8">
