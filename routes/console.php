@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command(\App\Console\Commands\ImportComicCommand::class)
-    ->everySixHours()
+    ->hourly()
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();
