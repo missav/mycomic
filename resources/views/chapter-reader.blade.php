@@ -2,7 +2,21 @@
     <div
         x-data='{
             reachedEnd: false,
-            showBottomControl: false,
+            shouldShowBottomControl: false,
+            showBottomControl() {
+                clearTimeout(window.bottomControlTimeout);
+
+                window.bottomControlTimeout = setTimeout(() => {
+                    this.shouldShowBottomControl = true;
+                }, 300);
+            },
+            hideBottomControl() {
+                clearTimeout(window.bottomControlTimeout);
+
+                window.bottomControlTimeout = setTimeout(() => {
+                    this.shouldShowBottomControl = false;
+                }, 300);
+            },
             addPurchaseRecommendation() {
                 recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
                     cascadeCreate: true,
@@ -11,9 +25,7 @@
             }
         }'
         x-init="$nextTick(() => {
-            document.querySelectorAll('img.lozad').forEach(img => img.onload = () => {
-                img.classList.remove('h-screen');
-            });
+            window.bottomControlTimeout = null;
 
             setTimeout(() => {
                 axios.post('{{ route('chapters.sync', ['chapter' => $chapter]) }}').then(response => {
@@ -24,28 +36,28 @@
         class="pb-16"
     >
         <flux:breadcrumbs>
-            <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
+            <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" aria-label="{{ __('Home') }}" />
             <flux:breadcrumbs.item :href="localizedRoute('comics.view', ['comic' => $chapter->comic])" class="whitespace-nowrap">{{ \Illuminate\Support\Str::limit($chapter->comic->name, 20) }}</flux:breadcrumbs.item>
-            <flux:breadcrumbs.item><div class="truncate whitespace-nowrap">{{ \Illuminate\Support\Str::limit($chapter->title, 10) }}</div></flux:breadcrumbs.item>
+            <flux:breadcrumbs.item><div class="truncate whitespace-nowrap">{{ \Illuminate\Support\Str::limit($chapter->title, 15) }}</div></flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
         <x-chapter-control
             :chapter="$chapter"
             :previous-url="$previouUrl"
             :next-url="$nextUrl"
-            x-intersect.margin.-100px="showBottomControl = false;"
-            x-intersect:leave.margin.-100px="showBottomControl = true;"
+            x-intersect.margin.-100px="hideBottomControl"
+            x-intersect:leave.margin.-100px="showBottomControl"
             class="justify-center py-5"
         />
 
-        <div class="-mx-6 sm:mx-0">
+        <div class="pages -mx-6 sm:mx-0">
             <div x-data="{ loaded: false }" x-show="! loaded" x-init="setTimeout(() => loaded = true, 300)" class="w-full h-screen"></div>
 
             @foreach ($pages as $page)
                 <img
                     @if ($page['number'] <= 3)
                         src="{{ $page['url'] }}"
-                        class="w-full mx-auto"
+                        class="w-full h-screen mx-auto"
                     @else
                         data-src="{{ $page['url'] }}"
                         class="lozad w-full h-screen mx-auto"
@@ -54,6 +66,7 @@
                     @if ($loop->last)
                         x-intersect.once="addPurchaseRecommendation"
                     @endif
+                    onload="this.classList.remove('h-screen');"
                 />
             @endforeach
         </div>
@@ -64,10 +77,10 @@
 
         <x-chapter-control
             x-cloak
+            x-show="shouldShowBottomControl"
             :chapter="$chapter"
             :previous-url="$previouUrl"
             :next-url="$nextUrl"
-            x-show="showBottomControl"
             class="fixed bottom-0 left-0 right-0 justify-center py-5 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-700"
         />
     </div>
