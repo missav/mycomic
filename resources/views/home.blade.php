@@ -1,6 +1,6 @@
 <x-layout>
     <div class="space-y-12">
-        <x-comic-thumbnails :comics="$featuredComics" :half="false" preload="1"></x-comic-thumbnails>
+        <x-comic-thumbnails :comics="$featuredComics" :half="false" preload="12"></x-comic-thumbnails>
         <div
             x-data='{ comics: placeholders(12) }'
             x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('home-recommended'), 12));"
