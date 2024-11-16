@@ -1,12 +1,20 @@
 <x-layout>
     <div
         x-data='{
-            pages: @json($pages),
-            preload: 3,
             reachedEnd: false,
             showBottomControl: false,
+            addPurchaseRecommendation() {
+                recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
+                    cascadeCreate: true,
+                    recommId: window.recommendId,
+                }));
+            }
         }'
         x-init="$nextTick(() => {
+            document.querySelectorAll('img.lozad').forEach(img => img.onload = () => {
+                img.classList.remove('h-screen');
+            });
+
             setTimeout(() => {
                 axios.post('{{ route('chapters.sync', ['chapter' => $chapter]) }}').then(response => {
                     syncUserUuid(response.data.userUuid);
@@ -31,24 +39,21 @@
         />
 
         <div class="-mx-6 sm:mx-0">
-            <div x-data="{ loaded: false }" x-show="! loaded" x-init="setTimeout(() => loaded = true, 1000)" class="w-full h-screen"></div>
-            <template x-for="page in pages" :key="`page_${page.number}`">
+            @foreach ($pages as $page)
                 <img
-                    :src="page.number <= preload ? page.url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=='"
-                    :data-src="page.url"
-                    class="w-full mx-auto scroll-mt-16"
-                    :class="page.number <= preload ? '' : 'lozad'"
-                    :alt="'{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title]) }}'.replace(':page', page.number)"
-                    x-intersect.once="() => {
-                        if (page.number === pages.length) {
-                            recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
-                                cascadeCreate: true,
-                                recommId: window.recommendId,
-                            }));
-                        }
-                    }"
+                    @if ($page['number'] <= 3)
+                        src="{{ $page['url'] }}"
+                        class="w-full mx-auto"
+                    @else
+                        data-src="{{ $page['url'] }}"
+                        class="lozad w-full h-screen mx-auto"
+                    @endif
+                    alt="{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title, 'page' => $page['number']]) }}"
+                    @if ($loop->last)
+                        x-intersect.once="addPurchaseRecommendation"
+                    @endif
                 />
-            </template>
+            @endforeach
         </div>
 
         <div class="text-center py-8">
