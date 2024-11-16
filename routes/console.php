@@ -21,7 +21,7 @@ Schedule::command(\App\Console\Commands\DownloadChapterCommand::class)
     ->runInBackground();
 
 Schedule::command(\App\Console\Commands\CheckComicUpdateCommand::class)
-    ->daily()
+    ->everyThreeHours()
     ->withoutOverlapping()
     ->onOneServer()
     ->runInBackground();

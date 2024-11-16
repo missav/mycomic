@@ -11,7 +11,7 @@ class CheckComicUpdateCommand extends Command
 {
     use WithScraper;
 
-    protected $signature = 'comic:check {day=3}';
+    protected $signature = 'comic:check {day=2}';
 
     protected $description = 'Check comic update command';
 
