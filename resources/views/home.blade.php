@@ -1,13 +1,11 @@
 <x-layout>
     <div class="space-y-12">
-        <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($featuredComics->skip(1))) }'>
-            <x-comic-thumbnails :comics="$featuredComics->take(1)" :half="false"></x-comic-thumbnails>
-        </div>
+        <x-comic-thumbnails :comics="$featuredComics" :half="false" preload="1"></x-comic-thumbnails>
         <div
             x-data='{ comics: placeholders(12) }'
             x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('home-recommended'), 12));"
         >
-            <x-comic-thumbnails title="Recommended for you"></x-comic-thumbnails>
+            <x-comic-thumbnails :comics="\App\Models\Comic::placeholders(12)" title="Recommended for you"></x-comic-thumbnails>
         </div>
         <div class="overflow-x-auto lg:overflow-x-visible">
             <flux:table class="w-auto lg:w-full">
@@ -51,11 +49,7 @@
                 </flux:rows>
             </flux:table>
         </div>
-        <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($recentUpdatedComics)) }'>
-            <x-comic-thumbnails title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])" lozad></x-comic-thumbnails>
-        </div>
-        <div x-data='{ comics: @json(\App\Http\Resources\ComicResource::collection($recentPublishedComics)) }'>
-            <x-comic-thumbnails title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])" lozad></x-comic-thumbnails>
-        </div>
+        <x-comic-thumbnails :comics="$recentUpdatedComics" title="Recent updates" :url="localizedRoute('comics.index', ['sort' => '-update'])"></x-comic-thumbnails>
+        <x-comic-thumbnails :comics="$recentPublishedComics" title="Recent published" :url="localizedRoute('comics.index', ['sort' => '-id'])"></x-comic-thumbnails>
     </div>
 </x-layout>

@@ -249,7 +249,7 @@
                 x-data='{ comics: placeholders(12) }'
                 x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('watch-next'), 12, comicId));"
             >
-                <x-comic-thumbnails></x-comic-thumbnails>
+                <x-comic-thumbnails :comics="\App\Models\Comic::placeholders(12)"></x-comic-thumbnails>
             </div>
         </div>
         <div class="w-1/4 ml-8 hidden lg:block text-white space-y-8">

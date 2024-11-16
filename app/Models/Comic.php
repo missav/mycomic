@@ -200,4 +200,9 @@ class Comic extends Model
     {
         return cache()->remember('comics_max_id', 3600, fn () => Comic::max('id'));
     }
+
+    public static function placeholders(int $count): Collection
+    {
+        return collect(range(1, $count))->map(fn () => new Comic);
+    }
 }
