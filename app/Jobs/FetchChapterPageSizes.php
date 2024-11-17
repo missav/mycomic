@@ -18,7 +18,9 @@ class FetchChapterPageSizes implements ShouldQueue, ShouldBeUnique
 
     public function __construct(
         protected Chapter $chapter,
-    ) {}
+    ) {
+        $this->onQueue('heavy');
+    }
 
     public function uniqueId(): string
     {
