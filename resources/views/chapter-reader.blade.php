@@ -1,7 +1,7 @@
 <x-layout>
     <div
         x-data='{
-            addPurchaseRecommendation() {
+            sendRecombeeAddPurchase() {
                 recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
                     cascadeCreate: true,
                     recommId: window.recommendId,
@@ -35,7 +35,7 @@
                     @endif
                     alt="{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title, 'page' => $page['number']]) }}"
                     @if ($loop->last)
-                        x-intersect.once="addPurchaseRecommendation"
+                        x-intersect.once="sendRecombeeAddPurchase"
                     @endif
                     @if ($page['width'])
                         width="{{ $page['width'] }}"
