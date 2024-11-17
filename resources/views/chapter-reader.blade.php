@@ -1,22 +1,6 @@
 <x-layout>
     <div
         x-data='{
-            reachedEnd: false,
-            shouldShowBottomControl: false,
-            showBottomControl() {
-                clearTimeout(window.bottomControlTimeout);
-
-                window.bottomControlTimeout = setTimeout(() => {
-                    this.shouldShowBottomControl = true;
-                }, 300);
-            },
-            hideBottomControl() {
-                clearTimeout(window.bottomControlTimeout);
-
-                window.bottomControlTimeout = setTimeout(() => {
-                    this.shouldShowBottomControl = false;
-                }, 300);
-            },
             addPurchaseRecommendation() {
                 recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
                     cascadeCreate: true,
@@ -25,8 +9,6 @@
             }
         }'
         x-init="$nextTick(() => {
-            window.bottomControlTimeout = null;
-
             setTimeout(() => {
                 axios.post('{{ route('chapters.sync', ['chapter' => $chapter]) }}').then(response => {
                     syncUserUuid(response.data.userUuid);
@@ -35,22 +17,13 @@
         });"
         class="pb-16"
     >
-        <flux:breadcrumbs>
+        <flux:breadcrumbs class="mb-4">
             <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" aria-label="{{ __('Home') }}" />
             <flux:breadcrumbs.item :href="localizedRoute('comics.view', ['comic' => $chapter->comic])" class="whitespace-nowrap">{{ \Illuminate\Support\Str::limit($chapter->comic->name, 20) }}</flux:breadcrumbs.item>
             <flux:breadcrumbs.item><div class="truncate whitespace-nowrap">{{ \Illuminate\Support\Str::limit($chapter->title, 15) }}</div></flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
-        <x-chapter-control
-            :chapter="$chapter"
-            :previous-url="$previouUrl"
-            :next-url="$nextUrl"
-            x-intersect.margin.-100px="hideBottomControl"
-            x-intersect:leave.margin.-100px="showBottomControl"
-            class="justify-center py-5"
-        />
-
-        <div class="pages -mx-6 sm:mx-0">
+        <div class="-mx-6 sm:mx-0">
             @foreach ($pages as $page)
                 <img
                     @if ($page['number'] <= 3)
@@ -77,8 +50,6 @@
         </div>
 
         <x-chapter-control
-            x-cloak
-            x-show="shouldShowBottomControl"
             :chapter="$chapter"
             :previous-url="$previouUrl"
             :next-url="$nextUrl"
