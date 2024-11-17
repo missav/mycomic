@@ -9,10 +9,6 @@ if (window.location.hash.slice(1).length === 32) {
     history.pushState('', document.title, `${window.location.pathname}${window.location.search}`);
 }
 
-if (history.scrollRestoration) {
-    history.scrollRestoration = 'manual';
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     window.userUuid = Cookies.get('user_uuid');
 
