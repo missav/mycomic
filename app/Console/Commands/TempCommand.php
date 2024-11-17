@@ -17,7 +17,6 @@ class TempCommand extends Command
     {
         Chapter::query()
             ->whereNull('page_sizes')
-            ->where('pages', '<=', 50)
             ->chunkById(1000, function (Collection $chapters) {
                 $chapters->each(function (Chapter $chapter) {
                     FetchChapterPageSizes::dispatch($chapter);
