@@ -13,6 +13,19 @@ if (! function_exists('cdn')) {
     }
 }
 
+if (! function_exists('origin')) {
+    function origin(?string $path = ''): string
+    {
+        if (\Illuminate\Support\Str::startsWith($path, 'http')) {
+            return $path;
+        }
+
+        $path = $path ? \Illuminate\Support\Str::start($path, '/') : $path;
+
+        return config('app.origin_url') . $path;
+    }
+}
+
 if (! function_exists('localizedRoute')) {
     function localizedRoute(
         string|\App\Enums\Locale $name,

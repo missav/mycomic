@@ -57,16 +57,18 @@
                 <img
                     @if ($page['number'] <= 3)
                         src="{{ $page['url'] }}"
-                        class="w-full h-screen mx-auto"
+                        class="w-full mx-auto"
                     @else
                         data-src="{{ $page['url'] }}"
-                        class="lozad w-full h-screen mx-auto"
+                        class="@if (! $page['width']) h-screen @endif lozad w-full mx-auto"
                     @endif
                     alt="{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title, 'page' => $page['number']]) }}"
                     @if ($loop->last)
                         x-intersect.once="addPurchaseRecommendation"
                     @endif
-                    onload="this.classList.remove('h-screen');"
+                    @if ($page['width'])
+                        style="aspect-ratio: {{ $page['width'] }} / {{ $page['height'] }};"
+                    @endif
                 />
             @endforeach
         </div>

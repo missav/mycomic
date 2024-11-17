@@ -56,6 +56,8 @@ return [
 
     'cdn_url' => env('CDN_URL'),
 
+    'origin_url' => env('ORIGIN_URL'),
+
     'proxy_url' => env('PROXY_URL'),
 
     /*

@@ -65,14 +65,9 @@ class ChapterReader
 
         Seo::jsonLdScript($mte->toScript());
 
-        $pages = collect(range(1, $chapter->pages))->map(fn (int $page) => [
-            'number' => $page,
-            'url' => $chapter->pageCdnUrl($page),
-        ]);
-
         return view('chapter-reader', [
             'chapter' => $chapter,
-            'pages' => $pages,
+            'pages' => $chapter->getPages(),
             'previouUrl' => $chapter->previous()?->url(),
             'nextUrl' => $chapter->next()?->url(),
         ]);

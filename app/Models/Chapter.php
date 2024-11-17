@@ -7,6 +7,7 @@ use App\FileSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class Chapter extends Model
 {
@@ -66,6 +67,32 @@ class Chapter extends Model
     public function pageCdnUrl(int $page): string
     {
         return cdn($this->pageImagePath($page));
+    }
+
+    public function pageOriginUrl(int $page): string
+    {
+        return origin($this->pageImagePath($page));
+    }
+
+    public function getPages(): Collection
+    {
+        $pageSizes = str($this->page_sizes)
+            ->explode(',')
+            ->map(function (string $sizes) {
+                if (! $sizes) {
+                    return ['width' => 0, 'height' => 0];
+                }
+
+                list($width, $height) = explode('x', $sizes);
+
+                return ['width' => $width, 'height' => $height];
+            })
+            ->all();
+
+        return collect(range(1, $this->pages))->map(fn (int $page, int $index) => array_merge([
+            'number' => $page,
+            'url' => $this->pageCdnUrl($page),
+        ], $pageSizes[$index] ?? ['width' => 0, 'height' => 0]));
     }
 
     public function previous(): ?static
