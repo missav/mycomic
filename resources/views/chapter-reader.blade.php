@@ -51,8 +51,6 @@
         />
 
         <div class="pages -mx-6 sm:mx-0">
-            <div x-data="{ loaded: false }" x-show="! loaded" x-init="setTimeout(() => loaded = true, 300)" class="w-full h-screen"></div>
-
             @foreach ($pages as $page)
                 <img
                     @if ($page['number'] <= 3)
