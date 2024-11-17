@@ -4,27 +4,19 @@ namespace App\Jobs;
 
 use App\Models\Chapter;
 use ErrorException;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Str;
 
-class FetchChapterPageSizes implements ShouldQueue, ShouldBeUnique
+class FetchChapterPageSizes implements ShouldQueue
 {
     use Queueable, Dispatchable;
-
-    public int $uniqueFor = 3600;
 
     public function __construct(
         protected Chapter $chapter,
     ) {
         $this->onQueue('heavy');
-    }
-
-    public function uniqueId(): string
-    {
-        return $this->chapter->id;
     }
 
     public function handle(): void
