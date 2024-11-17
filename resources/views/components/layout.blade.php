@@ -31,8 +31,29 @@
         <meta name="twitter:creator" content="{{ \App\Seo::twitter() }}" />
         <title>{{ \App\Seo::title() }}</title>
         <link rel="preconnect" href="{{ cdn() }}">
-        <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="preload" as="font" href="/fonts/inter-latin-400-normal.woff2" type="font/woff2" crossorigin />
+        <link rel="preload" as="font" href="/fonts/inter-latin-500-normal.woff2" type="font/woff2" crossorigin />
+        <style>
+            @font-face {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-display: swap;
+                src: local(''),
+                    url('/fonts/inter-latin-400-normal.woff2') format('woff2'),
+                    url('/fonts/inter-latin-400-normal.woff') format('woff');
+            }
+
+            @font-face {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 500;
+                font-display: swap;
+                src: local(''),
+                url('/fonts/inter-latin-500-normal.woff2') format('woff2'),
+                url('/fonts/inter-latin-500-normal.woff') format('woff');
+            }
+        </style>
         <link rel="icon" type="image/x-icon" href="{{ cdn('img/favicon.png') }}">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
