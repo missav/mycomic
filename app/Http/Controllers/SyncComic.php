@@ -12,10 +12,14 @@ class SyncComic
 
     public function __invoke(Comic $comic): array
     {
+        if (! $userUuid = $this->getUserUuid()) {
+            return [];
+        }
+
         $comic->views();
 
         $record = Record::query()
-            ->where('user_id', $this->getUserUuid())
+            ->where('user_id', $userUuid)
             ->where('comic_id', $comic->id)
             ->first();
 

@@ -12,8 +12,12 @@ class SyncChapter
 
     public function __invoke(Chapter $chapter): array
     {
+        if (! $userUuid = $this->getUserUuid()) {
+            return [];
+        }
+
         Record::updateOrCreate([
-            'user_id' => $this->getUserUuid(),
+            'user_id' => $userUuid,
             'comic_id' => $chapter->comic->id,
         ], [
             'chapter_id' => $chapter->id,
