@@ -191,7 +191,7 @@ return [
                 'autoScalingStrategy' => 'time',
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
-                'maxProcesses' => 300,
+                'maxProcesses' => 100,
                 'maxTime' => 0,
                 'maxJobs' => 100,
                 'memory' => 256,
