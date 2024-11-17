@@ -70,6 +70,8 @@ class DownloadChapter implements ShouldQueue
                 throw new MissingChapterPageException("Missing page for chapter #{$this->chapter->id}");
             }
 
+            FetchChapterPageSizes::dispatchSync($this->chapter);
+
             $this->chapter->update(['has_downloaded_pages' => true]);
         } finally {
             $this->chapter->unlock();
