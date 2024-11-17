@@ -19,7 +19,7 @@ class TempCommand extends Command
             ->limit(100)
             ->get()
             ->each(function (Chapter $chapter) {
-                FetchChapterPageSizes::dispatchSync($chapter);
+                FetchChapterPageSizes::dispatch($chapter);
 
                 $this->info("Queued chapter #{$chapter->id}");
             });
