@@ -67,7 +67,8 @@
                         x-intersect.once="addPurchaseRecommendation"
                     @endif
                     @if ($page['width'])
-                        style="aspect-ratio: {{ $page['width'] }} / {{ $page['height'] }};"
+                        width="{{ $page['width'] }}"
+                        height="{{ $page['height'] }}"
                     @endif
                 />
             @endforeach
