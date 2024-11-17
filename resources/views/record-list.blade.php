@@ -3,7 +3,7 @@
         <div class="w-3/4 grow">
             <div class="flex justify-between items-center mb-4">
                 <flux:breadcrumbs>
-                    <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
+                    <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" aria-label="{{ __('Home') }}" />
                     <flux:breadcrumbs.item>{{ \App\Seo::title(raw: true) }}</flux:breadcrumbs.item>
                 </flux:breadcrumbs>
                 @if (request()->routeIs('*bookmarks.index') && auth()->check())

@@ -43,7 +43,7 @@
     >
         <div class="w-3/4 grow">
             <flux:breadcrumbs class="mb-4">
-                <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" />
+                <flux:breadcrumbs.item :href="localizedRoute('home')" icon="home" aria-label="{{ __('Home') }}" />
                 <flux:breadcrumbs.item :href="localizedRoute('comics.index')" class="whitespace-nowrap">{{ __('Comic database') }}</flux:breadcrumbs.item>
                 <flux:breadcrumbs.item><div class="truncate whitespace-nowrap">{{ \Illuminate\Support\Str::limit($comic->name(), 20) }}</div></flux:breadcrumbs.item>
             </flux:breadcrumbs>
@@ -122,7 +122,6 @@
                                 variant="danger"
                                 ::href="recentChapterId ? chapterUrl(recentChapterId) : appendRecommendId('{{ $comic->chapters->first()->url() }}')"
                                 href
-                                id="start"
                             >
                                 <div>
                                     <span x-text="recentChapterId ? '{{ __('Continue reading') }}' : '{{ __('Start reading') }}'"></span><span x-show="recentChapterId" id="recent-chapter-title"></span>
