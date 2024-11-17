@@ -181,7 +181,7 @@
                 </flux:tooltip>
                 <flux:dropdown position="bottom" align="end">
                     <flux:tooltip content="{{ __('Switch language') }}" position="bottom">
-                        <flux:navbar.item :square="true">
+                        <flux:navbar.item>
                             <img width="20" height="20" src="{{ \App\Enums\Locale::current()->flagUrl() }}" alt="{{ \App\Enums\Locale::current()->label() }}">
                         </flux:navbar.item>
                     </flux:tooltip>
