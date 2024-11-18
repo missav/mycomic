@@ -31,7 +31,7 @@
                         class="w-full mx-auto"
                     @else
                         data-src="{{ $page['url'] }}"
-                        class="@if (! $page['width']) h-screen @endif lozad w-full mx-auto"
+                        class="lozad w-full mx-auto"
                     @endif
                     alt="{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title, 'page' => $page['number']]) }}"
                     @if ($loop->last)
