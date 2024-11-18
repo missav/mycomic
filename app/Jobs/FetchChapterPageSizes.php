@@ -14,7 +14,7 @@ class FetchChapterPageSizes implements ShouldQueue
     use Queueable, Dispatchable;
 
     public function __construct(
-        protected Chapter $chapter,
+        public Chapter $chapter,
     ) {
         $this->onQueue('heavy');
     }
@@ -27,13 +27,23 @@ class FetchChapterPageSizes implements ShouldQueue
 
         $pageSizes = collect(range(1, $this->chapter->pages))
             ->map(function (int $page) {
-                try {
+                $getSize = function () use ($page) {
                     list($width, $height) = getimagesize($this->chapter->pageOriginUrl($page));
 
                     return "{$width}x{$height}";
+                };
+
+                try {
+                    return $getSize();
                 } catch (ErrorException $e) {
                     if (Str::contains($e->getMessage(), '404 Not Found')) {
                         return '';
+                    }
+
+                    if (Str::contains($e->getMessage(), 'getimagesize(): Error reading from')) {
+                        RefreshChapterPage::dispatchSync($this->chapter, $page);
+
+                        return $getSize();
                     }
 
                     throw $e;

@@ -22,12 +22,13 @@ class DownloadChapter implements ShouldQueue
 
     public function __construct(
         public Chapter $chapter,
+        public bool $force = false,
     ) {}
 
     public function middleware(): array
     {
         return [
-            Skip::when($this->chapter->has_downloaded_pages),
+            Skip::when($this->chapter->has_downloaded_pages && ! $this->force),
         ];
     }
 

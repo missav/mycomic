@@ -52,4 +52,14 @@ return [
         'scheme' => 'https',
     ],
 
+    'cloudflare' => [
+        'token' => env('CLOUDFLARE_TOKEN'),
+        'origin_zone_id' => env('CLOUDFLARE_ORIGIN_ZONE_ID'),
+        'cdn_zone_id' => env('CLOUDFLARE_CDN_ZONE_ID'),
+    ],
+
+    'bunny' => [
+        'token' => env('BUNNY_TOKEN'),
+    ],
+
 ];
