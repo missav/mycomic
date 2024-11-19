@@ -29,7 +29,7 @@
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=="
                                 data-src="{{ $comic->coverCdnUrl() }}"
                             @endif
-                            @if ($preload > 0 && $loop->first)
+                            @if ($preload > 0 && $index % 6 === 0)
                                 fetchpriority="high"
                             @endif
                             alt="{{ $comic->name() }}"
