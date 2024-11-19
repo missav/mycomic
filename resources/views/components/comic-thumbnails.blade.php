@@ -29,6 +29,9 @@
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN09omrBwADNQFuUCqPAwAAAABJRU5ErkJggg=="
                                 data-src="{{ $comic->coverCdnUrl() }}"
                             @endif
+                            @if ($preload > 0 && $loop->first)
+                                fetchpriority="high"
+                            @endif
                             alt="{{ $comic->name() }}"
                             class="@if ($index >= $preload) lozad @endif w-full h-full object-cover object-top lg:h-full lg:w-full -z-10"
                         >
