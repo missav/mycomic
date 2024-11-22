@@ -2,10 +2,12 @@
     <div
         x-data='{
             sendRecombeeAddPurchase() {
-                recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
-                    cascadeCreate: true,
-                    recommId: window.recommendId,
-                }));
+                if (window.userUuid) {
+                    recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
+                        cascadeCreate: true,
+                        recommId: window.recommendId,
+                    }));
+                }
             }
         }'
         x-init="$nextTick(() => {

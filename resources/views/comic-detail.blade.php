@@ -8,10 +8,12 @@
             hasBookmarked: false,
             recentChapterId: null,
             sendRecombeeAddBookmark() {
-                recombeeClient.send(new recombee.AddBookmark(window.userUuid, this.comicId, {
-                    cascadeCreate: false,
-                    recommId: window.recommendId,
-                }));
+                if (window.userUuid) {
+                    recombeeClient.send(new recombee.AddBookmark(window.userUuid, this.comicId, {
+                        cascadeCreate: false,
+                        recommId: window.recommendId,
+                    }));
+                }
             },
         }"
         x-init="$nextTick(() => {
@@ -33,10 +35,12 @@
             }, 100);
 
             setTimeout(() => {
-                recombeeClient.send(new recombee.AddDetailView(window.userUuid, comicId, {
-                    cascadeCreate: true,
-                    recommId: window.recommendId,
-                }));
+                if (window.userUuid) {
+                    recombeeClient.send(new recombee.AddDetailView(window.userUuid, comicId, {
+                        cascadeCreate: true,
+                        recommId: window.recommendId,
+                    }));
+                }
             }, 3000);
         });"
         class="flex items-stretch"
@@ -366,12 +370,14 @@
 
                     axios.post('{{ route('comics.review', ['comic' => $comic]) }}', { rating, text })
                         .then(response => {
-                            recombeeClient.send(new recombee.AddRating(window.userUuid, comicId, (rating - 3) / 2, {
-                                cascadeCreate: true,
-                                recommId: window.recommendId,
-                            })).then(() => {
-                                window.location.reload();
-                            });
+                            if (window.userUuid) {
+                                recombeeClient.send(new recombee.AddRating(window.userUuid, comicId, (rating - 3) / 2, {
+                                    cascadeCreate: true,
+                                    recommId: window.recommendId,
+                                })).then(() => {
+                                    window.location.reload();
+                                });
+                            }
                         })
                         .catch(error => {
                             errors = error.response.data.errors;

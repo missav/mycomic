@@ -147,16 +147,20 @@
 
                 if (comicId) {
                     return new Promise(resolve => {
-                        recombeeClient.send(new recombee.RecommendItemsToItem(comicId, window.userUuid, count, data)).then(response => {
-                            resolve(transformResponse(response));
-                        });
+                        if (window.userUuid) {
+                            recombeeClient.send(new recombee.RecommendItemsToItem(comicId, window.userUuid, count, data)).then(response => {
+                                resolve(transformResponse(response));
+                            });
+                        }
                     });
                 }
 
                 return new Promise(resolve => {
-                    recombeeClient.send(new recombee.RecommendItemsToUser(window.userUuid, count, data)).then(response => {
-                        resolve(transformResponse(response));
-                    });
+                    if (window.userUuid) {
+                        recombeeClient.send(new recombee.RecommendItemsToUser(window.userUuid, count, data)).then(response => {
+                            resolve(transformResponse(response));
+                        });
+                    }
                 });
             },
         }"
