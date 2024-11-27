@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('comics', function (Blueprint $table) {
-            $table->string('search_keywords', 300)->nullable()->after('aliases');
+            $table->string('search_keywords', 1000)->nullable()->after('aliases');
         });
     }
 
