@@ -120,7 +120,6 @@
                 }
             },
             getRecommendations(scenario, count, comicId) {
-                console.log('c');
                 const data = {
                     scenario: scenario,
                     cascadeCreate: true,
@@ -133,7 +132,6 @@
                         'cover_image_path',
                     ],
                 };
-                console.log('d');
 
                 const transformResponse = response => response.recomms.map(item => {
                     item.values.id = item.id;
@@ -146,28 +144,31 @@
 
                     return item.values;
                 });
-                console.log('e');
+
+                const ensureUserUuid = callback => {
+                    if (! window.userUuid) {
+                        return setTimeout(() => ensureUserUuid(callback), 50);
+                    }
+
+                    callback();
+                };
 
                 if (comicId) {
                     return new Promise(resolve => {
-                        if (window.userUuid) {
+                        ensureUserUuid(() => {
                             recombeeClient.send(new recombee.RecommendItemsToItem(comicId, window.userUuid, count, data)).then(response => {
                                 resolve(transformResponse(response));
                             });
-                        }
+                        });
                     });
                 }
 
-                console.log('f');
-
                 return new Promise(resolve => {
-                    console.log('g');
-                    if (window.userUuid) {
-                        console.log('h');
+                    ensureUserUuid(() => {
                         recombeeClient.send(new recombee.RecommendItemsToUser(window.userUuid, count, data)).then(response => {
                             resolve(transformResponse(response));
                         });
-                    }
+                    });
                 });
             },
         }"

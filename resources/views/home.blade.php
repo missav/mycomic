@@ -3,11 +3,7 @@
         <x-comic-thumbnails :comics="$featuredComics" :half="false" preload="12"></x-comic-thumbnails>
         <div
             x-data='{ comics: placeholders(12) }'
-            x-init="$nextTick(async () => {
-                console.log('a');
-                comics = await getRecommendations(prefixScenario('home-recommended'), 12);
-                console.log('b');
-            });"
+            x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('home-recommended'), 12));"
         >
             <x-comic-thumbnails :comics="\App\Models\Comic::placeholders(12)" title="Recommended for you"></x-comic-thumbnails>
         </div>
