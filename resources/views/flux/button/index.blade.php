@@ -130,7 +130,7 @@ $classes = Flux::classes()
         <?php else: ?>
             <?php if ($loadable): ?>
                 <div class="absolute inset-0 flex items-center justify-center" :class="loading ? '' : 'opacity-0'">
-                    <flux:icon icon="loading" />
+                    <flux:icon.loading />
                 </div>
                 <div :class="loading ? 'opacity-0' : ''">
                     {{ $slot }}
