@@ -58,10 +58,13 @@
         </div>
 
         <div class="text-center py-8">
-            @if ($chapter->comic->is_ended)
+            @if ($nextUrl)
+                <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('The end of this chapter') }}</flux:badge>
+            @elseif ($chapter->comic->is_ended)
+                <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('The end of this comic') }}</flux:badge>
             @else
+                <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('To be continued') }}</flux:badge>
             @endif
-            <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('The end of this chapter') }}</flux:badge>
         </div>
 
         @if (! $nextUrl)
