@@ -58,8 +58,22 @@
         </div>
 
         <div class="text-center py-8">
+            @if ($chapter->comic->is_ended)
+            @else
+            @endif
             <flux:badge color="blue" size="lg" icon="hand-thumb-up">{{ __('The end of this chapter') }}</flux:badge>
         </div>
+
+        @if (! $nextUrl)
+            <flux:separator class="my-8" text="{{ __('Recommended for you') }}" />
+            <div
+                x-data='{ comics: placeholders(6) }'
+                x-init="$nextTick(async () => comics = await getRecommendations(prefixScenario('watch-next'), 6, {{ $chapter->comic->id }}));"
+                class="mb-8"
+            >
+                <x-comic-thumbnails :comics="\App\Models\Comic::placeholders(6)"></x-comic-thumbnails>
+            </div>
+        @endif
 
         <x-chapter-control
             :chapter="$chapter"
