@@ -17,6 +17,16 @@
                 });
             }, 2000);
         });"
+        @if ($previouUrl)
+            @keyup.left.window="() => {
+                window.location.href = '{{ $previouUrl }}';
+            }"
+        @endif
+        @if ($nextUrl)
+            @keyup.right.window="() => {
+                window.location.href = '{{ $nextUrl }}';
+            }"
+        @endif
         class="pb-16"
     >
         <flux:breadcrumbs class="mb-4">
