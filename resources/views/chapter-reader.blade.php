@@ -1,12 +1,19 @@
 <x-layout>
     <div
         x-data='{
-            sendRecombeeAddPurchase() {
+            reachedBottomCallback() {
                 if (window.userUuid) {
                     recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
                         cascadeCreate: true,
                         recommId: window.recommendId,
                     }));
+
+                    window.dataLayer.push({
+                        event: "comicRead",
+                        item: {
+                            comic_id: "{{ $chapter->comic->dvd_id }}",
+                        },
+                    });
                 }
             }
         }'
@@ -47,7 +54,7 @@
                     @endif
                     alt="{{ __(':comic - :chapter: Page :page', ['comic' => $chapter->comic->name, 'chapter' => $chapter->title, 'page' => $page['number']]) }}"
                     @if ($loop->last)
-                        x-intersect.once="sendRecombeeAddPurchase"
+                        x-intersect.once="reachedBottomCallback"
                     @endif
                     @if ($page['width'])
                         width="{{ $page['width'] }}"
