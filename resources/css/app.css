@@ -68,3 +68,12 @@ Transition dialogs with fade a slight scale effect...
 [data-flux-modal] > dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.25);
 }
+
+.page {
+    scroll-margin-top: 57px;
+}
+
+.page-selector {
+    scroll-margin-left: 20px;
+    scroll-margin-right: 20px;
+}
