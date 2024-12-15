@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Schedule;
 
+Schedule::command('model:prune', ['--model' => \Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem::class])
+    ->daily()
+    ->withoutOverlapping()
+    ->onOneServer()
+    ->runInBackground();
+
 Schedule::command(\App\Console\Commands\ImportComicCommand::class)
     ->hourly()
     ->withoutOverlapping()
