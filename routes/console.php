@@ -12,7 +12,8 @@ Schedule::command(\App\Console\Commands\ImportComicCommand::class)
     ->hourly()
     ->withoutOverlapping()
     ->onOneServer()
-    ->runInBackground();
+    ->runInBackground()
+    ->graceTimeInMinutes(30);
 
 Schedule::command(\App\Console\Commands\DownloadComicCoverCommand::class)
     ->everyFiveMinutes()
