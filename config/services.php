@@ -62,4 +62,8 @@ return [
         'token' => env('BUNNY_TOKEN'),
     ],
 
+    'ploi' => [
+        'token' => env('PLOI_TOKEN'),
+    ],
+
 ];

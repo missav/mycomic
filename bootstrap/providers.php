@@ -8,4 +8,5 @@ return [
     App\Aliyun\AliyunServiceProvider::class,
     App\Cloudflare\CloudflareServiceProvider::class,
     App\Bunny\BunnyServiceProvider::class,
+    App\Ploi\PloiServiceProvider::class,
 ];
