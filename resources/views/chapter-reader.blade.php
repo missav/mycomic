@@ -98,20 +98,22 @@
 
         <div class="fixed bottom-0 left-0 right-0 border-t border-zinc-200 dark:border-zinc-700">
             <div class="-mx-4 sm:mx-0">
-                <div class="px-6 lg:px-8 [[data-flux-container]_&]:px-0 mx-auto w-full [:where(&)]:max-w-7xl text-white bg-zinc-100 dark:bg-zinc-800 overflow-scroll whitespace-nowrap">
-                    @for ($i = 1; $i <= $chapter->pages; $i++)
-                        <button
-                            x-ref="page-selector-{{ $i }}"
-                            @click="scrollToPage({{ $i }});"
-                            :class="{
-                                'text-red-600': currentPage === {{ $i }},
-                                'dark:text-red-500': currentPage === {{ $i }},
-                            }"
-                            class="page-selector p-2"
-                        >
-                            {{ $i }}
-                        </button>
-                    @endfor
+                <div class="px-6 lg:px-8 [[data-flux-container]_&]:px-0 mx-auto w-full [:where(&)]:max-w-7xl text-white bg-zinc-100 dark:bg-zinc-800">
+                    <div class="overflow-scroll whitespace-nowrap">
+                        @for ($i = 1; $i <= $chapter->pages; $i++)
+                            <button
+                                x-ref="page-selector-{{ $i }}"
+                                @click="scrollToPage({{ $i }});"
+                                :class="{
+                                    'text-red-600': currentPage === {{ $i }},
+                                    'dark:text-red-500': currentPage === {{ $i }},
+                                }"
+                                class="page-selector p-2"
+                            >
+                                {{ $i }}
+                            </button>
+                        @endfor
+                    </div>
                 </div>
             </div>
             <div class="flex justify-center bg-zinc-50 dark:bg-zinc-900 py-4">
