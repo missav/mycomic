@@ -20,6 +20,8 @@ class DownloadChapter implements ShouldQueue
 {
     use Queueable, WithScraper;
 
+    public int $tries = 10;
+
     public function __construct(
         public Chapter $chapter,
         public bool $force = false,
