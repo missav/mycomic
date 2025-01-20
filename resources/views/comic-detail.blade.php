@@ -160,7 +160,7 @@
                                 @click="
                                     loading = true;
 
-                                    axios.post('{{ route('comics.unbookmark', ['comic' => $comic]) }}').then(response => {
+                                    axios.delete('{{ route('comics.unbookmark', ['comic' => $comic]) }}').then(response => {
                                         syncUserUuid(response.data.userUuid);
                                         hasBookmarked = false;
                                         loading = false;
