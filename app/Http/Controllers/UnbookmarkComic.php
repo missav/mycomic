@@ -26,5 +26,7 @@ class UnbookmarkComic
         }
 
         Recombee::send(new DeleteBookmark(user()->id, $record->comic_id));
+
+        return $this->responseUserUuid();
     }
 }
