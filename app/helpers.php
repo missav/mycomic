@@ -31,7 +31,7 @@ if (! function_exists('localizedRoute')) {
         string|\App\Enums\Locale $name,
         array $parameters = [],
         bool $absolute = true,
-        \App\Enums\Locale $locale = null,
+        ?\App\Enums\Locale $locale = null,
     ): string
     {
         $locale = $locale ? $locale->value : app()->getLocale();
