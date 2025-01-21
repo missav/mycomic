@@ -53,7 +53,7 @@ class ChapterReader
             ->audience(Schema::audience()->name($chapter->comic->audience->text()))
             ->author($chapter->comic->authors->pluck('name')->map(fn (string $name) => Schema::person()->name($name))->all())
             ->countryOfOrigin(Schema::country()->name($chapter->comic->country->text()))
-            ->datePublished(Carbon::make("{$chapter->comic->year}-01-01"))
+            ->datePublished($chapter->created_at)
             ->keywords($chapter->comic->tags->pluck('name')->all())
             ->position($chapter->number)
             ->thumbnailUrl($chapter->comic->coverCdnUrl())
