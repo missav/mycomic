@@ -164,7 +164,7 @@ class Comic extends Model
             ]);
         }
 
-        $cacheKey = "item:views:{$this->id}";
+        $cacheKey = "comic:views:{$this->id}";
 
         $cachedViews = cache()->increment($cacheKey);
 
