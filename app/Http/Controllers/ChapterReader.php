@@ -54,7 +54,7 @@ class ChapterReader
             ->author($chapter->comic->authors->pluck('name')->map(fn (string $name) => Schema::person()->name($name))->all())
             ->countryOfOrigin(Schema::country()->name($chapter->comic->country->text()))
             ->datePublished($chapter->created_at)
-            ->keywords($chapter->comic->tags->pluck('name')->all())
+            ->keywords($chapter->comic->tags->map->name()->all())
             ->position($chapter->number)
             ->thumbnailUrl($chapter->comic->coverCdnUrl())
             ->alternateName($chapter->comic->original_name)
