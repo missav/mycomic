@@ -57,11 +57,11 @@ class ChapterReader
             ->keywords($chapter->comic->tags->map->name()->all())
             ->position($chapter->number)
             ->thumbnailUrl($chapter->comic->coverCdnUrl())
-            ->alternateName($chapter->comic->original_name)
+            ->alternateName(localized($chapter->comic->original_name))
             ->description($chapter->comic->description())
             ->image($chapter->comic->coverCdnUrl())
             ->name("{$chapter->comic->name()} - {$chapter->title()}")
-            ->url($chapter->comic->url());
+            ->url($chapter->url());
 
         Seo::jsonLdScript($mte->toScript());
 
