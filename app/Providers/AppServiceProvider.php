@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Comic;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -21,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading();
 
         Relation::morphMap(['comic' => Comic::class]);
+
+        Carbon::setLocale('zh');
 
         $this->registerHttpMacros();
         $this->registerRequestMacros();
