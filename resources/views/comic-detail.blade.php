@@ -89,7 +89,7 @@
                                 {!! $comic
                                     ->tags
                                     ->map(fn (\App\Models\Tag $tag) =>
-                                        '<a href="' . $tag->url() . '" class="hover:underline underline-offset-4">' . $tag->name . '</a>'
+                                        '<a href="' . $tag->url() . '" class="hover:underline underline-offset-4">' . $tag->name() . '</a>'
                                     )
                                     ->add('<a href="' . $comic->audienceUrl() . '" class="hover:underline underline-offset-4">' . $comic->audience->text() . '</a>')
                                     ->implode(', ') !!}
