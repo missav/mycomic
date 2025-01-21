@@ -211,15 +211,15 @@
                 </div>
                 <div class="hidden sm:block flex-none sm:w-40 mt-6 sm:mt-0 sm:ml-8">
                     <div class="aspect-w-2 aspect-h-1 sm:aspect-w-3 sm:aspect-h-4 overflow-hidden rounded-md shadow-lg dark:shadow-gray-500/40">
-                        <img src="{{ $comic->coverCdnUrl() }}" alt="{{ $comic->name }}" class="object-cover object-top">
+                        <img src="{{ $comic->coverCdnUrl() }}" alt="{{ $comic->name() }}" class="object-cover object-top">
                     </div>
                 </div>
             </flux:card>
             <div x-cloak class="mt-8 mb-12">
-                @foreach ($comic->chapters->reverse()->groupBy(fn (\App\Models\Chapter $chapter) => $chapter->type()) as $group => $chapters)
+                @foreach ($comic->chapters->groupBy(fn (\App\Models\Chapter $chapter) => $chapter->type()) as $group => $chapters)
                     <div
                         x-data='{
-                            chapters: @json(\App\Http\Resources\ChapterResource::collection($chapters)),
+                            chapters: @json(\App\Http\Resources\ChapterResource::collection($chapters->reverse())),
                             decending: true,
                             toggleSorting() {
                                 this.chapters = this.chapters.reverse();
