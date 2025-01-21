@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('model:prune', ['--model' => \Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem::class])
+Schedule::command('model:prune')
     ->daily()
     ->withoutOverlapping()
     ->onOneServer()
