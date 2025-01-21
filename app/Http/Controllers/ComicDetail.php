@@ -43,10 +43,10 @@ class ComicDetail
 
         $mte->comicSeries()
             ->audience(Schema::audience()->name($comic->audience->text()))
-            ->author($comic->authors->pluck('name')->map(fn (string $name) => Schema::person()->name($name))->all())
+            ->author($comic->authors->map->name()->map(fn (string $name) => Schema::person()->name($name))->all())
             ->countryOfOrigin(Schema::country()->name($comic->country->text()))
             ->datePublished(Carbon::make("{$comic->year}-01-01"))
-            ->keywords($comic->tags->pluck('name')->all())
+            ->keywords($comic->tags->map->name()->all())
             ->thumbnailUrl($comic->coverCdnUrl())
             ->alternateName($comic->original_name)
             ->description($comic->description())
