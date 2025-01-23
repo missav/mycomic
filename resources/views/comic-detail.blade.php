@@ -216,10 +216,10 @@
                 </div>
             </flux:card>
             <div x-cloak class="mt-8 mb-12">
-                @foreach ($comic->chapters->groupBy(fn (\App\Models\Chapter $chapter) => $chapter->type()) as $group => $chapters)
+                @foreach ($comic->chapters->reverse()->groupBy(fn (\App\Models\Chapter $chapter) => $chapter->type()) as $group => $chapters)
                     <div
                         x-data='{
-                            chapters: @json(\App\Http\Resources\ChapterResource::collection($chapters->reverse())),
+                            chapters: @json(\App\Http\Resources\ChapterResource::collection($chapters)),
                             decending: true,
                             toggleSorting() {
                                 this.chapters = this.chapters.reverse();
