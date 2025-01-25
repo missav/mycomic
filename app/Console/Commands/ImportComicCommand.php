@@ -61,6 +61,10 @@ class ImportComicCommand extends Command
 
         try {
             $source = $this->scrap(Comic::sourceUrl($id));
+
+            if (Str::contains($source, '已下架')) {
+                $source = zh($this->scrap(Comic::sourceUrl($id, 'www')));
+            }
         } catch (RequestException $e) {
             if ($e->getCode() === 404) {
                 $this->error("Missing comic #{$id}");
