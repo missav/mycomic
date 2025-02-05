@@ -99,7 +99,7 @@
         <div class="fixed bottom-0 left-0 right-0 border-t border-zinc-200 dark:border-zinc-700">
             <div class="-mx-4 sm:mx-0">
                 <div class="px-6 lg:px-8 [[data-flux-container]_&]:px-0 mx-auto w-full [:where(&)]:max-w-7xl text-white bg-zinc-100 dark:bg-zinc-800">
-                    <div class="overflow-scroll whitespace-nowrap">
+                    <div class="overflow-auto whitespace-nowrap" style="scrollbar-width: none;">
                         @for ($i = 1; $i <= $chapter->pages; $i++)
                             <button
                                 x-ref="page-selector-{{ $i }}"
