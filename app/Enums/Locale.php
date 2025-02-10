@@ -4,22 +4,22 @@ namespace App\Enums;
 
 enum Locale: string
 {
-    case CN = 'cn';
     case ZH = 'zh';
+    case CN = 'cn';
 
     public function label(): string
     {
         return match($this->value) {
-            'cn' => '简体中文',
             'zh' => '繁體中文',
+            'cn' => '简体中文',
         };
     }
 
     public function code(): string
     {
         return match($this->value) {
-            'cn' => 'zh-Hans',
             'zh' => 'zh-Hant',
+            'cn' => 'zh-Hans',
         };
     }
 
