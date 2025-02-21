@@ -37,7 +37,7 @@
             setTimeout(() => {
                 if (window.userUuid) {
                     recombeeClient.send(new recombee.AddDetailView(window.userUuid, comicId, {
-                        cascadeCreate: true,
+                        cascadeCreate: false,
                         recommId: window.recommendId,
                     }));
                 }
@@ -372,7 +372,7 @@
                         .then(response => {
                             if (window.userUuid) {
                                 recombeeClient.send(new recombee.AddRating(window.userUuid, comicId, (rating - 3) / 2, {
-                                    cascadeCreate: true,
+                                    cascadeCreate: false,
                                     recommId: window.recommendId,
                                 })).then(() => {
                                     window.location.reload();
