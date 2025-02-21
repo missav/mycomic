@@ -13,7 +13,7 @@
             reachedBottomCallback() {
                 if (window.userUuid) {
                     recombeeClient.send(new recombee.AddPurchase(window.userUuid, {{ $chapter->comic->id }}, {
-                        cascadeCreate: false,
+                        cascadeCreate: true,
                         recommId: window.recommendId,
                     }));
 

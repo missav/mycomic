@@ -122,7 +122,7 @@
             getRecommendations(scenario, count, comicId) {
                 const data = {
                     scenario: scenario,
-                    cascadeCreate: false,
+                    cascadeCreate: true,
                     returnProperties: true,
                     includedProperties: [
                         this.locale === 'zh' ? 'name' : 'name_cn',
